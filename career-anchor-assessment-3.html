@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>キャリア・アンカー診断 完全改善版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .intro {
+            background: #f0f4ff;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .intro h3 {
+            color: #667eea;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .intro h3:first-child {
+            margin-top: 0;
+        }
+        
+        .intro ul {
+            margin: 10px 0 10px 25px;
+            line-height: 1.8;
+        }
+        
+        .intro li {
+            margin-bottom: 5px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .warning-box strong {
+            color: #856404;
+        }
+        
+        .question-container {
+            display: none;
+        }
+        
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question {
+            background: #f0f4ff;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .question-number {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .scenario-box {
+            background: #fff;
+            padding: 15px;
+            border-left: 4px solid #667eea;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-style: italic;
+            color: #555;
+            font-size: 16px;
+        }
+        
+        .scale-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .scale-option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: white;
+            border: 2px solid #d0d9ff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .scale-option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .scale-option.selected {
+            border-color: #667eea;
+            background: #e8edff;
+        }
+        
+        .scale-option input[type="radio"] {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .scale-option label {
+            cursor: pointer;
+            flex: 1;
+            font-size: 16px;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #d0d9ff;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .btn-prev {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .btn-prev:hover:not(:disabled) {
+            background: #d0d0d0;
+        }
+        
+        .btn-next, .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-next:hover:not(:disabled), .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-start {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 18px;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            display: none;
+        }
+        
+        .result.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 28px;
+            color: #667eea;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .result-type {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .anchor-scores {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .anchor-card {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #d0d9ff;
+            text-align: center;
+        }
+        
+        .anchor-card.primary {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #f0f4ff 0%, #e8edff 100%);
+        }
+        
+        .anchor-card.secondary {
+            border-color: #9face6;
+        }
+        
+        .anchor-name {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        
+        .anchor-score {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            margin: 10px 0;
+        }
+        
+        .percentile {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .result-description {
+            background: #f0f4ff;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+        
+        .result-description h3 {
+            color: #667eea;
+            margin: 25px 0 15px 0;
+            font-size: 18px;
+        }
+        
+        .result-description h3:first-child {
+            margin-top: 0;
+        }
+        
+        .result-description ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .result-description li {
+            margin-bottom: 8px;
+        }
+        
+        .result-description p {
+            margin-bottom: 10px;
+        }
+        
+        .score-explanation {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #4caf50;
+        }
+        
+        .score-explanation strong {
+            color: #2e7d32;
+        }
+        
+        .btn-restart {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 40px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        hr {
+            margin: 30px 0;
+            border: none;
+            border-top: 2px solid #d0d9ff;
+        }
+        
+        .important-note {
+            background: #fce4ec;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #e91e63;
+        }
+        
+        .important-note strong {
+            color: #880e4f;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .anchor-scores {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>キャリア・アンカー診断</h1>
+        <div class="subtitle">仕事で大切にしたい価値観を知る</div>
+        
+        <div id="intro" class="intro">
+            <span class="badge">学生向けカスタマイズ版</span>
+            
+            <h3>この診断について</h3>
+            <p>このツールは、あなたが仕事で大切にしたい価値観を明確にするためのものです。エドガー・シャインのキャリア・アンカー理論に基づいています。</p>
+            
+            <h3>測定する8つの価値観</h3>
+            <ul>
+                <li><strong>専門性：</strong>特定分野のスペシャリストになりたい</li>
+                <li><strong>管理：</strong>組織全体を指揮したい</li>
+                <li><strong>自律：</strong>自分のやり方で自由に働きたい</li>
+                <li><strong>安定：</strong>安定と継続性を重視したい</li>
+                <li><strong>創造性：</strong>新しいものを生み出したい</li>
+                <li><strong>奉仕：</strong>社会や人の役に立ちたい</li>
+                <li><strong>挑戦：</strong>困難な課題に取り組みたい</li>
+                <li><strong>ライフスタイル：</strong>仕事と生活のバランスを大切にしたい</li>
+            </ul>
+            
+            <div class="warning-box">
+                <strong>学生の皆さんへ：</strong>このアンケートは「もし〜だったら」というシナリオに基づいています。実務経験がなくても大丈夫です。直感的に答えてください。結果は進学や就職選択の判断材料になります。
+            </div>
+            
+            <h3>診断の特徴</h3>
+            <ul>
+                <li>計40問（約12-15分）</li>
+                <li>大学の経験やアルバイトを想定したシナリオ型質問</li>
+                <li>複数の価値観を同時に測定し、総合的に評価</li>
+                <li>あなたに最も適した価値観TOP3を提示</li>
+            </ul>
+            
+            <button class="btn-start" onclick="startAssessment()">診断を開始する</button>
+        </div>
+        
+        <div id="assessment" class="hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div id="questionsContainer"></div>
+            
+            <div class="buttons">
+                <button class="btn-prev" id="prevBtn" onclick="prevQuestion()">前へ</button>
+                <button class="btn-next" id="nextBtn" onclick="nextQuestion()">次へ</button>
+                <button class="btn-submit hidden" id="submitBtn" onclick="calculateResult()">結果を見る</button>
+            </div>
+        </div>
+        
+        <div id="result" class="result">
+            <div class="result-header">
+                <h2 style="color: #667eea; margin-bottom: 10px;">診断結果</h2>
+                <p class="result-type" id="resultType"></p>
+                <div class="result-title" id="resultTitle"></div>
+            </div>
+            
+            <div class="score-explanation">
+                <strong>スコアの見方：</strong>各スコアは0～15点です。スコアが高いほど、その価値観があなたにとって重要です。相対比較であり、絶対的な優劣ではありません。
+            </div>
+            
+            <div class="anchor-scores" id="anchorScores"></div>
+            
+            <div class="result-description" id="resultDescription"></div>
+            
+            <button class="btn-restart" onclick="restart()">もう一度診断する</button>
+        </div>
+    </div>
+    
+    <script>
+        // 改善版質問セット（学生向けシナリオ型）
+        const questions = [
+            // 専門性（TE） - 5問
+            {q: "将来、特定の専門分野で深い知識と技能を身につけることは重要ですか?", anchor: "TE", reverse: false},
+            {q: "あなたの分野のエキスパートとして認識されることに価値を感じますか?", anchor: "TE", reverse: false},
+            {q: "専門知識を深めるために、継続的な学習が必要な職を選びたいですか?", anchor: "TE", reverse: false},
+            {q: "将来、特定の技術や専門分野を極めることより、幅広い経験を積むことを優先しますか?", anchor: "TE", reverse: true},
+            {q: "自分の専門領域での「プロフェッショナル」という評価を得ることは、キャリアの最大の目標ですか?", anchor: "TE", reverse: false},
+            
+            // 管理（GM） - 5問
+            {q: "将来、チームやプロジェクトをリーダーシップで指揮することに興味がありますか?", anchor: "GM", reverse: false},
+            {q: "複数の部門を統括し、組織全体の成功に貢献することに魅力を感じますか?", anchor: "GM", reverse: false},
+            {q: "人を育成し、ビジネスの意思決定に関わることが職人的な充実感より重要ですか?", anchor: "GM", reverse: false},
+            {q: "管理職よりも現場で手を動かす仕事を優先したいですか?", anchor: "GM", reverse: true},
+            {q: "組織のトップマネジメント層を目指すことは、あなたのキャリア目標ですか?", anchor: "GM", reverse: false},
+            
+            // 自律（AU） - 5問
+            {q: "自分のペースで、自分のやり方で仕事をしたいですか?", anchor: "AU", reverse: false},
+            {q: "組織のルールや制約に縛られずに働く環境を求めていますか?", anchor: "AU", reverse: false},
+            {q: "会社に依存するより、個人の専門性で独立して活動することを考えていますか?", anchor: "AU", reverse: false},
+            {q: "組織の一員として安定した環境で働くことを優先したいですか?", anchor: "AU", reverse: true},
+            {q: "自分自身で判断し、責任を取る働き方を強く望みますか?", anchor: "AU", reverse: false},
+            
+            // 安定（SE） - 5問
+            {q: "安定した雇用と給与が得られることは、仕事を選ぶ際に重要ですか?", anchor: "SE", reverse: false},
+            {q: "将来的な雇用の不安定さより、安心して働ける環境を優先しますか?", anchor: "SE", reverse: false},
+            {q: "公務員や大手企業など、安定した組織を職場として考えていますか?", anchor: "SE", reverse: false},
+            {q: "リスクを取ってでも、成長や成功の機会を求めたいですか?", anchor: "SE", reverse: true},
+            {q: "経済的な不確実性は、あなたのキャリア選択に大きな影響を与えますか?", anchor: "SE", reverse: false},
+            
+            // 創造性（EC） - 5問
+            {q: "新しいアイデアやビジネスを生み出すことに情熱を感じますか?", anchor: "EC", reverse: false},
+            {q: "自分のアイデアを形にし、事業を立ち上げることに興味がありますか?", anchor: "EC", reverse: false},
+            {q: "革新的で創造的な仕事に携わることは、あなたにとって重要ですか?", anchor: "EC", reverse: false},
+            {q: "既存の枠組みの中で着実に仕事をすることより、新しいことに挑戦したいですか?", anchor: "EC", reverse: false},
+            {q: "ルーティン業務より、常に新しい課題に取り組む環境を求めていますか?", anchor: "EC", reverse: false},
+            
+            // 奉仕（SV） - 5問
+            {q: "社会や人々の役に立つ仕事をすることは重要ですか?", anchor: "SV", reverse: false},
+            {q: "自分の仕事が社会にどう貢献しているかが、仕事選びの判断基準ですか?", anchor: "SV", reverse: false},
+            {q: "利益より社会貢献を優先する仕事に魅力を感じますか?", anchor: "SV", reverse: false},
+            {q: "自分の信念や価値観に沿った仕事をすることは最優先ですか?", anchor: "SV", reverse: false},
+            {q: "世界をより良くするために働きたいという気持ちは強いですか?", anchor: "SV", reverse: false},
+            
+            // 挑戦（CH） - 5問
+            {q: "困難で挑戦的な問題を解決することに充実感を感じますか?", anchor: "CH", reverse: false},
+            {q: "競争的な環境で自分の能力を試したいですか?", anchor: "CH", reverse: false},
+            {q: "不可能と思われることを成し遂げることは、あなたのモチベーションですか?", anchor: "CH", reverse: false},
+            {q: "安定より刺激と挑戦のある環境を求めていますか?", anchor: "CH", reverse: false},
+            {q: "目標達成のために努力する過程こそが、最大のやりがいですか?", anchor: "CH", reverse: false},
+            
+            // ライフスタイル（LS） - 5問
+            {q: "仕事と生活のバランスを大切にしたいですか?", anchor: "LS", reverse: false},
+            {q: "家族や趣味など、仕事以外の時間を充実させることは重要ですか?", anchor: "LS", reverse: false},
+            {q: "柔軟な働き方ができる環境を優先したいですか?", anchor: "LS", reverse: false},
+            {q: "キャリアの成功のためなら、生活時間を削ることも厭わないですか?", anchor: "LS", reverse: true},
+            {q: "仕事一筋より、人生全体の充実を重視していますか?", anchor: "LS", reverse: false}
+        ];
+        
+        let currentQuestion = 0;
+        let answers = [];
+        
+        function startAssessment() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('assessment').classList.remove('hidden');
+            renderQuestion();
+            updateProgress();
+        }
+        
+        function renderQuestion() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            const question = questions[currentQuestion];
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-container active';
+            
+            questionDiv.innerHTML = `
+                <div class="question">
+                    <div class="question-number">質問 ${currentQuestion + 1} / ${questions.length}</div>
+                    <div class="question-text">${question.q}</div>
+                    <div class="scale-container">
+                        <div class="scale-option ${answers[currentQuestion] === 3 ? 'selected' : ''}" onclick="selectOption(${currentQuestion}, 3)">
+                            <input type="radio" name="q${currentQuestion}" id="q${currentQuestion}_3" value="3" ${answers[currentQuestion] === 3 ? 'checked' : ''}>
+                            <label for="q${currentQuestion}_3">非常にそう思う</label>
+                        </div>
+                        <div class="scale-option ${answers[currentQuestion] === 2 ? 'selected' : ''}" onclick="selectOption(${currentQuestion}, 2)">
+                            <input type="radio" name="q${currentQuestion}" id="q${currentQuestion}_2" value="2" ${answers[currentQuestion] === 2 ? 'checked' : ''}>
+                            <label for="q${currentQuestion}_2">そう思う</label>
+                        </div>
+                        <div class="scale-option ${answers[currentQuestion] === 1 ? 'selected' : ''}" onclick="selectOption(${currentQuestion}, 1)">
+                            <input type="radio" name="q${currentQuestion}" id="q${currentQuestion}_1" value="1" ${answers[currentQuestion] === 1 ? 'checked' : ''}>
+                            <label for="q${currentQuestion}_1">やや思う</label>
+                        </div>
+                        <div class="scale-option ${answers[currentQuestion] === 0 ? 'selected' : ''}" onclick="selectOption(${currentQuestion}, 0)">
+                            <input type="radio" name="q${currentQuestion}" id="q${currentQuestion}_0" value="0" ${answers[currentQuestion] === 0 ? 'checked' : ''}>
+                            <label for="q${currentQuestion}_0">そう思わない</label>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(questionDiv);
+            updateButtons();
+        }
+        
+        function selectOption(questionIndex, value) {
+            answers[questionIndex] = value;
+            document.getElementById(`q${questionIndex}_${value}`).checked = true;
+            
+            const options = document.querySelectorAll('.scale-option');
+            options.forEach((opt) => {
+                const input = opt.querySelector('input');
+                if (input.checked) {
+                    opt.classList.add('selected');
+                } else {
+                    opt.classList.remove('selected');
+                }
+            });
+            
+            updateButtons();
+        }
+        
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.disabled = currentQuestion === 0;
+            
+            const hasAnswer = answers[currentQuestion] !== undefined;
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+                submitBtn.disabled = !hasAnswer;
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+                nextBtn.disabled = !hasAnswer;
+            }
+        }
+        
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1 && answers[currentQuestion] !== undefined) {
+                currentQuestion++;
+                renderQuestion();
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        function calculateResult() {
+            const rawScores = {TE: 0, GM: 0, AU: 0, SE: 0, EC: 0, SV: 0, CH: 0, LS: 0};
+            
+            answers.forEach((answer, index) => {
+                const question = questions[index];
+                const score = question.reverse ? (3 - answer) : answer;
+                rawScores[question.anchor] += score;
+            });
+            
+            // 標準化得点を計算
+            const scores = {};
+            const mean = Object.values(rawScores).reduce((a, b) => a + b) / 8;
+            const variance = Object.values(rawScores).reduce((sum, score) => sum + Math.pow(score - mean, 2), 0) / 8;
+            const stdDev = Math.sqrt(variance);
+            
+            Object.keys(rawScores).forEach(anchor => {
+                scores[anchor] = stdDev > 0 ? ((rawScores[anchor] - mean) / stdDev).toFixed(2) : 0;
+            });
+            
+            const sortedAnchors = Object.keys(rawScores).sort((a, b) => rawScores[b] - rawScores[a]);
+            const topAnchors = sortedAnchors.slice(0, 3);
+            
+            displayResult(topAnchors, rawScores, scores);
+        }
+        
+        function displayResult(topAnchors, rawScores, zScores) {
+            const anchorInfo = {
+                TE: {
+                    name: '専門性・職能別コンピタンス',
+                    shortName: '専門性',
+                    desc: '特定分野でのエキスパート',
+                    traits: '深い専門知識、技術的な卓越性、分野での認識',
+                    careers: '研究者、エンジニア、医師、弁護士、コンサルタント、技術専門職',
+                    advice: '専門性を深められる環境を選び、継続的なスキルアップを重視しましょう。業界での「プロ」という評価を目指すこと'
+                },
+                GM: {
+                    name: '一般管理コンピタンス',
+                    shortName: '管理',
+                    desc: '組織全体をリード',
+                    traits: '組織運営、リーダーシップ、総合的な意思決定、責任ある立場',
+                    careers: '経営者、事業部長、ゼネラルマネージャー、経営企画、管理職',
+                    advice: 'マネジメントスキルを磨き、組織全体を見渡す経験を積みましょう。リーダーシップの機会を求めること'
+                },
+                AU: {
+                    name: '自律・独立',
+                    shortName: '自律',
+                    desc: '自分のやり方で自由に働く',
+                    traits: '独立性、自己決定、ルールに縛られない、自分のペース',
+                    careers: 'フリーランス、起業家、コンサルタント、研究者、芸術家',
+                    advice: '自律性の高い働き方ができる環境を選びましょう。組織に依存しない個人の専門性を磨くこと'
+                },
+                SE: {
+                    name: '保障・安定',
+                    shortName: '安定',
+                    desc: '安定した雇用と継続性を重視',
+                    traits: '長期的な雇用、経済的安定、予測可能性、福利厚生',
+                    careers: '公務員、大手企業、教育機関、金融機関、安定企業の正社員',
+                    advice: '安定した組織を選び、長期的なキャリアを築くことを重視しましょう。雇用の継続性と福利厚生を確認すること'
+                },
+                EC: {
+                    name: '起業家的創造性',
+                    shortName: '創造性',
+                    desc: '新しいものを生み出す',
+                    traits: '創造性、革新、起業家精神、新規事業開発',
+                    careers: '起業家、新規事業開発、イノベーター、ベンチャー企業、製品開発',
+                    advice: '創造的で革新的な環境を選びましょう。スタートアップやベンチャーの機会を検討すること'
+                },
+                SV: {
+                    name: '奉仕・社会貢献',
+                    shortName: '奉仕',
+                    desc: '社会や人々の役に立つ',
+                    traits: '社会貢献、利他主義、価値観重視、意味のある仕事',
+                    careers: '非営利団体、医療・福祉、教育、カウンセラー、ソーシャルワーカー',
+                    advice: '社会的使命を持つ組織を選びましょう。意義ある仕事をすることを優先すること'
+                },
+                CH: {
+                    name: '純粋な挑戦',
+                    shortName: '挑戦',
+                    desc: '困難な課題に取り組む',
+                    traits: '挑戦、競争、難題の克服、達成感',
+                    careers: 'プロジェクトマネージャー、営業、アスリート、探検家、投資家',
+                    advice: '常に新しい挑戦ができる刺激的な環境を選びましょう。困難な目標達成の過程を重視すること'
+                },
+                LS: {
+                    name: '生活様式',
+                    shortName: 'ライフスタイル',
+                    desc: '仕事と生活のバランス',
+                    traits: 'ワークライフバランス、柔軟性、家族・趣味の時間、人生全体の充実',
+                    careers: 'フレックス勤務可能な企業、リモートワーク、時短勤務、パートタイム',
+                    advice: '柔軟な働き方ができる環境を優先しましょう。人生全体の充実を重視すること'
+                }
+            };
+            
+            const resultType = topAnchors.length > 1 && Math.abs(parseFloat(zScores[topAnchors[0]]) - parseFloat(zScores[topAnchors[1]])) < 0.5 
+                ? '複合型（複数の価値観が同程度に大切）'
+                : '単一型（1つの価値観が特に重要）';
+            
+            document.getElementById('assessment').classList.add('hidden');
+            document.getElementById('result').classList.add('active');
+            document.getElementById('resultType').textContent = resultType;
+            
+            const anchorNames = topAnchors.slice(0, 2).map(a => anchorInfo[a].shortName).join(' + ');
+            document.getElementById('resultTitle').textContent = anchorNames;
+            
+            let scoresHTML = '';
+            const sortedAll = Object.keys(rawScores).sort((a, b) => rawScores[b] - rawScores[a]);
+            sortedAll.forEach((anchor, index) => {
+                const isPrimary = index === 0;
+                const isSecondary = index === 1;
+                scoresHTML += `
+                    <div class="anchor-card ${isPrimary ? 'primary' : isSecondary ? 'secondary' : ''}">
+                        <div class="anchor-name">${anchorInfo[anchor].shortName}</div>
+                        <div class="anchor-score">${rawScores[anchor]}/15点</div>
+                        <div class="percentile">相対スコア: ${Math.round((rawScores[anchor] / 15) * 100)}%</div>
+                    </div>
+                `;
+            });
+            document.getElementById('anchorScores').innerHTML = scoresHTML;
+            
+            let descriptionHTML = '';
+            topAnchors.slice(0, 2).forEach((anchor, index) => {
+                const info = anchorInfo[anchor];
+                const label = index === 0 ? 'あなたの最も重要な価値観' : 'あなたの次に重要な価値観';
+                descriptionHTML += `
+                    <h3>${label}：${info.name}</h3>
+                    <p><strong>この価値観の意味：</strong>${info.desc}</p>
+                    
+                    <h3>大切にすること</h3>
+                    <p>${info.traits}</p>
+                    
+                    <h3>適した職業・職場</h3>
+                    <p>${info.careers}</p>
+                    
+                    <h3>キャリア形成のアドバイス</h3>
+                    <p>${info.advice}</p>
+                `;
+                
+                if (index === 0 && topAnchors.length > 1) {
+                    descriptionHTML += '<hr>';
+                }
+            });
+            
+            descriptionHTML += `
+                <h3>あなたの価値観スコア（全8軸）</h3>
+                <p style="margin-bottom: 15px;">以下のランキングから、自分にとって何が重要かをよく確認してください。</p>
+                <ul>
+                    ${sortedAll.map((anchor, index) => `
+                        <li><strong>${index + 1}位: ${anchorInfo[anchor].shortName}</strong> - ${rawScores[anchor]}点</li>
+                    `).join('')}
+                </ul>
+                
+                <h3>このツールの使い方</h3>
+                <p>このスコアは「あなたにとって何が重要か」を示しています。職業選択の際に以下のように活用してください：</p>
+                <ul>
+                    <li>求人票で「この価値観が満たされるか」を確認する</li>
+                    <li>企業研究時に「社風や待遇がこの価値観と合っているか」を評価する</li>
+                    <li>複数の選択肢で迷った時、この価値観を判断基準にする</li>
+                    <li>インターンシップで職場がこの価値観と合っているか体験する</li>
+                </ul>
+                
+                <div class="important-note">
+                    <strong>重要な注意：</strong>このスコアは「現在のあなたの傾向」を示しています。経験を積むと価値観は変わることがあります。特に、就職後1-2年で価値観が大きく変わることは珍しくありません。定期的（年1回程度）に再診断することをお勧めします。
+                </div>
+                
+                <h3>メタアセスメントへ戻る</h3>
+                <p>このツールは、メタアセスメント（総合キャリア診断）の一部です。他の診断結果と組み合わせることで、より総合的な自己理解が得られます。</p>
+                <ul>
+                    <li>興味・関心診断（VPI）との組み合わせ：「やりたいこと」と「大事にしたいこと」の両面から職業を検討</li>
+                    <li>性格診断（MBTI）との組み合わせ：「自分の特性」と「重視する価値観」から最適な環境を判定</li>
+                </ul>
+            `;
+            
+            document.getElementById('resultDescription').innerHTML = descriptionHTML;
+            
+            window.scrollTo(0, 0);
+        }
+        
+        function restart() {
+            currentQuestion = 0;
+            answers = [];
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('intro').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>

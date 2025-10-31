@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学生向けキャリア傾向診断</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+       
+       body {
+    font-family: 'Inter', 'Yu Gothic', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    padding: 20px;
+    /* transform 関連のプロパティを削除 */
+}
+        .container {
+    width: 900px !important;
+    max-width: 900px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    transform: none !important;
+}
+        h1 {
+            color: #667eea;
+            text-align: center;
+            font-size: 2xl;
+        }
+        .intro {
+            background: #f8fafc;
+        }
+        .question-container {
+            display: none;
+        }
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .progress-bar {
+            height: 8px;
+            background: #e0e7ff;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            height: 100%;
+        }
+        .btn-base {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-primary:hover:not(:disabled) {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+        .btn-secondary {
+            background: #e5e7eb;
+            color: #4b5563;
+        }
+        .btn-secondary:hover:not(:disabled) {
+            background: #d1d5db;
+        }
+        .btn-disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        .scale-option {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 2px solid #e5e7eb;
+            padding: 16px;
+            border-radius: 12px;
+            display: block;
+            width: 100%;
+            text-align: left;
+        }
+        .scale-option:hover {
+            border-color: #667eea;
+            background-color: #f5f3ff;
+            transform: translateX(4px);
+        }
+        .scale-option.selected {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+            color: white;
+        }
+        .scale-option label {
+            cursor: pointer;
+            display: block;
+            margin: 0;
+            font-weight: 500;
+        }
+        .assessment-footer {
+            display: flex;
+            gap: 16px;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid #e5e7eb;
+            flex-wrap: wrap;
+        }
+        .progress-info {
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+            font-weight: 600;
+            padding: 8px 16px;
+            background: #f3f4f6;
+            border-radius: 8px;
+        }
+        .disclaimer {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            font-size: 14px;
+            color: #92400e;
+            line-height: 1.6;
+        }
+        .note {
+            background: #dbeafe;
+            border-left: 4px solid #0284c7;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 12px 0;
+            font-size: 14px;
+            color: #0c4a6e;
+        }
+        input[type="radio"],
+        input[type="checkbox"] {
+            display: none;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="container p-6 md:p-10">
+        <h1 class="text-3xl font-extrabold mb-2">学生向けキャリア傾向診断</h1>
+        <div class="text-center text-gray-500 mb-8">あなたの学習スタイルと職業適性を発見する</div>
+        
+        <!-- 導入画面 -->
+        <div id="intro" class="intro p-6 rounded-xl mb-6">
+            <div class="disclaimer">
+                <strong>⚠️ 重要な注意事項</strong><br>
+                このツールはあなたの学習スタイルと職業適性の傾向を理解するための参考情報です。診断結果は唯一の進路決定基準ではありません。学校のキャリアカウンセラーや保護者と相談して、総合的に判断してください。
+            </div>
+
+            <h3 class="text-xl font-bold mb-4 text-[#667eea]">このツールについて</h3>
+            <p class="text-gray-700 leading-relaxed mb-4">
+                このツールは、あなたの性格特性や学習スタイルから、以下の4つの軸について分析します：
+            </p>
+            <ul class="list-disc list-inside text-gray-700 ml-4 my-4 leading-relaxed space-y-2">
+                <li><strong>エネルギーの方向性：</strong>グループ学習か個人学習か</li>
+                <li><strong>情報の受け取り方：</strong>現実的か理論的か</li>
+                <li><strong>意思決定の方法：</strong>論理的か感情的か</li>
+                <li><strong>生活スタイル：</strong>計画的か柔軟的か</li>
+            </ul>
+
+            <div class="note">
+                <strong>📌 実施方法</strong><br>
+                全60問（初期48問 + 詳細分析12問）に答えます。具体的な状況を想像してお答えください。
+            </div>
+
+            <button class="btn-base btn-primary w-full mt-6" onclick="startAssessment()">診断を始める</button>
+        </div>
+        
+        <!-- 質問画面 -->
+        <div id="assessment" class="hidden">
+            <div class="progress-bar rounded-full mb-8">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div id="questionsContainer" class="min-h-[300px]"></div>
+            
+            <div class="assessment-footer">
+                <button class="btn-base btn-secondary" id="prevBtn" onclick="prevQuestion()" disabled>← 前へ</button>
+                <div class="progress-info">
+                    <span id="progressText">質問 1 / 48</span>
+                </div>
+                <button class="btn-base btn-primary" id="nextBtn" onclick="nextQuestion()" disabled>次へ →</button>
+                <button class="btn-base btn-primary hidden" id="submitBtn" onclick="calculateResult(1)">診断を完了</button>
+            </div>
+        </div>
+        
+        <!-- 詳細分析プロンプト画面 -->
+        <div id="detail-prompt" class="hidden p-8">
+            <h2 class="text-2xl font-bold text-center text-[#667eea] mb-4">初期診断が完了しました</h2>
+            <p class="text-lg text-center text-gray-700 mb-6">
+                あなたの傾向が把握できました。より詳しく分析するため、追加で質問に答えることで、診断精度を高めることができます。
+            </p>
+            
+            <div id="intermediate-scores" class="grid grid-cols-2 gap-4 mb-8"></div>
+
+            <div class="flex gap-4 justify-center flex-wrap">
+                <button class="btn-base btn-secondary" onclick="calculateResult(2)">この結果で確認する</button>
+                <button class="btn-base btn-primary" onclick="startDetailPhase()">詳細分析に進む</button>
+            </div>
+        </div>
+
+        <!-- 結果画面 -->
+        <div id="result" class="hidden">
+            <h2 class="text-3xl font-extrabold text-center text-[#667eea] mb-6">あなたのキャリア傾向診断結果</h2>
+            
+            <div class="text-4xl md:text-5xl text-center text-[#667eea] font-black tracking-widest mb-2 p-4 bg-purple-50 rounded-lg" id="resultType"></div>
+            <p class="text-center text-gray-600 mb-6 text-lg" id="resultNickname"></p>
+
+            <div class="disclaimer">
+                このタイプは統計的傾向です。個人差があり、すべての人が同じではありません。
+            </div>
+
+            <div id="dimensionScores" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8"></div>
+            
+            <div class="bg-gray-50 p-6 rounded-xl shadow-inner" id="resultDescription"></div>
+
+            <div class="bg-blue-50 p-6 rounded-xl border border-blue-200 mt-6">
+                <h3 class="font-bold text-lg mb-3">📋 次に取るべき行動</h3>
+                <ol class="list-decimal list-inside space-y-2 text-gray-700">
+                    <li>学校のキャリアカウンセラーに相談し、この診断結果を共有する</li>
+                    <li>興味のある学部・学科のオープンキャンパスに参加する</li>
+                    <li>大学の先輩やOB/OGに話を聞く機会を作る</li>
+                    <li>複数の診断ツール（適性検査、学力診断など）も受けて総合的に判断する</li>
+                    <li>定期的に（3-6ヶ月ごと）このツールを再実施し、自分の成長を確認する</li>
+                </ol>
+            </div>
+
+            <button class="btn-base btn-primary w-full mt-8" onclick="restart()">もう一度診断する</button>
+        </div>
+    </div>
+    
+    <script>
+        const INITIAL_PHASE_COUNT = 48;
+        const QUESTIONS_PER_DIMENSION_INITIAL = 12;
+        const QUESTIONS_PER_DIMENSION_FINAL = 15;
+        const DIMENSIONS = ['EI', 'SN', 'TF', 'JP'];
+        
+        const questions = [
+            // E/I軸 - 15問
+            {q: "仕事やプロジェクトで**他の人と協力したい気持ち**と**一人で集中したい気持ち**、どちらが強いですか?", dimension: "EI", type: "radio", options: [{text: "断然、他の人と協力したい", score: 1.5}, {text: "どちらかといえば協力したい", score: 0.5}, {text: "どちらかといえば一人が好き", score: -0.5}, {text: "断然、一人で集中したい", score: -1.5}]},
+            {q: "授業で複雑な内容が出た時、**理解を深めるために**最も効果的な方法は?", dimension: "EI", type: "radio", options: [{text: "クラスメートと一緒に議論する", score: 1.5}, {text: "人と話しながら考える方が良い", score: 0.5}, {text: "一人で考えた後に確認したい", score: -0.5}, {text: "完全に一人で論理立てて考える", score: -1.5}]},
+            {q: "グループ課題で、あなたのエネルギーレベルは?", dimension: "EI", type: "radio", options: [{text: "メンバーとの相互作用で活発になる", score: 1.5}, {text: "まあまあ活発になる", score: 0.5}, {text: "少し疲れるが対応できる", score: -0.5}, {text: "大幅に疲弊する", score: -1.5}]},
+            {q: "新しい環境(新学年、大学など)**最初の対応スタイル**は?", dimension: "EI", type: "radio", options: [{text: "すぐに色々な人に話しかける", score: 1.5}, {text: "比較的積極的に関わる", score: 0.5}, {text: "まず観察してから動く", score: -0.5}, {text: "信頼できる1-2人を見つけてから広げる", score: -1.5}]},
+            {q: "勉強の休憩時間の**過ごし方**として当てはまるのは?", dimension: "EI", type: "checkbox", options: [{text: "友達と話す", score: 1.0}, {text: "SNSで人と交流する", score: 1.0}, {text: "一人で本を読む", score: -1.0}, {text: "静かに瞑想・リラックスする", score: -1.0}]},
+            {q: "困った時や**ストレスを感じた時**、あなたは?", dimension: "EI", type: "radio", options: [{text: "誰かに話して気持ちをすっきりさせたい", score: 1.5}, {text: "話すことで少し楽になる", score: 0.5}, {text: "話す前に一人で整理したい", score: -0.5}, {text: "極力一人で解決したい", score: -1.5}]},
+            {q: "大人数での発表やプレゼン、どう感じますか?", dimension: "EI", type: "radio", options: [{text: "刺激を感じて楽しい", score: 1.5}, {text: "特に抵抗はない", score: 0.5}, {text: "少し緊張するが対応できる", score: -0.5}, {text: "非常に不安で避けたい", score: -1.5}]},
+            {q: "**オンライン授業と対面授業**、どちらが理解しやすいですか?", dimension: "EI", type: "radio", options: [{text: "対面の方が圧倒的に良い（質問しやすい）", score: 1.5}, {text: "対面が少し良い", score: 0.5}, {text: "オンラインが少し良い", score: -0.5}, {text: "オンラインの方が集中できる", score: -1.5}]},
+            {q: "学校やサークルで**新企画の立案**に誘われたら?", dimension: "EI", type: "radio", options: [{text: "すぐに参加したい、楽しそう", score: 1.5}, {text: "興味があれば参加する", score: 0.5}, {text: "一度考えてから決めたい", score: -0.5}, {text: "誘われても遠慮したい", score: -1.5}]},
+            {q: "クラスや職場での**人間関係の構築**、自分のペースは?", dimension: "EI", type: "radio", options: [{text: "すぐに多くの人と親しくなる", score: 1.5}, {text: "割と早く打ち解ける", score: 0.5}, {text: "時間がかかる", score: -0.5}, {text: "かなり時間がかかる", score: -1.5}]},
+            {q: "**一日中**のキャンパスライフで最も充実感を感じるのは?", dimension: "EI", type: "radio", options: [{text: "友達とずっと過ごした日", score: 1.5}, {text: "誰かと過ごした時間が多い日", score: 0.5}, {text: "一人の時間と友達と過ごす時間が混在", score: -0.5}, {text: "静かに自分のことをした日", score: -1.5}]},
+            {q: "試験期間中の勉強スタイル**最も効率が良いのは?**", dimension: "EI", type: "radio", options: [{text: "友達と一緒に勉強（質問し合える）", score: 1.5}, {text: "時々人と確認しながら", score: 0.5}, {text: "基本一人で、最後に確認", score: -0.5}, {text: "完全に一人で進める", score: -1.5}]},
+            {q: "部活やサークル選びで重視するポイントは?", dimension: "EI", type: "radio", options: [{text: "人間関係が充実している", score: 1.5}, {text: "チームワークが楽しめる", score: 0.5}, {text: "個人の成長に注力できる", score: -0.5}, {text: "一人でコツコツできる活動", score: -1.5}]},
+            {q: "キャリア形成で大切だと思う要素は?", dimension: "EI", type: "radio", options: [{text: "人脈とネットワーク", score: 1.5}, {text: "対人スキル", score: 0.5}, {text: "専門知識と技術", score: -0.5}, {text: "独立した思考と実行力", score: -1.5}]},
+            {q: "理想の仕事環境は?", dimension: "EI", type: "radio", options: [{text: "チームで協力して目標達成する環境", score: 1.5}, {text: "適度なコミュニケーション", score: 0.5}, {text: "集中できる個人スペース", score: -0.5}, {text: "独立して判断・行動できる環境", score: -1.5}]},
+
+            // S/N軸 - 15問
+            {q: "**新しい科目や概念**を学ぶ時、どのアプローチを好みますか?", dimension: "SN", type: "radio", options: [{text: "具体例や実例から理解する", score: 1.5}, {text: "実用的な応用を重視", score: 0.5}, {text: "全体構造と理論を理解したい", score: -0.5}, {text: "抽象的な原理から理解したい", score: -1.5}]},
+            {q: "**説明文を読む時**、何が気になりますか?", dimension: "SN", type: "radio", options: [{text: "具体的な数字やデータ", score: 1.5}, {text: "実例が豊富か", score: 0.5}, {text: "全体的な流れと関連性", score: -0.5}, {text: "根本的な理論や意味", score: -1.5}]},
+            {q: "退屈な作業**ルーティンワーク**について、あなたは?", dimension: "SN", type: "radio", options: [{text: "コツコツと確実にこなす方が好き", score: 1.5}, {text: "必要なら対応できる", score: 0.5}, {text: "退屈だが我慢できる", score: -0.5}, {text: "非常に退屈で避けたい", score: -1.5}]},
+            {q: "**将来のキャリア**について考える時、まず何を考えますか?", dimension: "SN", type: "radio", options: [{text: "実現可能な現実的なプラン", score: 1.5}, {text: "具体的な職業例", score: 0.5}, {text: "理想や可能性の探索", score: -0.5}, {text: "独創的で新しい道", score: -1.5}]},
+            {q: "日常生活で、**細かい変化や詳細**に気づきやすいですか?", dimension: "SN", type: "radio", options: [{text: "非常によく気づく", score: 1.5}, {text: "比較的気づく方", score: 0.5}, {text: "大きな変化は気づくが細部は見逃す", score: -0.5}, {text: "全体的な流れに注目し細部は見ない", score: -1.5}]},
+            {q: "プロジェクト計画時**まず何から始めますか?**", dimension: "SN", type: "radio", options: [{text: "現状の事実とリソース把握", score: 1.5}, {text: "具体的な第一歩", score: 0.5}, {text: "全体目標と方向性", score: -0.5}, {text: "理想的なビジョンから逆算", score: -1.5}]},
+            {q: "**ブログ記事やニュース**を読む時、何が気になりますか?", dimension: "SN", type: "radio", options: [{text: "具体的な事実や数字", score: 1.5}, {text: "実例の詳細", score: 0.5}, {text: "全体的な意味や影響", score: -0.5}, {text: "隠された意味や深い解釈", score: -1.5}]},
+            {q: "得意な学習方法は?", dimension: "SN", type: "checkbox", options: [{text: "実験や実習", score: 1.0}, {text: "事例分析や演習問題", score: 1.0}, {text: "理論の講義", score: -1.0}, {text: "概念図やモデル学習", score: -1.0}]},
+            {q: "**異なる分野の知識**、あなたのスタイルは?", dimension: "SN", type: "radio", options: [{text: "実用的に活用できることを学ぶ", score: 1.5}, {text: "応用例が豊富か重視", score: 0.5}, {text: "分野間の関連性に興味", score: -0.5}, {text: "新しい理論体系に興味", score: -1.5}]},
+            {q: "**エラーが起こった時**、対応スタイルは?", dimension: "SN", type: "radio", options: [{text: "症状と原因を具体的に特定", score: 1.5}, {text: "実装場所を調べる", score: 0.5}, {text: "全体のシステムから考察", score: -0.5}, {text: "根本原因の理論的追究", score: -1.5}]},
+            {q: "読みやすい文章のタイプは?", dimension: "SN", type: "radio", options: [{text: "具体例が多く、わかりやすい", score: 1.5}, {text: "実例があると分かりやすい", score: 0.5}, {text: "全体構造が明確", score: -0.5}, {text: "抽象的で深い内容", score: -1.5}]},
+            {q: "**経験すること**と**学ぶこと**、どちらが大切?", dimension: "SN", type: "radio", options: [{text: "経験が最優先（手で覚える）", score: 1.5}, {text: "経験が少し重要", score: 0.5}, {text: "両方同等", score: 0}, {text: "学ぶこと（理論）が最優先", score: -1.5}]},
+            {q: "興味のある分野は?", dimension: "SN", type: "radio", options: [{text: "実務的で応用性が高い", score: 1.5}, {text: "具体的で実用的", score: 0.5}, {text: "理論と応用のバランス", score: 0}, {text: "根本的な理論や哲学", score: -1.5}]},
+            {q: "研究や調査をする時のアプローチは?", dimension: "SN", type: "radio", options: [{text: "実地調査や実験", score: 1.5}, {text: "データ収集と分析", score: 0.5}, {text: "関連理論の検討", score: -0.5}, {text: "原理的なモデル構築", score: -1.5}]},
+            {q: "問題解決時**最初に何をしますか?**", dimension: "SN", type: "radio", options: [{text: "具体的な事実確認", score: 1.5}, {text: "現状分析", score: 0.5}, {text: "論理的なフレームワーク適用", score: -0.5}, {text: "根本的な原因仮説", score: -1.5}]},
+
+            // T/F軸 - 15問
+            {q: "重要な決定をする時**何を最優先**しますか?", dimension: "TF", type: "radio", options: [{text: "客観的事実と論理的結果", score: 1.5}, {text: "理性的判断", score: 0.5}, {text: "関係者の気持ちと影響", score: -0.5}, {text: "自分と他者の価値観", score: -1.5}]},
+            {q: "友達が間違ったことをした時、どう対応?", dimension: "TF", type: "radio", options: [{text: "客観的に間違いを指摘する", score: 1.5}, {text: "論理的に説明する", score: 0.5}, {text: "相手の気持ちを考慮して優しく伝える", score: -0.5}, {text: "関係を損なわないようそっと示唆する", score: -1.5}]},
+            {q: "グループプロジェクトで**成果**と**チームの雰囲気**、どちらを優先?", dimension: "TF", type: "radio", options: [{text: "絶対に成果を優先", score: 1.5}, {text: "基本は成果", score: 0.5}, {text: "どちらか一方に絞れない", score: 0}, {text: "チームの雰囲気を優先", score: -1.5}]},
+            {q: "批判や意見の相違で**落ち込みますか?**", dimension: "TF", type: "radio", options: [{text: "全く落ち込まない、改善の機会", score: 1.5}, {text: "あまり落ち込まない", score: 0.5}, {text: "少し落ち込む", score: -0.5}, {text: "かなり落ち込む", score: -1.5}]},
+            {q: "**対立した状況**での問題解決、あなたのスタイルは?", dimension: "TF", type: "radio", options: [{text: "論理と事実で解決を図る", score: 1.5}, {text: "条件や基準を明確にする", score: 0.5}, {text: "相手の背景を理解する努力", score: -0.5}, {text: "相手の感情に寄り添う", score: -1.5}]},
+            {q: "他人の**感情的な悩み**に対して、得意な対応は?", dimension: "TF", type: "radio", options: [{text: "論理的なアドバイスをする", score: 1.5}, {text: "実用的な解決策を示す", score: 0.5}, {text: "話を聞いて理解しようとする", score: -0.5}, {text: "感情を共有し寄り添う", score: -1.5}]},
+            {q: "**組織のルール**と**個別の事情**、対立時は?", dimension: "TF", type: "radio", options: [{text: "ルールを厳格に適用すべき", score: 1.5}, {text: "基本はルール", score: 0.5}, {text: "個別対応も必要だが難しい", score: 0}, {text: "事情に配慮した柔軟対応", score: -1.5}]},
+            {q: "失敗した人への対応で大切なのは?", dimension: "TF", type: "radio", options: [{text: "原因と改善策の明確化", score: 1.5}, {text: "学べる教訓の抽出", score: 0.5}, {text: "本人の努力を認める", score: -0.5}, {text: "心理的サポート重視", score: -1.5}]},
+            {q: "リーダーシップスタイルとして**理想的**なのは?", dimension: "TF", type: "radio", options: [{text: "明確な方針と論理的指導", score: 1.5}, {text: "効率的で公平な指導", score: 0.5}, {text: "メンバーの気持ちに寄り添う", score: -0.5}, {text: "調和と信頼関係重視", score: -1.5}]},
+            {q: "**不公正な状況**に対して、あなたは?", dimension: "TF", type: "radio", options: [{text: "理屈立てて異議を唱える", score: 1.5}, {text: "疑問を提示する", score: 0.5}, {text: "その場は従うが内心不満", score: -0.5}, {text: "言い出しにくく我慢する", score: -1.5}]},
+            {q: "自分の意見と**人間関係**が対立した時、どうなりますか?", dimension: "TF", type: "radio", options: [{text: "意見を貫く", score: 1.5}, {text: "意見は少し譲歩", score: 0.5}, {text: "関係を壊したくない", score: -0.5}, {text: "関係を優先させる", score: -1.5}]},
+            {q: "**良き人**の定義は何ですか?", dimension: "TF", type: "radio", options: [{text: "論理的で有能な人", score: 1.5}, {text: "知識と技術がある人", score: 0.5}, {text: "親切で気遣いできる人", score: -0.5}, {text: "思いやりと共感力がある人", score: -1.5}]},
+            {q: "職場での重要な判断基準は?", dimension: "TF", type: "radio", options: [{text: "論理と客観的評価", score: 1.5}, {text: "効率性と成果", score: 0.5}, {text: "人間関係と組織の調和", score: -0.5}, {text: "個々の価値観と福祉", score: -1.5}]},
+            {q: "困難な決定を迫られた時の判断軸は?", dimension: "TF", type: "radio", options: [{text: "最も論理的な選択肢", score: 1.5}, {text: "データと根拠", score: 0.5}, {text: "ステークホルダーの気持ち", score: -0.5}, {text: "自分と周囲の価値観", score: -1.5}]},
+            {q: "チームの不和の時、解決策として重視するのは?", dimension: "TF", type: "radio", options: [{text: "客観的な事実の共有", score: 1.5}, {text: "明確な役割分担", score: 0.5}, {text: "相互の理解促進", score: -0.5}, {text: "信頼と尊重の回復", score: -1.5}]},
+
+            // J/P軸 - 15問
+            {q: "**予定と計画**について、あなたは?", dimension: "JP", type: "radio", options: [{text: "詳細な計画を立てて実行したい", score: 1.5}, {text: "大まかな計画がほしい", score: 0.5}, {text: "計画は柔軟に変わるもの", score: -0.5}, {text: "その場の流れに任せたい", score: -1.5}]},
+            {q: "**提出期限**への対応スタイルは?", dimension: "JP", type: "radio", options: [{text: "早めに完成させて提出", score: 1.5}, {text: "余裕を持って完成", score: 0.5}, {text: "ギリギリだが間に合わせる", score: -0.5}, {text: "期限近くで慌てる", score: -1.5}]},
+            {q: "**机や部屋の状態**として当てはまるのは?", dimension: "JP", type: "radio", options: [{text: "整理整頓が得意、すぐに片付く", score: 1.5}, {text: "基本的に整っている", score: 0.5}, {text: "必要に応じて片付ける", score: -0.5}, {text: "物が散らかっていることが多い", score: -1.5}]},
+            {q: "**急な予定変更**があった時、どう感じますか?", dimension: "JP", type: "radio", options: [{text: "計画が崩れてストレス", score: 1.5}, {text: "少し戸惑うが対応できる", score: 0.5}, {text: "柔軟に対応できる", score: -0.5}, {text: "むしろ楽しい", score: -1.5}]},
+            {q: "**新しい情報や判断**の時、あなたは?", dimension: "JP", type: "radio", options: [{text: "できるだけ早く結論を出したい", score: 1.5}, {text: "適切な時点で決めたい", score: 0.5}, {text: "情報を集めたい", score: -0.5}, {text: "最後まで判断を保留したい", score: -1.5}]},
+            {q: "**To Doリスト**について、あなたは?", dimension: "JP", type: "radio", options: [{text: "毎日作成・確認する", score: 1.5}, {text: "定期的に作成する", score: 0.5}, {text: "頭で覚えているくらい", score: -0.5}, {text: "作らない、その場で判断", score: -1.5}]},
+            {q: "**週末の予定**、どのくらい決めていますか?", dimension: "JP", type: "radio", options: [{text: "細かく予定を立てる", score: 1.5}, {text: "大まかに決めている", score: 0.5}, {text: "流動的", score: -0.5}, {text: "ほぼ決めない", score: -1.5}]},
+            {q: "**余暇時間の使い方**について、あなたは?", dimension: "JP", type: "checkbox", options: [{text: "計画的に趣味の時間を確保", score: 1.0}, {text: "スケジュール帳に記入", score: 1.0}, {text: "気の向くままに過ごす", score: -1.0}, {text: "その時々で決める", score: -1.0}]},
+            {q: "**完璧さ**について、あなたは?", dimension: "JP", type: "radio", options: [{text: "できるだけ完璧を目指す", score: 1.5}, {text: "ある程度完璧にしたい", score: 0.5}, {text: "できの程度は柔軟", score: -0.5}, {text: "完了することが大事", score: -1.5}]},
+            {q: "**買い物リスト**を作りますか?", dimension: "JP", type: "radio", options: [{text: "必ず作る、予算も管理", score: 1.5}, {text: "だいたい作る", score: 0.5}, {text: "時々作る", score: -0.5}, {text: "作らない、その場で選ぶ", score: -1.5}]},
+            {q: "プロジェクトの**進め方**の理想は?", dimension: "JP", type: "radio", options: [{text: "フェーズごとに明確に完結させる", score: 1.5}, {text: "計画を立てて進める", score: 0.5}, {text: "途中で調整しながら進める", score: -0.5}, {text: "柔軟に進化させる", score: -1.5}]},
+            {q: "**意思決定のタイミング**、あなたは?", dimension: "JP", type: "radio", options: [{text: "早めに決めて動きたい", score: 1.5}, {text: "適切な時点で決定", score: 0.5}, {text: "情報を集めてから", score: -0.5}, {text: "最後の最後まで判断保留", score: -1.5}]},
+            {q: "勉強計画の立て方は?", dimension: "JP", type: "radio", options: [{text: "綿密にスケジュール作成", score: 1.5}, {text: "月間・週間で計画", score: 0.5}, {text: "大まかな見通し", score: -0.5}, {text: "その日やりたいことをやる", score: -1.5}]},
+            {q: "キャリア計画について、あなたは?", dimension: "JP", type: "radio", options: [{text: "5年後10年後を細かく計画", score: 1.5}, {text: "数年ごとの目標がある", score: 0.5}, {text: "大体の方向性", score: -0.5}, {text: "流れで決まるもの", score: -1.5}]},
+            {q: "失敗時の対応スタイルは?", dimension: "JP", type: "radio", options: [{text: "原因分析と改善計画を立てる", score: 1.5}, {text: "学んで次に活かす", score: 0.5}, {text: "反省して前に進む", score: -0.5}, {text: "気にせず次へ", score: -1.5}]}
+        ];
+
+        let currentQuestion = 0;
+        let answers = [];
+        let isDetailPhase = false;
+
+        function startAssessment() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('assessment').classList.remove('hidden');
+            answers = new Array(questions.length).fill(undefined);
+            renderQuestion(currentQuestion);
+            updateProgress();
+        }
+
+        function renderQuestion(index) {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            const question = questions[index];
+            const qType = isDetailPhase ? "詳細分析" : "初期診断";
+            const total = isDetailPhase ? questions.length : INITIAL_PHASE_COUNT;
+            const currentQIndex = index + 1;
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-container active';
+            
+            let optionsHtml = '';
+            
+            if (question.type === 'radio') {
+                optionsHtml = question.options.map((option, optIndex) => {
+                    const isSelected = answers[index] === optIndex;
+                    return `
+                    <button class="scale-option ${isSelected ? 'selected' : ''}" onclick="selectOption(${index}, ${optIndex})">
+                        <label>${option.text}</label>
+                    </button>
+                    `;
+                }).join('');
+            } else if (question.type === 'checkbox') {
+                const selectedIndices = Array.isArray(answers[index]) ? answers[index] : [];
+                optionsHtml = question.options.map((option, optIndex) => {
+                    const isSelected = selectedIndices.includes(optIndex);
+                    return `
+                    <button class="scale-option ${isSelected ? 'selected' : ''}" onclick="toggleCheckbox(${index}, ${optIndex})">
+                        <label>${option.text}</label>
+                    </button>
+                    `;
+                }).join('');
+            }
+
+            questionDiv.innerHTML = `
+                <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-xl shadow-lg border border-gray-100">
+                    <div class="flex justify-between items-center mb-6">
+                        <div class="text-sm font-bold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">${qType}</div>
+                        <div class="text-sm font-bold text-gray-500">${currentQIndex} / ${total}</div>
+                    </div>
+                    
+                    <div class="text-xl font-bold mb-8 text-gray-800 leading-relaxed">${question.q}</div>
+                    
+                    <div class="space-y-3">
+                        ${optionsHtml}
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(questionDiv);
+            updateButtons();
+        }
+
+        function selectOption(questionIndex, optionIndex) {
+            answers[questionIndex] = optionIndex;
+            renderQuestion(questionIndex);
+            updateButtons();
+        }
+
+        function toggleCheckbox(questionIndex, optionIndex) {
+            if (!Array.isArray(answers[questionIndex])) {
+                answers[questionIndex] = [];
+            }
+            let currentSelections = answers[questionIndex];
+            
+            const idx = currentSelections.indexOf(optionIndex);
+            if (idx > -1) {
+                currentSelections.splice(idx, 1);
+            } else {
+                currentSelections.push(optionIndex);
+            }
+            
+            if (currentSelections.length === 0) {
+                answers[questionIndex] = undefined;
+            }
+            
+            renderQuestion(questionIndex);
+            updateButtons();
+        }
+
+        function updateButtons() {
+            const index = currentQuestion;
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.disabled = index === 0;
+
+            const isAnswered = answers[index] !== undefined && (Array.isArray(answers[index]) ? answers[index].length > 0 : true);
+            
+            if (!isDetailPhase && index < INITIAL_PHASE_COUNT - 1) {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+                nextBtn.disabled = !isAnswered;
+            } 
+            else if (!isDetailPhase && index === INITIAL_PHASE_COUNT - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+                submitBtn.textContent = '初期診断結果を見る';
+                submitBtn.disabled = !isAnswered;
+            }
+            else if (isDetailPhase) {
+                if (index < questions.length - 1) {
+                    nextBtn.classList.remove('hidden');
+                    submitBtn.classList.add('hidden');
+                    nextBtn.disabled = !isAnswered;
+                } else if (index === questions.length - 1) {
+                    nextBtn.classList.add('hidden');
+                    submitBtn.classList.remove('hidden');
+                    submitBtn.textContent = '最終結果を見る';
+                    submitBtn.onclick = () => calculateResult(3);
+                    submitBtn.disabled = !isAnswered;
+                }
+            }
+        }
+
+        function nextQuestion() {
+            const isAnswered = answers[currentQuestion] !== undefined && (Array.isArray(answers[currentQuestion]) ? answers[currentQuestion].length > 0 : true);
+            if (currentQuestion < questions.length - 1 && isAnswered) {
+                currentQuestion++;
+                renderQuestion(currentQuestion);
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                if (currentQuestion < INITIAL_PHASE_COUNT) {
+                    isDetailPhase = false;
+                }
+                renderQuestion(currentQuestion);
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+
+        function updateProgress() {
+            const totalQuestions = isDetailPhase ? questions.length : INITIAL_PHASE_COUNT;
+            const currentQIndex = currentQuestion + 1;
+            
+            let progress;
+            if (isDetailPhase) {
+                progress = (INITIAL_PHASE_COUNT + (currentQIndex - INITIAL_PHASE_COUNT)) / questions.length * 100;
+            } else {
+                progress = currentQIndex / questions.length * 100;
+            }
+            
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `質問 ${currentQIndex} / ${totalQuestions}`;
+        }
+
+        function calculateResult(phase) {
+            const maxQ = (phase === 1 || phase === 2) ? INITIAL_PHASE_COUNT : questions.length;
+            const scores = {EI: 0, SN: 0, TF: 0, JP: 0};
+            const numQuestions = (phase === 1 || phase === 2) ? QUESTIONS_PER_DIMENSION_INITIAL : QUESTIONS_PER_DIMENSION_FINAL;
+            const maxScore = numQuestions * 1.5;
+
+            for (let i = 0; i < maxQ; i++) {
+                const q = questions[i];
+                const answer = answers[i];
+                
+                if (answer === undefined) continue;
+                
+                if (q.type === 'radio') {
+                    scores[q.dimension] += q.options[answer].score;
+                } else if (q.type === 'checkbox' && Array.isArray(answer)) {
+                    answer.forEach(optIndex => {
+                        scores[q.dimension] += q.options[optIndex].score;
+                    });
+                }
+            }
+            
+            const dimensionResults = DIMENSIONS.map(dim => {
+                const score = scores[dim];
+                const normalizedScore = (score / maxScore) * 100;
+                const confidence = Math.abs(normalizedScore) / 100;
+                
+                let type = '';
+                let label = '';
+                if (dim === 'EI') { type = score > 0 ? 'E' : 'I'; label = score > 0 ? 'グループ学習タイプ' : '個人学習タイプ'; }
+                if (dim === 'SN') { type = score > 0 ? 'S' : 'N'; label = score > 0 ? '実践的思考タイプ' : '理論的思考タイプ'; }
+                if (dim === 'TF') { type = score > 0 ? 'T' : 'F'; label = score > 0 ? '論理的判断タイプ' : '価値観判断タイプ'; }
+                if (dim === 'JP') { type = score > 0 ? 'J' : 'P'; label = score > 0 ? '計画的タイプ' : '柔軟的タイプ'; }
+
+                const isIntermediate = confidence < 0.4;
+                
+                return { dim, score, normalizedScore, type, label, confidence, isIntermediate };
+            });
+
+            if (phase === 1) {
+                handleIntermediateResult(dimensionResults);
+            } else if (phase === 2 || phase === 3) {
+                displayFinalResult(dimensionResults);
+            }
+        }
+
+        function handleIntermediateResult(dimensionResults) {
+            document.getElementById('assessment').classList.add('hidden');
+            document.getElementById('detail-prompt').classList.remove('hidden');
+
+            const intermediateScoresDiv = document.getElementById('intermediate-scores');
+            intermediateScoresDiv.innerHTML = '';
+            
+            let intermediateCount = 0;
+            dimensionResults.forEach(res => {
+                if (res.isIntermediate) {
+                    intermediateCount++;
+                }
+                
+                const confidencePercent = (res.confidence * 100).toFixed(0);
+                intermediateScoresDiv.innerHTML += `
+                    <div class="p-4 rounded-xl border-2 border-purple-200 bg-purple-50">
+                        <div class="text-sm font-bold text-purple-900 mb-2">${res.label}</div>
+                        <div class="text-2xl font-black text-purple-700">${res.type}</div>
+                        <div class="text-xs text-purple-600 mt-2">${res.isIntermediate ? '中間的な傾向' : '明確な傾向'}</div>
+                    </div>
+                `;
+            });
+
+            const promptTitle = document.querySelector('#detail-prompt h2');
+            const promptText = document.querySelector('#detail-prompt p:nth-of-type(1)');
+            const proceedBtn = document.querySelector('#detail-prompt .flex button:last-child');
+            
+            if (intermediateCount === 0) {
+                promptTitle.textContent = '初期診断が完了しました - 傾向が明確です';
+                promptText.textContent = 'すべての軸で明確な傾向が確認されました。そのままの結果をご覧いただけます。';
+                proceedBtn.classList.add('hidden');
+            }
+        }
+
+        function startDetailPhase() {
+            isDetailPhase = true;
+            currentQuestion = INITIAL_PHASE_COUNT;
+            document.getElementById('detail-prompt').classList.add('hidden');
+            document.getElementById('assessment').classList.remove('hidden');
+            renderQuestion(currentQuestion);
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+
+        function displayFinalResult(dimensionResults) {
+            document.getElementById('detail-prompt').classList.add('hidden');
+            document.getElementById('assessment').classList.add('hidden');
+            document.getElementById('result').classList.remove('hidden');
+            
+            const finalType = dimensionResults.map(res => res.type).join('');
+            
+            document.getElementById('resultType').textContent = finalType;
+            document.getElementById('resultNickname').textContent = getTypeInfo(finalType).nickname + ' - ' + getTypeInfo(finalType).name;
+            
+            const dimensionScoresDiv = document.getElementById('dimensionScores');
+            dimensionScoresDiv.innerHTML = dimensionResults.map(res => {
+                const confidencePercent = (res.confidence * 100).toFixed(1);
+                return `
+                    <div class="p-5 rounded-xl border-2 border-purple-300 bg-white shadow-lg">
+                        <div class="text-sm font-bold text-gray-600 mb-1">${res.dim}軸</div>
+                        <div class="text-2xl font-bold text-purple-700 mb-2">${res.label}</div>
+                        <div class="text-3xl font-black text-purple-600 mb-3">${res.type}</div>
+                        <div class="h-3 bg-gray-200 rounded-full overflow-hidden mb-2">
+                            <div class="h-full bg-gradient-to-r from-purple-500 to-purple-700" style="width: ${confidencePercent}%;"></div>
+                        </div>
+                        <div class="text-xs text-gray-600 text-center">確信度: ${confidencePercent}%</div>
+                    </div>
+                `;
+            }).join('');
+            
+            const typeInfo = getTypeInfo(finalType);
+            document.getElementById('resultDescription').innerHTML = `
+                <h3 class="text-2xl font-bold text-purple-700 mb-4">${typeInfo.name}</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">${typeInfo.traits}</p>
+                
+                <div class="bg-green-50 border-l-4 border-green-500 p-4 rounded mb-4">
+                    <h4 class="font-bold text-green-900 mb-2">✓ あなたの強み</h4>
+                    <p class="text-gray-700">${typeInfo.strengths}</p>
+                </div>
+                
+                <div class="bg-blue-50 border-l-4 border-blue-500 p-4 rounded mb-4">
+                    <h4 class="font-bold text-blue-900 mb-2">適職・学部</h4>
+                    <p class="text-gray-700">${typeInfo.careers}</p>
+                </div>
+            `;
+
+            window.scrollTo(0, 0);
+        }
+
+        function getTypeInfo(type) {
+            const types = {
+                ESTJ: {name: '実行型リーダー', nickname: '組織者', traits: 'グループ学習を好み、実践的で現実的な思考をします。論理的に判断し、計画的に行動するため、チームをまとめるリーダーシップが得意です。', strengths: '目標設定と達成計画、チームマネジメント、実行力、責任感', careers: '企業管理者、プロジェクトマネージャー、公務員、営業職、製造業など'},
+                ENTJ: {name: '戦略型思想家', nickname: '指揮官', traits: 'グループ学習と理論的思考を組み合わせ、大局的なビジョンから戦略を立てます。独立心と野心があり、難題を解決することに喜びを感じます。', strengths: '戦略立案、大局的視点、意思決定の迅速性、カリスマ性', careers: 'CEO、戦略コンサルタント、起業家、政治家、外交官など'},
+                ESFJ: {name: '社交型サポーター', nickname: 'ホストホステス', traits: 'グループ学習と実践的思考が得意で、温かく人情深い性格です。人間関係の構築と調和を大切にし、他者をサポートすることに充実感を感じます。', strengths: '対人スキル、組織運営、協調性、献身的なサポート', careers: '教員、看護師、保育士、営業職、カウンセラー、人事職など'},
+                ENFJ: {name: '理想型メンター', nickname: 'リーダー型教育者', traits: 'グループ学習と理論的思考で、人々の成長と可能性を信じて導きます。カリスマ性と共感力を持ち、理想を追求する情熱があります。', strengths: '人材育成、ビジョン提示、感動させる力、共感力', careers: 'カウンセラー、教員、研修講師、コーチ、NPO職員など'},
+                ISTJ: {name: '実務型信頼者', nickname: '論理官', traits: '個人学習で実践的に学び、論理的かつ計画的に行動します。責任感が強く、細部への注意が優れており、信頼性が高いです。', strengths: '正確な作業、詳細な分析、組織化能力、信頼性の高さ', careers: '会計士、監査役、エンジニア、公務員、データアナリストなど'},
+                INTJ: {name: '思想型建築家', nickname: '独創的戦略家', traits: '個人学習で理論的に学び、独立した判断を大切にします。複雑なシステム理解に優れ、長期的ビジョンに基づいて行動します。', strengths: '複雑な問題解決、システム理解、独立した思考、戦略立案', careers: '研究者、エンジニア、アーキテクト、戦略コンサルタント、学者など'},
+                ISFJ: {name: '奉仕型守護者', nickname: '保護者', traits: '個人学習で実践的に学び、人情深い性格です。他者をサポートすることを重視し、細心の配慮で信頼を築きます。', strengths: 'サポート業務、細やかな配慮、実用的スキル、聴取能力', careers: '看護師、事務職、保育士、社会福祉士、秘書、図書館員など'},
+                INFJ: {name: '理想型提唱者', nickname: 'ビジョン追求型', traits: '個人学習で理論的に学び、深い思考と共感力を持ちます。人類への貢献と理想の実現を求め、創造的に行動します。', strengths: '深い洞察力、ビジョン構築、共感力、創造性', careers: 'カウンセラー、心理学者、作家、教育者、社会活動家など'},
+                ESTP: {name: '探究型起業家', nickname: '冒険家', traits: 'グループ学習で実践的に学び、行動的で柔軟です。その場の刺激を求め、リスクを厭わず新しい経験に飛び込みます。', strengths: '問題解決力、交渉スキル、適応力、危機対応', careers: '営業職、起業家、トレーダー、スポーツ選手、イベント企画など'},
+                ENTP: {name: '議論型発明家', nickname: '革新者', traits: 'グループ学習で理論的に学び、知的刺激を求めます。新しいアイデアを生み出し、議論を通じて考えを深めることを好みます。', strengths: 'アイデア創出、戦略的思考、説得力、柔軟性', careers: '起業家、発明家、マーケッター、弁護士、コンサルタントなど'},
+                ESFP: {name: '表現型エンターテイナー', nickname: 'パフォーマー', traits: 'グループ学習と実践的思考で、現在を楽しむことを重視します。社交的で表現力が高く、人を喜ばせることに充実感を感じます。', strengths: '人を楽しませる力、即興能力、社交性、実行力', careers: 'イベント企画、エンターテイナー、接客業、デザイナーなど'},
+                ENFP: {name: '運動型広報', nickname: '活動家', traits: 'グループ学習と理論的思考で、新しい可能性を探索します。情熱的で多くの人を巻き込み、変革的なプロジェクトを推し進めます。', strengths: 'ビジョン提示、人を動かす力、多角的思考、創造性', careers: 'ジャーナリスト、カウンセラー、NPO職員、クリエイティブ職など'},
+                ISTP: {name: '分析型職人', nickname: '技術者', traits: '個人学習で実践的に学び、ものの仕組みを理解することに興味があります。自分のペースで問題解決に取り組みます。', strengths: '実践技術、問題解決、独立性、機械センス', careers: 'エンジニア、プログラマー、職人、パイロット、機械オペレータなど'},
+                INTP: {name: '論理型研究者', nickname: '思想家', traits: '個人学習で理論を深く追究します。複雑なシステムの理解に優れ、知的追究に没頭します。', strengths: '論理的分析、システム理解、創造的思考、集中力', careers: '研究者、プログラマー、アナリスト、学者、ソフトウェア設計など'},
+                ISFP: {name: '創造型芸術家', nickname: 'アーティスト', traits: '個人学習で実践的に学び、美的感覚や価値観を大切にします。静かに自分のペースで創造的に表現します。', strengths: '創造的表現、美的センス、他者への配慮、実用スキル', careers: 'アーティスト、デザイナー、音楽家、手工芸職人、メイクアップなど'},
+                INFP: {name: '理想型仲介者', nickname: '詩人', traits: '個人学習で理論を深く追究し、強い価値観に基づいて行動します。他者の可能性を信じ、創造的に表現することを好みます。', strengths: '深い思考、創造的表現、同情心、理想の追求', careers: '作家、カウンセラー、アーティスト、教育者、社会活動家など'}
+            };
+            return types[type] || {name: '未定義タイプ', nickname: '', traits: '', strengths: '', careers: ''};
+        }
+
+        function restart() {
+            currentQuestion = 0;
+            answers = new Array(questions.length).fill(undefined);
+            isDetailPhase = false;
+            document.getElementById('result').classList.add('hidden');
+            document.getElementById('detail-prompt').classList.add('hidden');
+            document.getElementById('intro').classList.remove('hidden');
+            document.getElementById('progressFill').style.width = '0%';
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>

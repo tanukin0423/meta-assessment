@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>興味・関心ベース診断（VPI型）完全改善版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #38f9d7;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+        
+        .intro {
+            background: #f0fffc;
+            padding: 25px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .intro h3 {
+            color: #38f9d7;
+            margin: 20px 0 10px 0;
+            font-size: 18px;
+        }
+        
+        .intro h3:first-child {
+            margin-top: 0;
+        }
+        
+        .intro ul {
+            margin: 10px 0 10px 25px;
+            line-height: 1.8;
+        }
+        
+        .intro li {
+            margin-bottom: 5px;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .warning-box {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .warning-box strong {
+            color: #856404;
+        }
+        
+        .question-container {
+            display: none;
+        }
+        
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question {
+            background: #f0fffc;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .question-number {
+            color: #38f9d7;
+            font-weight: bold;
+            margin-bottom: 15px;
+            font-size: 14px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .rating-container {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+        }
+        
+        .rating-option {
+            flex: 1;
+            padding: 18px 10px;
+            background: white;
+            border: 3px solid #c0f5eb;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .rating-option:hover {
+            border-color: #38f9d7;
+            background: #f0fffc;
+            transform: translateY(-3px);
+        }
+        
+        .rating-option.selected {
+            border-color: #38f9d7;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+        
+        .rating-label {
+            display: block;
+            margin-top: 5px;
+            font-size: 12px;
+            font-weight: normal;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #c0f5eb;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #43e97b 0%, #38f9d7 100%);
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+        
+        .progress-info {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .btn-prev {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .btn-prev:hover:not(:disabled) {
+            background: #d0d0d0;
+        }
+        
+        .btn-next, .btn-submit {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+        }
+        
+        .btn-next:hover:not(:disabled), .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(56, 249, 215, 0.4);
+        }
+        
+        .btn-start {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            font-size: 18px;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            display: none;
+        }
+        
+        .result.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .result-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 28px;
+            color: #38f9d7;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .holland-chart {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+        
+        .holland-card {
+            background: #f0fffc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 2px solid #c0f5eb;
+            text-align: center;
+        }
+        
+        .holland-card.top {
+            border-color: #38f9d7;
+            background: linear-gradient(135deg, #f0fffc 0%, #e0fff9 100%);
+            box-shadow: 0 5px 15px rgba(56, 249, 215, 0.2);
+            transform: scale(1.02);
+        }
+        
+        .holland-letter {
+            font-size: 32px;
+            font-weight: bold;
+            color: #38f9d7;
+            margin-bottom: 5px;
+        }
+        
+        .holland-name {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .holland-score {
+            font-size: 18px;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .result-description {
+            background: #f0fffc;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+            line-height: 1.8;
+        }
+        
+        .result-description h2 {
+            color: #38f9d7;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .result-description h3 {
+            color: #43e97b;
+            margin: 25px 0 15px 0;
+            font-size: 20px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #c0f5eb;
+        }
+        
+        .result-description h3:first-child {
+            margin-top: 0;
+        }
+        
+        .result-description ul {
+            margin-left: 25px;
+            margin-top: 10px;
+            list-style: disc;
+        }
+        
+        .result-description li {
+            margin-bottom: 8px;
+        }
+        
+        .result-description p {
+            margin-bottom: 10px;
+        }
+        
+        .career-box {
+            background: #fff;
+            padding: 15px;
+            border-left: 4px solid #38f9d7;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .btn-restart {
+            background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+            color: white;
+            padding: 15px 40px;
+            margin-top: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .btn-restart:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(56, 249, 215, 0.4);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .holland-chart {
+                grid-template-columns: 1fr;
+            }
+            
+            .rating-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>興味・関心ベース診断</h1>
+        <div class="subtitle">VPI型 - ホランド理論に基づいた職業適性診断</div>
+        
+        <div id="intro" class="intro">
+            <span class="badge">学生向け改善版</span>
+            
+            <h3>この診断について</h3>
+            <p>このツールは、ジョン・ホランドの職業興味理論に基づいています。あなたの興味や関心のパターンから、適した職業分野を見つけるのに役立ちます。</p>
+            
+            <h3>測定する6つの興味タイプ</h3>
+            <ul>
+                <li><strong>R（現実的）：</strong>機械や物を扱う具体的な仕事に興味がある</li>
+                <li><strong>I（研究的）：</strong>調査・研究・分析する仕事に興味がある</li>
+                <li><strong>A（芸術的）：</strong>創造的・表現的な仕事に興味がある</li>
+                <li><strong>S（社会的）：</strong>人を助ける・教える仕事に興味がある</li>
+                <li><strong>E（企業的）：</strong>指導・営業・起業する仕事に興味がある</li>
+                <li><strong>C（慣習的）：</strong>データ処理・事務作業の仕事に興味がある</li>
+            </ul>
+            
+            <h3>診断の特徴</h3>
+            <ul>
+                <li>計48問で約8-10分</li>
+                <li>大学での経験やアルバイトを想定したシナリオ型質問</li>
+                <li>4段階評価（当てはまらない～当てはまる）</li>
+                <li>ホランドコード（3文字）で結果を提示</li>
+            </ul>
+            
+            <div class="warning-box">
+                <strong>学生の皆さんへ：</strong>直感的に答えてください。「正解」はありません。あなたの本当の興味を把握することが大切です。
+            </div>
+            
+            <button class="btn-start" onclick="startAssessment()">診断を開始する</button>
+        </div>
+        
+        <div id="assessment" class="hidden">
+            <div class="progress-info">
+                <span id="progressText"></span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div id="questionsContainer"></div>
+            
+            <div class="buttons">
+                <button class="btn-prev" id="prevBtn" onclick="prevQuestion()">前へ</button>
+                <button class="btn-next" id="nextBtn" onclick="nextQuestion()">次へ</button>
+                <button class="btn-submit hidden" id="submitBtn" onclick="calculateResult()">結果を見る</button>
+            </div>
+        </div>
+        
+        <div id="result" class="result">
+            <div class="result-header">
+                <h2 style="color: #38f9d7; margin-bottom: 10px;">診断結果</h2>
+                <p style="color: #666;">あなたのホランド・コード</p>
+                <div class="result-title" id="resultCode"></div>
+            </div>
+            
+            <div class="holland-chart" id="hollandChart"></div>
+            
+            <div class="result-description" id="resultDescription"></div>
+            
+            <button class="btn-restart" onclick="restart()">もう一度診断する</button>
+        </div>
+    </div>
+    
+    <script>
+        // 改善版質問セット（学生向けシナリオ型、逆転項目含む）
+        const questions = [
+            // R型（現実的）8問
+            {q: "機械や工具を使って何かを作ったり修理したりすることに興味がありますか？", type: "R", reverse: false},
+            {q: "技術的なスキルを身につけることは、あなたのキャリアで重要だと思いますか？", type: "R", reverse: false},
+            {q: "屋外や実際に身体を使う仕事に魅力を感じますか？", type: "R", reverse: false},
+            {q: "机の上での理論的な仕事よりも、実践的で具体的な成果が見える仕事を好みますか？", type: "R", reverse: false},
+            {q: "農業や建設、製造業などの実務的な分野に興味がありますか？", type: "R", reverse: false},
+            {q: "物の仕組みや構造を理解することより、それを使いこなすことの方が得意だと思いますか？", type: "R", reverse: false},
+            {q: "データ処理や企画よりも、手作業で目に見える成果を作ることに満足感を覚えますか？", type: "R", reverse: false},
+            {q: "抽象的な理論よりも、具体的で実用的なことに関心がありますか？", type: "R", reverse: true},
+            
+            // I型（研究的）8問
+            {q: "科学的な問題を解決することに興味がありますか？", type: "I", reverse: false},
+            {q: "データを分析したり、研究したりすることが好きですか？", type: "I", reverse: false},
+            {q: "複雑な問題を論理的に考えることに充実感を感じますか？", type: "I", reverse: false},
+            {q: "新しい知識を学ぶことにワクワクしますか？", type: "I", reverse: false},
+            {q: "実験や観察を通じて物事を理解したいと思いますか？", type: "I", reverse: false},
+            {q: "大学での研究や学問的な職業に魅力を感じますか？", type: "I", reverse: false},
+            {q: "なぜそうなるのか原因を探ることに興味がありますか？", type: "I", reverse: false},
+            {q: "深く考えることより、すぐに行動することの方が得意だと思いますか？", type: "I", reverse: true},
+            
+            // A型（芸術的）8問
+            {q: "絵を描いたり、音楽を作ったり、創作することが好きですか？", type: "A", reverse: false},
+            {q: "創造的で独創的なアイデアを考えることに喜びを感じますか？", type: "A", reverse: false},
+            {q: "自分を表現することに価値を感じますか？", type: "A", reverse: false},
+            {q: "美しいものやデザインに強い関心がありますか？", type: "A", reverse: false},
+            {q: "型にはまらない自由な働き方に魅力を感じますか？", type: "A", reverse: false},
+            {q: "想像力を使って新しいものを生み出したいですか？", type: "A", reverse: false},
+            {q: "芸術作品や文学作品に深く感動しますか？", type: "A", reverse: false},
+            {q: "自分独自のスタイルを追求することより、安定を求める方ですか？", type: "A", reverse: true},
+            
+            // S型（社会的）8問
+            {q: "人を助けたり、サポートしたりすることが好きですか？", type: "S", reverse: false},
+            {q: "人と話したり、教えたりすることに喜びを感じますか？", type: "S", reverse: false},
+            {q: "他者の成長や幸せに貢献したいと思いますか？", type: "S", reverse: false},
+            {q: "チームで協力して働くことを好みますか？", type: "S", reverse: false},
+            {q: "相談を受けたり、相談に乗ったりすることにやりがいを感じますか？", type: "S", reverse: false},
+            {q: "他人の気持ちを理解し、共感することが得意ですか？", type: "S", reverse: false},
+            {q: "社会的な問題の解決に関心がありますか？", type: "S", reverse: false},
+            {q: "人間関係よりも、個人で進める仕事の方を好みますか？", type: "S", reverse: true},
+            
+            // E型（企業的）8問
+            {q: "人を説得したり、影響を与えたりすることが得意だと思いますか？", type: "E", reverse: false},
+            {q: "リーダーシップを発揮することに興味がありますか？", type: "E", reverse: false},
+            {q: "ビジネスや起業に興味がありますか？", type: "E", reverse: false},
+            {q: "目標を達成することに強い欲望を感じますか？", type: "E", reverse: false},
+            {q: "競争的な環境で自分の力を試したいですか？", type: "E", reverse: false},
+            {q: "プロジェクトを計画し、実行することに満足感を覚えますか？", type: "E", reverse: false},
+            {q: "組織やグループをまとめる役割に惹かれますか？", type: "E", reverse: false},
+            {q: "競争や成果主義よりも、協調と安定を重視しますか？", type: "E", reverse: true},
+            
+            // C型（慣習的）8問
+            {q: "決まった手順やルールに従って仕事をすることが得意ですか？", type: "C", reverse: false},
+            {q: "データや数字を正確に扱うことが好きですか？", type: "C", reverse: false},
+            {q: "整理整頓された環境で働くことを好みますか？", type: "C", reverse: false},
+            {q: "細かい作業や事務処理が得意ですか？", type: "C", reverse: false},
+            {q: "安定した環境で計画的に働きたいですか？", type: "C", reverse: false},
+            {q: "システムやプロセスに沿って作業することが得意ですか？", type: "C", reverse: false},
+            {q: "正確さと効率性が求められる仕事に向いていると思いますか？", type: "C", reverse: false},
+            {q: "新しいやり方を試すことより、既存のやり方を守ることを好みますか？", type: "C", reverse: true}
+        ];
+        
+        // ホランドタイプ情報
+        const typeInfo = {
+            R: {
+                name: '現実的',
+                fullName: 'Realistic（現実的）',
+                desc: '機械や物を扱う具体的な仕事',
+                traits: '実践的、技術志向、身体を使う、具体的な成果',
+                careers: ['自動車整備士', '電気技術者', '建設作業員', '製造業技術者', '機械エンジニア', '工業デザイナー', '大工', '配管工', 'パイロット', '農業従事者', '測量技師', '電気工事士'],
+                workstyle: '実用的で具体的な成果が見える環境で、手を使って物を作ったり修理したりすることに満足感を得ます。'
+            },
+            I: {
+                name: '研究的',
+                fullName: 'Investigative（研究的）',
+                desc: '調査・研究・分析する仕事',
+                traits: '論理的、分析的、知的好奇心、独立的',
+                careers: ['科学者', '研究員', '医師', '薬剤師', 'データアナリスト', 'プログラマー', '大学教授', 'コンサルタント', 'エコノミスト', '心理学者', '統計学者', '技術者'],
+                workstyle: '知的な挑戦がある複雑な問題に取り組む環境で、深く分析して理解することに充実感を得ます。'
+            },
+            A: {
+                name: '芸術的',
+                fullName: 'Artistic（芸術的）',
+                desc: '創造的・表現的な仕事',
+                traits: '創造的、感性豊か、独創的、自由志向',
+                careers: ['アーティスト', 'デザイナー', '作家', '音楽家', '舞台俳優', '映画製作者', 'イラストレーター', '建築家', 'ジャーナリスト', '編集者', 'ウェブデザイナー', 'ファッションデザイナー'],
+                workstyle: 'ルールや規則に縛られず、自由に表現・創造できる環境で、自分独自のスタイルを追求することに充実感を得ます。'
+            },
+            S: {
+                name: '社会的',
+                fullName: 'Social（社会的）',
+                desc: '人を助ける・教える仕事',
+                traits: '協調的、親切、教育的、共感的',
+                careers: ['教師', '看護師', '医療従事者', '福祉職員', 'カウンセラー', 'ソーシャルワーカー', '人事担当者', '研修講師', 'キャリアコンサルタント', '組織開発専門家', 'ガイド', '相談員'],
+                workstyle: '人と関わり、他者を支援・教育することに深い満足感を得ます。温かい人間関係と協力的な環境を重視します。'
+            },
+            E: {
+                name: '企業的',
+                fullName: 'Enterprising（企業的）',
+                desc: '指導・営業・起業する仕事',
+                traits: '指導力、説得力、野心的、エネルギッシュ',
+                careers: ['経営者', '営業職', '政治家', '管理職', 'マネージャー', 'コンサルタント', '起業家', '営業企画', '広報担当者', '販売管理者', 'イベントプロデューサー', '営業戦略家'],
+                workstyle: '目標達成や影響力を行使できる環境を好みます。競争を楽しみ、自らリスクを取って新しい機会を創出します。'
+            },
+            C: {
+                name: '慣習的',
+                fullName: 'Conventional（慣習的）',
+                desc: 'データ処理・事務作業の仕事',
+                traits: '几帳面、正確、組織的、実務的',
+                careers: ['会計士', '事務職', '図書館司書', 'データ入力職', '品質管理者', '銀行員', '公務員', '秘書', '税務職員', '医療事務', 'レコード管理者', '監査職'],
+                workstyle: '明確なルールと秩序がある環境で、正確さが求められる作業に取り組むことに満足感を得ます。'
+            }
+        };
+        
+        let currentQuestion = 0;
+        let answers = [];
+        
+        function startAssessment() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('assessment').classList.remove('hidden');
+            renderQuestion();
+            updateProgress();
+        }
+        
+        function renderQuestion() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            const question = questions[currentQuestion];
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-container active';
+            
+            const currentAnswer = answers[currentQuestion];
+            
+            questionDiv.innerHTML = `
+                <div class="question">
+                    <div class="question-number">質問 ${currentQuestion + 1} / ${questions.length}</div>
+                    <div class="question-text">${question.q}</div>
+                    <div class="rating-container">
+                        <div class="rating-option ${currentAnswer === 1 ? 'selected' : ''}" onclick="selectRating(${currentQuestion}, 1)">
+                            <strong>1</strong>
+                            <span class="rating-label">当てはまらない</span>
+                        </div>
+                        <div class="rating-option ${currentAnswer === 2 ? 'selected' : ''}" onclick="selectRating(${currentQuestion}, 2)">
+                            <strong>2</strong>
+                            <span class="rating-label">やや当てはまらない</span>
+                        </div>
+                        <div class="rating-option ${currentAnswer === 3 ? 'selected' : ''}" onclick="selectRating(${currentQuestion}, 3)">
+                            <strong>3</strong>
+                            <span class="rating-label">やや当てはまる</span>
+                        </div>
+                        <div class="rating-option ${currentAnswer === 4 ? 'selected' : ''}" onclick="selectRating(${currentQuestion}, 4)">
+                            <strong>4</strong>
+                            <span class="rating-label">当てはまる</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(questionDiv);
+            updateButtons();
+        }
+        
+        function selectRating(questionIndex, value) {
+            answers[questionIndex] = value;
+            renderQuestion();
+        }
+        
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            
+            prevBtn.disabled = currentQuestion === 0;
+            
+            const isAnswered = answers[currentQuestion] !== undefined;
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+                submitBtn.disabled = !isAnswered;
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+                nextBtn.disabled = !isAnswered;
+            }
+        }
+        
+        function nextQuestion() {
+            if (currentQuestion < questions.length - 1 && answers[currentQuestion] !== undefined) {
+                currentQuestion++;
+                renderQuestion();
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestion();
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('progressText').textContent = `質問 ${currentQuestion + 1} / ${questions.length}`;
+        }
+        
+        function calculateResult() {
+            const scores = {R: 0, I: 0, A: 0, S: 0, E: 0, C: 0};
+            
+            questions.forEach((question, index) => {
+                const answer = answers[index] || 0;
+                // 逆転項目の場合は反転
+                const score = question.reverse ? (5 - answer) : answer;
+                scores[question.type] += score;
+            });
+            
+            // スコアが高い順にソート
+            const sortedTypes = Object.keys(scores).sort((a, b) => scores[b] - scores[a]);
+            
+            // ホランドコード（上位3つ）
+            const hollandCode = sortedTypes.slice(0, 3).join('');
+            
+            displayResult(hollandCode, scores);
+        }
+        
+        function generateResultDescription(code, scores) {
+            const top1 = code[0];
+            const top2 = code[1];
+            const top3 = code[2];
+            
+            let html = `
+                <h2>あなたのホランド・コード「${code}」について</h2>
+                
+                <p>あなたの興味・関心は<strong>${typeInfo[top1].fullName}</strong>を最も強く示しており、次に<strong>${typeInfo[top2].fullName}</strong>と<strong>${typeInfo[top3].fullName}</strong>の傾向があります。</p>
+                
+                <h3>第1の興味：${typeInfo[top1].fullName}</h3>
+                <p><strong>特徴：</strong>${typeInfo[top1].desc}</p>
+                <p><strong>性質：</strong>${typeInfo[top1].traits}</p>
+                <p><strong>あなたの働き方：</strong>${typeInfo[top1].workstyle}</p>
+                <div class="career-box">
+                    <strong>適した職業の例：</strong>
+                    <p>${typeInfo[top1].careers.slice(0, 6).join('、')}<br/>
+                    ${typeInfo[top1].careers.slice(6).join('、')}</p>
+                </div>
+                
+                <h3>第2の興味：${typeInfo[top2].fullName}</h3>
+                <p>第1の興味を補完する領域です。${typeInfo[top2].desc}の要素にも関心があります。</p>
+                <div class="career-box">
+                    <strong>この領域の職業例：</strong>
+                    <p>${typeInfo[top2].careers.slice(0, 6).join('、')}<br/>
+                    ${typeInfo[top2].careers.slice(6).join('、')}</p>
+                </div>
+                
+                <h3>第3の興味：${typeInfo[top3].fullName}</h3>
+                <p>さらに補完的な領域です。${typeInfo[top3].desc}にも関心があります。</p>
+                
+                <h3>ホランド・コードの活用方法</h3>
+                <p>このコード「${code}」は、あなたの興味パターンの核を示しています。以下のように活用できます：</p>
+                <ul>
+                    <li><strong>職業探索：</strong>このコードに対応する職業を調べ、実際のインターンシップや職場体験を通じて検証する</li>
+                    <li><strong>大学選択：</strong>学部・学科選択の際に、この興味に対応した教育環境を選ぶ</li>
+                    <li><strong>キャリア計画：</strong>長期的なキャリアの方向性を決定する際の指針にする</li>
+                    <li><strong>自己理解：</strong>自分の興味がどの領域にあるかを客観的に理解する</li>
+                </ul>
+                
+                <h3>重要な注意点</h3>
+                <p>このホランド・コードは「現在のあなたの興味傾向」を示しています。しかし人の興味は経験を通じて変わることがあります。特に大学での学び、インターンシップ、アルバイト経験を通じて、新しい興味分野が発見される場合も多いです。</p>
+                <ul>
+                    <li>このコードが「絶対」ではなく、あくまで「参考情報」として活用してください</li>
+                    <li>興味が変わることは自然で健全なプロセスです</li>
+                    <li>定期的（年1回程度）に再診断することで、自分の興味の変化を追跡できます</li>
+                </ul>
+                
+                <h3>次のステップ</h3>
+                <ul>
+                    <li><strong>情報収集：</strong>このコードに対応する職業について、詳しく調べる</li>
+                    <li><strong>体験学習：</strong>興味のある職業のインターンシップや説明会に参加する</li>
+                    <li><strong>相談：</strong>キャリアセンターやキャリアカウンセラーにこの結果を相談する</li>
+                    <li><strong>他の診断：</strong>メタアセスメントの他の診断（性格診断や価値観診断）と組み合わせて、より多角的に自己理解を深める</li>
+                </ul>
+            `;
+            return html;
+        }
+        
+        function generateHollandChart(scores, code) {
+            const chartContainer = document.getElementById('hollandChart');
+            chartContainer.innerHTML = '';
+            
+            const allTypes = ['R', 'I', 'A', 'S', 'E', 'C'];
+            
+            // スコアを降順でソート
+            const sortedDisplayTypes = allTypes.sort((a, b) => scores[b] - scores[a]);
+            
+            sortedDisplayTypes.forEach(type => {
+                const isTop3 = code.includes(type);
+                const score = scores[type];
+                const maxScore = 32; // 8問 × 4点満点
+                const typeName = typeInfo[type].name;
+                
+                const card = document.createElement('div');
+                card.className = `holland-card ${isTop3 ? 'top' : ''}`;
+                card.innerHTML = `
+                    <div class="holland-letter">${type}</div>
+                    <div class="holland-name">${typeName}</div>
+                    <div class="holland-score">スコア: ${score} / ${maxScore}</div>
+                `;
+                chartContainer.appendChild(card);
+            });
+        }
+        
+        function displayResult(code, scores) {
+            document.getElementById('assessment').classList.add('hidden');
+            document.getElementById('result').classList.add('active');
+            
+            document.getElementById('resultCode').textContent = code;
+            
+            generateHollandChart(scores, code);
+            
+            document.getElementById('resultDescription').innerHTML = generateResultDescription(code, scores);
+            
+            window.scrollTo(0, 0);
+        }
+        
+        function restart() {
+            currentQuestion = 0;
+            answers = [];
+            
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('assessment').classList.add('hidden');
+            document.getElementById('intro').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+        
+        window.onload = () => {
+            document.getElementById('prevBtn').disabled = true;
+            document.getElementById('nextBtn').classList.add('hidden');
+            document.getElementById('submitBtn').classList.add('hidden');
+        };
+    </script>
+</body>
+</html>

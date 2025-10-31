@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>キャリアストーリー対話型診断</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Segoe UI', 'Yu Gothic', sans-serif;
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      padding: 40px;
+    }
+    
+    h1 {
+      color: #a8edea;
+      text-align: center;
+      margin-bottom: 15px;
+      font-size: 28px;
+    }
+    
+    .subtitle {
+      text-align: center;
+      color: #666;
+      margin-bottom: 30px;
+      font-size: 16px;
+    }
+    
+    .intro {
+      background: #f0fffe;
+      padding: 25px;
+      border-radius: 10px;
+      margin-bottom: 30px;
+      line-height: 1.8;
+    }
+    
+    .intro h3 {
+      color: #a8edea;
+      margin-bottom: 15px;
+    }
+    
+    .intro p {
+      margin-bottom: 10px;
+      color: #333;
+    }
+    
+    .intro ul {
+      margin: 15px 0 15px 25px;
+      line-height: 1.8;
+    }
+    
+    .intro li {
+      margin-bottom: 8px;
+      color: #333;
+    }
+    
+    .mode-selection {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+    }
+    
+    .mode-card {
+      flex: 1;
+      padding: 25px;
+      background: white;
+      border: 3px solid #d4f1f4;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      text-align: center;
+    }
+    
+    .mode-card:hover {
+      border-color: #a8edea;
+      background: #f0fffe;
+      transform: translateY(-3px);
+    }
+    
+    .mode-card h3 {
+      color: #a8edea;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    
+    .mode-card p {
+      color: #666;
+      font-size: 14px;
+    }
+    
+    .interview-section {
+      display: none;
+    }
+    
+    .interview-section.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .progress-info {
+      background: #f0fffe;
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 14px;
+      color: #666;
+    }
+    
+    .section-nav {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+      overflow-x: auto;
+      padding: 10px 0;
+      flex-wrap: wrap;
+    }
+    
+    .nav-item {
+      padding: 10px 15px;
+      background: #f0fffe;
+      border: 2px solid #d4f1f4;
+      border-radius: 8px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.3s;
+      font-weight: bold;
+      font-size: 13px;
+    }
+    
+    .nav-item:hover {
+      border-color: #a8edea;
+    }
+    
+    .nav-item.completed {
+      background: #a8edea;
+      color: white;
+      border-color: #a8edea;
+    }
+    
+    .nav-item.active {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      color: white;
+      border-color: #a8edea;
+    }
+    
+    .question-section {
+      background: #f0fffe;
+      padding: 30px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .section-title {
+      color: #a8edea;
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    
+    .section-desc {
+      color: #666;
+      margin-bottom: 25px;
+      line-height: 1.6;
+      font-size: 14px;
+    }
+    
+    .question-item {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      margin-bottom: 20px;
+      border: 2px solid #d4f1f4;
+    }
+    
+    .question-label {
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 10px;
+      font-size: 16px;
+    }
+    
+    .question-note {
+      color: #888;
+      font-size: 13px;
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+    
+    .example-box {
+      background: #f9f9f9;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      border-left: 3px solid #a8edea;
+      font-size: 13px;
+      color: #555;
+      line-height: 1.6;
+    }
+    
+    textarea {
+      width: 100%;
+      min-height: 120px;
+      padding: 15px;
+      border: 2px solid #d4f1f4;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: inherit;
+      resize: vertical;
+      transition: all 0.3s;
+    }
+    
+    textarea:focus {
+      outline: none;
+      border-color: #a8edea;
+      box-shadow: 0 0 0 3px rgba(168, 237, 234, 0.1);
+    }
+    
+    textarea.has-content {
+      border-color: #a8edea;
+      background: #f9fffe;
+    }
+    
+    .tip-box {
+      background: #fff9e6;
+      padding: 12px;
+      border-radius: 6px;
+      margin-top: 12px;
+      border-left: 3px solid #fed6e3;
+      font-size: 13px;
+      color: #666;
+    }
+    
+    .buttons {
+      display: flex;
+      gap: 15px;
+      justify-content: space-between;
+      margin-top: 30px;
+    }
+    
+    button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: bold;
+    }
+    
+    .btn-prev {
+      background: #e0e0e0;
+      color: #666;
+    }
+    
+    .btn-prev:hover:not(:disabled) {
+      background: #d0d0d0;
+    }
+    
+    .btn-next, .btn-finish {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      color: white;
+    }
+    
+    .btn-next:hover:not(:disabled), .btn-finish:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(168, 237, 234, 0.4);
+    }
+    
+    button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .hidden {
+      display: none;
+    }
+    
+    .summary {
+      display: none;
+    }
+    
+    .summary.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+    
+    .summary-section {
+      background: #f0fffe;
+      padding: 25px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    
+    .summary-section h3 {
+      color: #a8edea;
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+    
+    .summary-content {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      line-height: 1.8;
+      font-size: 14px;
+      border-left: 3px solid #a8edea;
+      margin-bottom: 15px;
+    }
+    
+    .action-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 30px;
+    }
+    
+    .btn-ai, .btn-export, .btn-restart {
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: bold;
+    }
+    
+    .btn-ai {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+    }
+    
+    .btn-ai:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    }
+    
+    .btn-export {
+      background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      color: white;
+    }
+    
+    .btn-restart {
+      background: #e0e0e0;
+      color: #666;
+    }
+    
+    .prompt-display {
+      background: #f5f5f5;
+      padding: 20px;
+      border-radius: 10px;
+      margin: 20px 0;
+      border: 2px solid #667eea;
+      display: none;
+    }
+    
+    .prompt-display.active {
+      display: block;
+      animation: fadeIn 0.3s;
+    }
+    
+    .prompt-text {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      font-family: 'Courier New', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      max-height: 500px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+    }
+    
+    .copy-success {
+      color: #4caf50;
+      font-weight: bold;
+      margin-left: 10px;
+      display: none;
+      font-size: 14px;
+    }
+    
+    .copy-success.show {
+      display: inline;
+      animation: fadeIn 0.3s;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+      
+      .mode-selection {
+        flex-direction: column;
+      }
+      
+      h1 {
+        font-size: 22px;
+      }
+      
+      .section-nav {
+        flex-wrap: wrap;
+      }
+      
+      .buttons {
+        flex-direction: column;
+      }
+      
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>キャリアストーリー対話型診断</h1>
+    <div class="subtitle">あなたのキャリア歩みと価値観を発見する</div>
+    
+    <div id="intro" class="intro">
+      <h3>この診断について</h3>
+      <p>この診断は、マーク・サビカスのキャリア構造理論に基づいたナラティブ・アプローチです。質問紙による診断とは異なり、あなた自身の人生ストーリーを語り、振り返ることで、キャリアの意味や深いテーマを見出していきます。</p>
+      
+      <h3 style="margin-top: 20px;">このアプローチの特徴</h3>
+      <ul>
+        <li>数値では測れない、あなた独自のキャリアストーリーを構築</li>
+        <li>過去の経験から、一貫したテーマや価値観を発見</li>
+        <li>対話と内省を通じた深い自己理解</li>
+        <li>未来のキャリアに向けた意味づけと方向性の発見</li>
+      </ul>
+      
+      <h3 style="margin-top: 20px;">使用方法を選択してください</h3>
+      <div class="mode-selection">
+        <div class="mode-card" onclick="startMode('self')">
+          <h3>セルフモード</h3>
+          <p>自分自身で質問に答えて、内省を深めます</p>
+        </div>
+        <div class="mode-card" onclick="startMode('counselor')">
+          <h3>カウンセラーガイド</h3>
+          <p>カウンセラーが面談で使用するガイドとして活用</p>
+        </div>
+      </div>
+    </div>
+    
+    <div id="interview" class="interview-section">
+      <div class="progress-info">
+        <span>セクション <span id="currentSec">1</span> / <span id="totalSec">7</span></span>
+        <span id="completionRate">0%完了</span>
+      </div>
+      
+      <div class="section-nav" id="sectionNav"></div>
+      
+      <div id="sections"></div>
+      
+      <div class="buttons">
+        <button class="btn-prev" id="prevBtn" onclick="prevSection()">前のセクション</button>
+        <button class="btn-next" id="nextBtn" onclick="nextSection()">次のセクション</button>
+        <button class="btn-finish hidden" id="finishBtn" onclick="finishInterview()">面談を完了する</button>
+      </div>
+    </div>
+    
+    <div id="summary" class="summary">
+      <h2 style="color: #a8edea; margin-bottom: 30px; text-align: center;">キャリアストーリー まとめ</h2>
+      <div id="summaryContent"></div>
+      
+      <div class="action-buttons">
+        <button class="btn-ai" onclick="generateAIPrompt()">🤖 AI分析用プロンプトを生成</button>
+        <button class="btn-export" onclick="exportData()">📥 結果をエクスポート</button>
+        <button class="btn-restart" onclick="restart()">🔄 最初から始める</button>
+      </div>
+      
+      <div class="prompt-display" id="promptDisplay">
+        <h3 style="color: #667eea; margin-bottom: 15px;">🤖 AI分析用プロンプト</h3>
+        <div class="prompt-text" id="promptText"></div>
+        <div style="text-align: center; margin-top: 15px;">
+          <button class="btn-ai" onclick="copyPrompt()">📋 プロンプトをコピー</button>
+          <span class="copy-success" id="copySuccess">✓ コピーしました!</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    let currentMode = '';
+    let currentSection = 0;
+    let responses = {};
+    
+    const sections = [
+      {
+        title: 'ロールモデル',
+        desc: '憧れの人物や影響を受けた人についてお話ください',
+        questions: [
+          {
+            id: 'rolemodel1',
+            label: '子どもの頃、憧れていた人物は誰ですか？(実在・架空を問わず)',
+            note: 'ヒント：テレビや本の中のキャラクター、家族、先生など',
+            tip: 'クライアントが憧れた理由や、その人物の特徴を深く聞き取りましょう',
+            ex: '宮崎駿監督。子どもの頃、「となりのトトロ」を見て、想像力豊かに自然と向き合う姿勢に憧れました。'
+          },
+          {
+            id: 'rolemodel2',
+            label: 'その人物のどんなところに憧れましたか？具体的に教えてください',
+            note: 'ヒント：性格、行動、生き方、能力など',
+            tip: 'ここに価値観や理想とする自己像が現れます',
+            ex: '自分の世界観を持っていて、それを作品として形にする創造性。子どもの目線を忘れない優しさと、環境問題など社会的メッセージを込める姿勢。'
+          },
+          {
+            id: 'rolemodel3',
+            label: '現在、尊敬している人や影響を受けている人はいますか？どんな人ですか？',
+            note: 'ヒント：身近な人、著名人、歴史上の人物など',
+            tip: '現在の価値観の変化や、継続するテーマを探ります',
+            ex: '会社の先輩で、プロジェクトマネージャーの田中さん。チームメンバーの意見を丁寧に聞きながら、明確なビジョンで導く姿勢を尊敬しています。'
+          },
+          {
+            id: 'rolemodel4',
+            label: 'その人の、どんな言葉や行動が、特に印象に残っていますか？',
+            note: 'ヒント：具体的なエピソードがあれば教えてください',
+            tip: '具体的なエピソードから、クライアントが大切にしたい価値を読み取ります',
+            ex: 'プロジェクトが困難な時に、「問題じゃなくて、解決策に集中しよう」と言った言葉。前向きな姿勢を学びました。'
+          }
+        ]
+      },
+      {
+        title: '好きな本・映画・物語',
+        desc: '心に残っている物語についてお話ください',
+        questions: [
+          {
+            id: 'story1',
+            label: 'これまでで最も印象に残っている本や映画は何ですか？',
+            note: 'ヒント：子どもの頃から最近まで、どの時期でも構いません',
+            tip: '物語の選択には、その人の価値観が投影されています',
+            ex: '「ショーシャンクの空に」。絶望的な状況でも希望を捨てず、長期的な視点で自由を掴む主人公の姿に感動しました。'
+          },
+          {
+            id: 'story2',
+            label: 'その物語のどんなところが好きですか？なぜ心に残っていますか？',
+            note: 'ヒント：ストーリー、登場人物、メッセージ、雰囲気など',
+            tip: '好きな理由に、キャリアテーマが隠されています',
+            ex: '逆境の中でも知識と忍耐で道を切り開く姿。人間関係を大切にしながら、自分の信念を貫く強さ。希望を持ち続けることの大切さ。'
+          },
+          {
+            id: 'story3',
+            label: 'その物語の中で、特に共感した場面や登場人物はいますか？',
+            note: 'ヒント：自分と重ね合わせた部分など',
+            tip: '共感のポイントから、自己イメージを読み取ります',
+            ex: '主人公が獄中で大図書館を作る場面。小さな行動の積み重ねが大きな結果につながることを実感しました。'
+          },
+          {
+            id: 'story4',
+            label: 'その物語から、あなたは何を学びましたか？または、どんな影響を受けましたか？',
+            note: 'ヒント：人生観、価値観の変化など',
+            tip: '学びや影響から、クライアントの成長の方向性が見えます',
+            ex: '困難な状況でも諦めないこと。短期的な結果ではなく、長期的な視点で物事を考える大切さを学びました。'
+          }
+        ]
+      },
+      {
+        title: '趣味・興味関心',
+        desc: '好きなことや夢中になることについてお話ください',
+        questions: [
+          {
+            id: 'hobby1',
+            label: '子どもの頃から現在まで、好きで続けていることや、熱中したことは何ですか？',
+            note: 'ヒント：趣味、スポーツ、学習、遊びなど',
+            tip: '継続している活動には、内発的動機が現れます',
+            ex: '小学生の頃からのプログラミング。最初はゲームを作りたくて始めましたが、今では仕事でも活かしています。'
+          },
+          {
+            id: 'hobby2',
+            label: 'それをしている時、どんな気持ちになりますか？何が楽しいですか？',
+            note: 'ヒント：具体的な感情や満足感について',
+            tip: '活動から得られる報酬が、仕事選びのヒントになります',
+            ex: '何かを形にしていく過程が楽しい。試行錯誤しながら問題を解決できた時の達成感。自分のアイデアが実現する喜び。'
+          },
+          {
+            id: 'hobby3',
+            label: 'その活動を通じて、何を大切にしていますか？',
+            note: 'ヒント：達成感、創造性、交流、成長など',
+            tip: 'ここに価値観が明確に現れます',
+            ex: '新しい技術を学び続けること。効率的で美しいコードを書くこと。他の人の役に立つものを作ること。'
+          },
+          {
+            id: 'hobby4',
+            label: 'この活動で特に印象に残っている経験や成果はありますか？',
+            note: 'ヒント：具体的なエピソードを教えてください',
+            tip: '成功体験のパターンから強みを見出します',
+            ex: '友人の依頼で業務効率化ツールを作った時。とても喜んでもらえました。人の役に立つものを作ることに大きなやりがいを感じました。'
+          }
+        ]
+      },
+      {
+        title: '人生の転機',
+        desc: '重要な出来事や決断についてお話ください',
+        questions: [
+          {
+            id: 'turning1',
+            label: 'これまでの人生で、大きな転機となった出来事は何ですか？',
+            note: 'ヒント：進学、引っ越し、出会い、挫折、成功など',
+            tip: '転機の選択に、その人の人生観が表れます',
+            ex: '大学2年の時、東日本大震災のボランティアに参加したこと。社会課題に向き合う仕事がしたいという気づきになりました。'
+          },
+          {
+            id: 'turning2',
+            label: 'その出来事は、あなたにどんな影響を与えましたか？',
+            note: 'ヒント：考え方の変化、新しい気づき、成長など',
+            tip: '影響の内容から、意味づけのパターンを探ります',
+            ex: 'それまで自分のことばかり考えていましたが、社会全体のために働くことの意義を実感しました。人の役に立つ仕事を選ぶようになりました。'
+          },
+          {
+            id: 'turning3',
+            label: 'その経験から、今のあなたにつながっているものは何ですか？',
+            note: 'ヒント：学んだこと、得たもの、変わったことなど',
+            tip: '過去と現在をつなぐストーリーラインを構築します',
+            ex: '社会課題への関心。人とのつながりの大切さ。自分に何ができるかを常に考える姿勢。'
+          },
+          {
+            id: 'turning4',
+            label: 'その転機で、あなたはどんな選択や決断をしましたか？',
+            note: 'ヒント：進路変更、新しい挑戦、価値観の転換など',
+            tip: '意思決定のパターンから、クライアントの判断基準を理解します',
+            ex: '就職先を給与や知名度ではなく、社会貢献度で選ぶことに決めました。NPOやソーシャルビジネスにも目を向けるようになりました。'
+          }
+        ]
+      },
+      {
+        title: '強み・成功体験',
+        desc: '自分が力を発揮できた経験についてお話ください',
+        questions: [
+          {
+            id: 'success1',
+            label: '「うまくいった」「成功した」と感じた経験を教えてください',
+            note: 'ヒント：勉強、スポーツ、人間関係、プロジェクトなど',
+            tip: '成功体験から、再現可能な強みを見出します',
+            ex: '大学のゼミで研究プロジェクトのリーダーを務めた時。メンバーの意見をまとめ、学会発表で優秀賞を受賞しました。'
+          },
+          {
+            id: 'success2',
+            label: 'その時、あなたはどんな工夫や努力をしましたか？',
+            note: 'ヒント：具体的な行動や考え方',
+            tip: '行動パターンから、再現可能な強みを特定します',
+            ex: 'メンバー全員と1対1で話し合い、各自の強みを活かせる役割分担を考えました。週1回の進捗確認と、困った時すぐ相談できる雰囲気づくりを心がけました。'
+          },
+          {
+            id: 'success3',
+            label: 'その経験から、自分の強みは何だと思いますか？',
+            note: 'ヒント：能力、性格、アプローチ方法など',
+            tip: '自己認識を確認し、言語化を支援します',
+            ex: '人の話を丁寧に聞き、それぞれの良さを引き出すこと。全体を俯瞰しながら、細かい配慮もできること。チームの雰囲気を良くすること。'
+          },
+          {
+            id: 'success4',
+            label: '周りの人から、どんなことをよく褒められたり、頼まれたりしますか？',
+            note: 'ヒント：他者から見た強み',
+            tip: '他者評価から、クライアント自身が気づいていない強みを発見します',
+            ex: '「話しやすい」「相談しやすい」とよく言われます。意見がまとまらない時に仲裁役を頼まれることが多いです。'
+          }
+        ]
+      },
+      {
+        title: '困難と克服',
+        desc: '挑戦や挫折の経験についてお話ください',
+        questions: [
+          {
+            id: 'challenge1',
+            label: 'これまでで最も困難だった経験や、乗り越えなければならなかった壁は何ですか？',
+            note: 'ヒント：失敗、挫折、葛藤、試練など',
+            tip: '困難の選択に、その人の価値観が見えます',
+            ex: '就職活動で30社以上落ち続けたこと。自分の価値を否定されたような気持ちになり、本当に辛かったです。'
+          },
+          {
+            id: 'challenge2',
+            label: 'その困難に、どのように対処しましたか？',
+            note: 'ヒント：考え方、行動、サポートなど',
+            tip: '対処法から、レジリエンスやリソースを確認します',
+            ex: '最初は落ち込みましたが、友人や家族に相談し、自分の価値観やしたいことを見つめ直しました。自分の強みや本当にやりたい企業を絞り、エントリーする企業を工夫しました。'
+          },
+          {
+            id: 'challenge3',
+            label: 'その経験は、今のあなたにどんな影響を与えていますか？',
+            note: 'ヒント：成長、学び、価値観の変化など',
+            tip: '困難の意味づけから、成長ストーリーを構築します',
+            ex: '失敗を恐れず挑戦することの大切さ。自分を見つめ直す大切さ。周りの人への感謝の気持ち。諦めなければ道は開けるという信念。'
+          },
+          {
+            id: 'challenge4',
+            label: 'その経験を乗り越えられた理由は何だと思いますか？',
+            note: 'ヒント：自分の力、周囲のサポート、考え方の転換など',
+            tip: 'クライアントのレジリエンスの源泉を探ります',
+            ex: '家族や友人が励ましてくれたこと。小さな成功体験を積み重ねたこと。必ず自分にあう場所があると信じ続けたこと。'
+          }
+        ]
+      },
+      {
+        title: '現在と未来',
+        desc: '今の状況と将来の展望についてお話ください',
+        questions: [
+          {
+            id: 'future1',
+            label: '現在、キャリアについてどんなことを考えていますか？悩みや迷いがあれば教えてください',
+            note: 'ヒント：進路、就職、転職、目標など',
+            tip: '現在の課題を明確にします',
+            ex: '今の仕事にやりがいを感じられず、転職を考えています。でも何がしたいのか明確ではなく、躊躇しています。'
+          },
+          {
+            id: 'future2',
+            label: '5年後、10年後、どんな自分でありたいですか？どんな生活をしていたいですか？',
+            note: 'ヒント：仕事、プライベート、ライフスタイル、達成したいことなど',
+            tip: '理想の自己像からキャリアの方向性を探ります',
+            ex: '10年後は、専門性を活かして社会課題の解決に貢献している。仕事と家庭のバランスを保ち、充実した毎日を送っている。'
+          },
+          {
+            id: 'future3',
+            label: 'これまで語ってきた経験や価値観を踏まえて、今後のキャリアで大切にしたいことは何ですか？',
+            note: 'ヒント：過去のストーリーと未来をつなげて考えてみましょう',
+            tip: 'ストーリー全体を統合し、一貫したテーマを見出します',
+            ex: '人との関わりを大切にしながら、社会に貢献できる仕事。新しいことを学び続けられる環境。チームで目標を達成する喜び。'
+          },
+          {
+            id: 'future4',
+            label: '理想のキャリアを実現するために、今でできることは何だと思いますか？',
+            note: 'ヒント：スキル習得、人脈づくり、情報収集、小さな一歩など',
+            tip: '具体的なアクションプランを考えるきっかけを作ります',
+            ex: '関心のある分野の勉強を始める。その分野で働いている人に話を聞く。今の仕事で新しいプロジェクトに挑戦してみる。'
+          }
+        ]
+      }
+    ];
+    
+    function startMode(mode) {
+      currentMode = mode;
+      document.getElementById('intro').classList.add('hidden');
+      document.getElementById('interview').classList.add('active');
+      renderSections();
+      renderNav();
+    }
+    
+    function renderNav() {
+      const nav = sections.map((s, i) => {
+        const isCompleted = s.questions.every(q => responses[q.id] && responses[q.id].trim().length > 0);
+        const isActive = i === currentSection;
+        return `<div class="nav-item ${isActive ? 'active' : ''} ${isCompleted ? 'completed' : ''}" onclick="goToSection(${i})">${i + 1}. ${s.title}</div>`;
+      }).join('');
+      document.getElementById('sectionNav').innerHTML = nav;
+      updateProgress();
+    }
+    
+    function updateProgress() {
+      const totalQuestions = sections.reduce((sum, s) => sum + s.questions.length, 0);
+      const completedQuestions = Object.values(responses).filter(v => v && v.trim().length > 0).length;
+      const percentage = Math.round((completedQuestions / totalQuestions) * 100);
+      
+      document.getElementById('currentSec').textContent = currentSection + 1;
+      document.getElementById('totalSec').textContent = sections.length;
+      document.getElementById('completionRate').textContent = percentage + '%完了';
+    }
+    
+    function renderSections() {
+      const section = sections[currentSection];
+      let html = `<div class="question-section">
+        <div class="section-title">${currentSection + 1}. ${section.title}</div>
+        <div class="section-desc">${section.desc}</div>`;
+      
+      section.questions.forEach(q => {
+        const value = responses[q.id] || '';
+        html += `<div class="question-item">
+          <div class="question-label">${q.label}</div>
+          <div class="question-note">${q.note}</div>
+          ${q.ex ? `<div class="example-box">記入例: ${q.ex}</div>` : ''}
+          <textarea id="${q.id}" onchange="saveResponse('${q.id}')" onkeyup="updateTextarea(this)" class="${value.trim() ? 'has-content' : ''}">${value}</textarea>
+          ${currentMode === 'counselor' ? `<div class="tip-box">ヒント：${q.tip}</div>` : ''}
+        </div>`;
+      });
+      
+      html += '</div>';
+      document.getElementById('sections').innerHTML = html;
+      updateButtons();
+    }
+    
+    function updateTextarea(el) {
+      el.classList.toggle('has-content', el.value.trim().length > 0);
+    }
+    
+    function saveResponse(id) {
+      responses[id] = document.getElementById(id).value;
+      renderNav();
+    }
+    
+    function goToSection(i) {
+      sections[currentSection].questions.forEach(q => {
+        const el = document.getElementById(q.id);
+        if (el) responses[q.id] = el.value;
+      });
+      currentSection = i;
+      renderSections();
+      renderNav();
+      window.scrollTo(0, 0);
+    }
+    
+    function nextSection() {
+      sections[currentSection].questions.forEach(q => {
+        const el = document.getElementById(q.id);
+        if (el) responses[q.id] = el.value;
+      });
+      if (currentSection < sections.length - 1) {
+        currentSection++;
+        renderSections();
+        renderNav();
+        window.scrollTo(0, 0);
+      }
+    }
+    
+    function prevSection() {
+      if (currentSection > 0) {
+        sections[currentSection].questions.forEach(q => {
+          const el = document.getElementById(q.id);
+          if (el) responses[q.id] = el.value;
+        });
+        currentSection--;
+        renderSections();
+        renderNav();
+        window.scrollTo(0, 0);
+      }
+    }
+    
+    function updateButtons() {
+      const prevBtn = document.getElementById('prevBtn');
+      const nextBtn = document.getElementById('nextBtn');
+      const finishBtn = document.getElementById('finishBtn');
+      
+      prevBtn.disabled = currentSection === 0;
+      
+      if (currentSection === sections.length - 1) {
+        nextBtn.classList.add('hidden');
+        finishBtn.classList.remove('hidden');
+      } else {
+        nextBtn.classList.remove('hidden');
+        finishBtn.classList.add('hidden');
+      }
+    }
+    
+    function finishInterview() {
+      sections[currentSection].questions.forEach(q => {
+        const el = document.getElementById(q.id);
+        if (el) responses[q.id] = el.value;
+      });
+      
+      document.getElementById('interview').classList.remove('active');
+      document.getElementById('summary').classList.add('active');
+      renderSummary();
+      window.scrollTo(0, 0);
+    }
+    
+    function renderSummary() {
+      let html = '';
+      sections.forEach((s, i) => {
+        html += `<div class="summary-section"><h3>${s.title}</h3>`;
+        s.questions.forEach(q => {
+          const r = responses[q.id] || '(未回答)';
+          html += `<div><div class="question-label">${q.label}</div><div class="summary-content">${r}</div></div>`;
+        });
+        html += '</div>';
+      });
+      document.getElementById('summaryContent').innerHTML = html;
+    }
+    
+    function exportData() {
+      let txt = 'キャリアストーリーインタビュー 記録\n';
+      txt += '実施日: ' + new Date().toLocaleDateString('ja-JP') + '\n';
+      txt += '=' .repeat(60) + '\n\n';
+      
+      sections.forEach((s, i) => {
+        txt += `【${i + 1}. ${s.title}】\n`;
+        txt += '-'.repeat(50) + '\n';
+        s.questions.forEach((q, j) => {
+          const r = responses[q.id] || '(未回答)';
+          txt += `\nQ${j + 1}: ${q.label}\nA: ${r}\n`;
+        });
+        txt += '\n' + '='.repeat(60) + '\n\n';
+      });
+      
+      const blob = new Blob([txt], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'career_story_' + new Date().getTime() + '.txt';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    }
+    
+    function generateAIPrompt() {
+      const pd = document.getElementById('promptDisplay');
+      const pt = document.getElementById('promptText');
+      
+      let prompt = `# キャリア・ナラティブ分析の依頼
+
+あなたはキャリアカウンセリングの専門家です。以下のナラティブ・インタビューの回答を分析し、クライアントに向けた温かく支援的なキャリア分析レポートを作成してください。
+
+## 分析の視点
+
+1. **一貫したテーマ・価値観の抽出**
+   - 回答全体を通じて繰り返し現れるテーマ
+   - 子ども時代から現在まで、どのように一貫または変化しているか
+
+2. **ロールモデルから読み取れる理想像**
+   - クライアントが憧れる人物から見える、なりたい自分の姿
+
+3. **強みとリソース**
+   - 成功体験から見える強み
+   - 困難を乗り越えた時のレジリエンス
+   - 活用可能な人的・社会的リソース
+
+4. **人生のストーリーライン**
+   - 過去の転機から現在へ、そして未来へと続く一貫性のある物語
+   - 各段階での学びと成長
+
+5. **キャリアの方向性と意味づけ**
+   - 理想と現実のギャップの理解
+   - クライアント自身が大切にしたいキャリアの意味
+
+## インタビュー回答
+
+`;
+      
+      sections.forEach((s, i) => {
+        prompt += `\n### ${i + 1}. ${s.title}\n\n`;
+        s.questions.forEach((q, j) => {
+          const r = responses[q.id] || '(未回答)';
+          prompt += `**Q${j + 1}: ${q.label}**\n${r}\n\n`;
+        });
+      });
+      
+      prompt += `---
+
+## レポート作成のガイドライン
+
+### 1. クライアント自身も気づいていないストーリーの発見
+- 表面的ではなく、深い意味づけを行う
+- 具体的な回答内容を引用しながら解釈する
+
+### 2. 強みとリソースの明示
+- 成功体験から具体的に導き出された強み
+- 困難を乗り越えた際の工夫や支援
+- すぐに活用できる実践的なリソース
+
+### 3. キャリアテーマの整理
+- 過去から現在に一貫するテーマ（3-4個程度）
+- それぞれのテーマが表れた具体的エピソード
+
+### 4. 理想像と現実のギャップの理解
+- 理想のキャリア像
+- 現在のギャップの要因
+- ギャップを埋めるための具体的なステップ
+
+### 5. 次のアクションプラン
+- 3ヶ月以内に取り組む具体的なアクション（2-3個）
+- 1年以内の中期目標
+- 3-5年の長期ビジョン
+
+### 6. メッセージ
+- クライアントへのエンカレッジメント
+- 自分自身のストーリーの価値への気づき
+- 将来への希望を感じさせるような締めくくり
+
+---
+
+**重要な留意点**：
+- クライアント自身の言葉や経験を尊重し、押し付けのない表現を心がける
+- 具体的で実現可能な提案を心がける
+- 一般的な論ではなく、このクライアント固有のストーリーに焦点を当てる
+- 温かく支援的なトーンを保つ
+- 可能性を広げる視点を持ちながら、現実的なアドバイスを提供する`;
+      
+      pt.textContent = prompt;
+      pd.classList.add('active');
+      pd.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+    
+    function copyPrompt() {
+      const text = document.getElementById('promptText').textContent;
+      const cs = document.getElementById('copySuccess');
+      navigator.clipboard.writeText(text).then(() => {
+        cs.classList.add('show');
+        setTimeout(() => cs.classList.remove('show'), 2000);
+      }).catch(() => {
+        alert('コピーに失敗しました。手動でテキストを選択してコピーしてください。');
+      });
+    }
+    
+    function restart() {
+      if (confirm('最初から始めますか？入力内容は失われます。')) {
+        currentSection = 0;
+        currentMode = '';
+        responses = {};
+        document.getElementById('summary').classList.remove('active');
+        document.getElementById('interview').classList.remove('active');
+        document.getElementById('intro').classList.remove('hidden');
+        window.scrollTo(0, 0);
+      }
+    }
+  </script>
+</body>
+</html>

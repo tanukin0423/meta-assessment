@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>キャリアアセスメント 総合ポータル</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Yu Gothic', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 32px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 18px;
+        }
+        
+        .welcome {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+        
+        .choice-section {
+            margin-top: 40px;
+        }
+        
+        .choice-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .choice-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 30px;
+            border-radius: 15px;
+            border: 3px solid #e0e0e0;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .choice-card:hover {
+            border-color: #667eea;
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        
+        .choice-card h3 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 15px;
+        }
+        
+        .choice-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .choice-card .badge {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 15px;
+        }
+        
+        .direct-assessments {
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 15px;
+        }
+        
+        .direct-assessments h3 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        
+        .assessment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .assessment-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s;
+        }
+        
+        .assessment-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+        
+        .assessment-card h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .assessment-card p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+        
+        .btn-toggle-detail {
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-block;
+            border: none;
+            transition: all 0.3s;
+        }
+        
+        .btn-toggle-detail:hover {
+            background: #5568d3;
+        }
+        
+        .btn-start-assessment {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 15px;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+        
+        .btn-start-assessment:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .intro {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            line-height: 1.8;
+        }
+        
+        .question-container {
+            display: none;
+            margin-bottom: 30px;
+        }
+        
+        .question-container.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .question {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+        }
+        
+        .question-number {
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .question-text {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        .multiple-choice-notice {
+            background: #e8f4fd;
+            border-left: 4px solid #667eea;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            background: white;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .option:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .option:focus-within {
+            outline: 2px solid #667eea;
+            outline-offset: 2px;
+        }
+        
+        .option.selected {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .option input[type="radio"],
+        .option input[type="checkbox"] {
+            margin-right: 12px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .option label {
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        .selection-count {
+            font-size: 13px;
+            color: #667eea;
+            font-weight: bold;
+            margin-top: 10px;
+            display: block;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s;
+            border-radius: 10px;
+        }
+        
+        .buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+        
+        .btn-prev {
+            background: #e0e0e0;
+            color: #666;
+        }
+        
+        .btn-prev:hover:not(:disabled) {
+            background: #d0d0d0;
+        }
+        
+        .btn-next, .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-next:hover:not(:disabled), .btn-submit:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .btn-back {
+            background: #e0e0e0;
+            color: #666;
+            padding: 10px 25px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        
+        .btn-back:hover {
+            background: #d0d0d0;
+        }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .result {
+            display: none;
+            text-align: center;
+        }
+        
+        .result.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        .result-title {
+            font-size: 28px;
+            color: #667eea;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        
+        .recommendation-section {
+            margin: 30px 0;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .recommendation-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .result-description {
+            background: #f8f9fa;
+            padding: 30px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: left;
+            line-height: 1.8;
+        }
+        
+        .result-description h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .result-description ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+        
+        .result-description li {
+            margin-bottom: 8px;
+        }
+        
+        .score-chart {
+            margin-top: 20px;
+            padding: 20px;
+            background: white;
+            border-radius: 8px;
+        }
+        
+        .score-bar {
+            margin: 15px 0;
+        }
+        
+        .score-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+        
+        .score-bar-fill {
+            height: 25px;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            border-radius: 5px;
+            transition: width 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            padding-left: 10px;
+            color: white;
+            font-weight: bold;
+        }
+        
+        .recommended-link {
+            display: inline-block;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+            border: none;
+            cursor: pointer;
+        }
+        
+        .recommended-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
+        }
+        
+        .other-assessments {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 2px solid #e0e0e0;
+        }
+        
+        .other-assessments h3 {
+            color: #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .assessment-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .assessment-link {
+            display: block;
+            padding: 15px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+            transition: all 0.3s;
+            text-align: center;
+        }
+        
+        .assessment-link:hover {
+            border-color: #667eea;
+            background: #f0f4ff;
+            transform: translateY(-2px);
+        }
+        
+        .assessment-link.recommended {
+            border-color: #667eea;
+            background: #f0f4ff;
+        }
+        
+        .assessment-link-title {
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .assessment-link-desc {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .btn-restart {
+            background: #e0e0e0;
+            color: #666;
+            padding: 12px 30px;
+            margin-top: 20px;
+        }
+        
+        .btn-restart:hover {
+            background: #d0d0d0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .explanation-box {
+            background: #e8f4fd;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        
+        .explanation-box h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+        
+        .explanation-box p {
+            color: #555;
+            line-height: 1.7;
+        }
+        
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .choice-cards {
+                grid-template-columns: 1fr;
+            }
+            
+            .assessment-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>キャリアアセスメント 総合ポータル</h1>
+        <div class="subtitle">あなたに最適な診断を見つけよう</div>
+        
+        <!-- ウェルカム画面 -->
+        <div id="welcome" class="welcome">
+            <h2 style="color: #667eea; margin-bottom: 20px; text-align: center;">ようこそ</h2>
+            <p style="margin-bottom: 20px;">このサイトでは、5種類のキャリアアセスメント(診断)を提供しています。</p>
+            
+            <div style="background: white; padding: 20px; border-radius: 8px; margin: 20px 0;">
+                <h3 style="color: #667eea; margin-bottom: 15px;">📋 利用可能な診断</h3>
+                <ul style="margin-left: 20px; line-height: 2;">
+                    <li><strong>A. 興味・関心ベース診断</strong> - どんな分野に興味があるか発見</li>
+                    <li><strong>B. 性格・特性ベース診断</strong> - 自分の性格タイプを知る</li>
+                    <li><strong>C. 価値観ベース診断</strong> - 仕事で大切にしたい価値観を明確化</li>
+                    <li><strong>D. 強み・能力ベース診断</strong> - あなたの強みを発見</li>
+                    <li><strong>E. ナラティブ・対話型診断</strong> - 人生ストーリーから探る</li>
+                </ul>
+            </div>
+            
+            <div class="explanation-box">
+                <h4>🤔 どの診断を受ければいいか分からない方へ</h4>
+                <p><strong>「メタアセスメント」を受けることをお勧めします。</strong><br>
+                30の質問に答えることで、あなたの現在の状況や目的に最も適した診断を自動的に推奨します。</p>
+            </div>
+            
+            <div class="choice-section">
+                <h3 style="color: #667eea; text-align: center; margin-bottom: 25px;">診断方法を選んでください</h3>
+                
+                <div class="choice-cards">
+                    <div class="choice-card" onclick="showMetaAssessment()" role="button" tabindex="0" onkeypress="if(event.key==='Enter') showMetaAssessment()">
+                        <div class="badge">おすすめ</div>
+                        <h3>📊 メタアセスメント</h3>
+                        <p>30個の質問に答えて、あなたに最適な診断を自動で推奨します。</p>
+                        <p style="font-size: 14px; color: #888; margin-top: 10px;">所要時間:約10-15分</p>
+                        <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px;">
+                            <strong style="color: #667eea;">こんな方におすすめ:</strong><br>
+                            ・どの診断が自分に合うか分からない<br>
+                            ・客観的に判断してほしい<br>
+                            ・初めて診断を受ける
+                        </div>
+                    </div>
+                    
+                    <div class="choice-card" onclick="showDirectChoice()" role="button" tabindex="0" onkeypress="if(event.key==='Enter') showDirectChoice()">
+                        <h3>🎯 診断を直接選択</h3>
+                        <p>5つの診断の中から、自分で選んで直接始まります。</p>
+                        <p style="font-size: 14px; color: #888; margin-top: 10px;">すぐに診断開始</p>
+                        <div style="margin-top: 20px; padding: 15px; background: white; border-radius: 8px;">
+                            <strong style="color: #667eea;">こんな方におすすめ:</strong><br>
+                            ・受けたい診断が既に決まっている<br>
+                            ・各診断の内容を理解している<br>
+                            ・時間がない
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="explanation-box" style="margin-top: 40px;">
+                <h4>👍 このサイトの使い方</h4>
+                <p><strong>1. メタアセスメントを選んだ場合:</strong><br>
+                → 30個の質問に回答 → あなたに最適な診断が表示される → その診断ページへ移動</p>
+                <p style="margin-top: 10px;"><strong>2. 直接選択した場合:</strong><br>
+                → 5つの診断から選択 → 選んだ診断ページへ移動</p>
+                <p style="margin-top: 15px; font-size: 14px; color: #888;">
+                ※ 各診断は独立したページで実施されます。診断完了後、ブラウザの「戻る」ボタンでこのページに戻れます。
+                </p>
+            </div>
+        </div>
+        
+        <!-- メタアセスメントのイントロ -->
+        <div id="intro" class="intro hidden">
+            <button class="btn-back" onclick="backToWelcome()">← 最初の画面に戻る</button>
+            <h3 style="margin-bottom: 15px; color: #667eea;">メタアセスメントについて</h3>
+            <p>このメタ診断ツールは、あなたに最適なキャリアアセスメント(診断プログラム)を見つけるためのものです。</p>
+            <p style="margin-top: 10px;">30の質問に答えることで、以下の5つの診断タイプの中から、あなたの現在の状況や目的に最も適したものを推奨します。</p>
+            <ul style="margin: 15px 0 15px 25px; line-height: 1.8;">
+                <li><strong>A. 興味・関心ベース診断</strong>(VPI/VRT型)</li>
+                <li><strong>B. 性格・特性ベース診断</strong>(MBTI型)</li>
+                <li><strong>C. 価値観ベース診断</strong>(キャリア・アンカー型)</li>
+                <li><strong>D. 強み・能力ベース診断</strong></li>
+                <li><strong>E. ナラティブ・対話型診断</strong></li>
+            </ul>
+            
+            <div class="explanation-box">
+                <h4>📌 メタアセスメント完了後の流れ</h4>
+                <p>1. 診断結果が表示されます(例:「あなたにはB. MBTI診断が最適です」)<br>
+                2. 推奨された診断へのリンクボタンが表示されます<br>
+                3. ボタンをクリックすると、その診断ページ(別ファイル)に移動します<br>
+                4. 診断完了後、ブラウザの「戻る」ボタンでこのページに戻ってこれます</p>
+            </div>
+            
+            <p style="margin-top: 15px;"><strong>所要時間:</strong>約10-15分</p>
+            <button class="btn-next" style="width: 100%; padding: 15px; margin-top: 20px;" onclick="startAssessment()">メタアセスメントを開始する</button>
+        </div>
+        
+        <!-- 直接選択画面 -->
+        <div id="directChoice" class="direct-assessments hidden">
+            <button class="btn-back" onclick="backToWelcome()">← 最初の画面に戻る</button>
+            <h3>診断を直接選択する</h3>
+            <p style="text-align: center; color: #666; margin-top: 10px;">受けたい診断をクリックしてください</p>
+            
+            <div class="explanation-box" style="margin-top: 20px;">
+                <h4>📌 診断の選び方のヒント</h4>
+                <p><strong>A. 興味・関心ベース診断:</strong>どんな分野・職業に興味があるか分からない方<br>
+                <strong>B. 性格・特性ベース診断:</strong>自分の性格タイプを知りたい方<br>
+                <strong>C. 価値観ベース診断:</strong>複数の選択肢で迷っている、各優先順位をつけたい方<br>
+                <strong>D. 強み・能力ベース診断:</strong>自分の強みが分からない、自己PRしたい方<br>
+                <strong>E. ナラティブ・対話型診断:</strong>人生を振り返り、深く内省したい方</p>
+            </div>
+            
+            <div class="assessment-grid">
+                <div class="assessment-card">
+                    <h4>A. VPI診断</h4>
+                    <p class="short-desc">興味・関心から適職を探します<br>(ホランド理論に基づく6タイプ分類)</p>
+                    <p style="margin-top: 10px; font-size: 13px; color: #888;">所要時間:約5-7分</p>
+                    <button class="btn-start-assessment" onclick="window.open('vpi-assessment-3.html', '_blank')">VPI診断を開始する →</button>
+                </div>
+                
+                <div class="assessment-card">
+                    <h4>B. MBTI診断</h4>
+                    <p class="short-desc">性格タイプから適した働き方を知ります<br>(16タイプ性格診断)</p>
+                    <p style="margin-top: 10px; font-size: 13px; color: #888;">所要時間:約5-7分</p>
+                    <button class="btn-start-assessment" onclick="window.open('mbti-assessment-3.html', '_blank')">MBTI診断を開始する →</button>
+                </div>
+                
+                <div class="assessment-card">
+                    <h4>C. キャリア・アンカー</h4>
+                    <p class="short-desc">仕事で大切にしたい価値観を明確化<br>(シャインの8つの価値軸)</p>
+                    <p style="margin-top: 10px; font-size: 13px; color: #888;">所要時間:約7-10分</p>
+                    <button class="btn-start-assessment" onclick="window.open('career-anchor-assessment-3.html', '_blank')">キャリア・アンカー診断を開始する →</button>
+                </div>
+                
+                <div class="assessment-card">
+                    <h4>D. 強み診断</h4>
+                    <p class="short-desc">あなたの強みと才能を発見します<br>(8つの強み領域)</p>
+                    <p style="margin-top: 10px; font-size: 13px; color: #888;">所要時間:約7-10分</p>
+                    <button class="btn-start-assessment" onclick="window.open('strengths-assessment-3.html', '_blank')">強み診断を開始する →</button>
+                </div>
+                
+                <div class="assessment-card">
+                    <h4>E. ナラティブ診断</h4>
+                    <p class="short-desc">人生ストーリーから意味を見出します<br>(サビカスのキャリア構築理論)</p>
+                    <p style="margin-top: 10px; font-size: 13px; color: #888;">所要時間:約30-60分</p>
+                    <button class="btn-start-assessment" onclick="window.open('narrative-assessment-3.html', '_blank')">ナラティブ診断を開始する →</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- メタアセスメント実施画面 -->
+        <div id="assessment" class="hidden">
+            <button class="btn-back" onclick="backToIntro()">← メタアセスメントの説明に戻る</button>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            
+            <div id="questionsContainer"></div>
+            
+            <div class="buttons">
+                <button class="btn-prev" id="prevBtn" onclick="prevQuestion()">前へ</button>
+                <button class="btn-next" id="nextBtn" onclick="nextQuestion()">次へ</button>
+                <button class="btn-submit hidden" id="submitBtn" onclick="calculateResult()">結果を見る</button>
+            </div>
+        </div>
+        
+        <!-- 結果画面 -->
+        <div id="result" class="result">
+            <h2>メタアセスメント 診断結果</h2>
+            <div id="recommendedAssessmentsContainer"></div>
+            <div id="resultDescription"></div>
+            
+            <div class="other-assessments">
+                <h3>他の診断も試してみる</h3>
+                <p style="text-align: center; color: #666; margin-bottom: 20px;">推奨診断以外にも興味があれば、こちらからアクセスできます</p>
+                <div class="assessment-links">
+                    <a href="vpi-assessment-3.html" target="_blank" class="assessment-link" id="link-A">
+                        <div class="assessment-link-title">A. VPI診断</div>
+                        <div class="assessment-link-desc">興味・関心から職を探す</div>
+                    </a>
+                    <a href="mbti-assessment-3.html" target="_blank" class="assessment-link" id="link-B">
+                        <div class="assessment-link-title">B. MBTI診断</div>
+                        <div class="assessment-link-desc">性格タイプを知る</div>
+                    </a>
+                    <a href="career-anchor-assessment-3.html" target="_blank" class="assessment-link" id="link-C">
+                        <div class="assessment-link-title">C. キャリア・アンカー</div>
+                        <div class="assessment-link-desc">価値観を明確にする</div>
+                    </a>
+                    <a href="strengths-assessment-3.html" target="_blank" class="assessment-link" id="link-D">
+                        <div class="assessment-link-title">D. 強み診断</div>
+                        <div class="assessment-link-desc">あなたの強みを発見</div>
+                    </a>
+                    <a href="narrative-assessment-3.html" target="_blank" class="assessment-link" id="link-E">
+                        <div class="assessment-link-title">E. ナラティブ診断</div>
+                        <div class="assessment-link-desc">ストーリーから探る</div>
+                    </a>
+                </div>
+            </div>
+            
+            <button class="btn-restart" onclick="restart()">最初の画面に戻る</button>
+        </div>
+    </div>
+    
+    <script>
+        // メタアセスメントの質問データ（改善版：配点調整済み）
+        const questions = [
+            // カテゴリ1: 基本情報(Q1-5)
+            {
+                q: "現在の学年または状況を教えてください。",
+                multipleChoice: false,
+                options: [
+                    {text: "大学1-2年生、またはキャリアを考え始めたばかり", scores: {A:5, B:3, C:1, D:2, E:0}},
+                    {text: "大学3-4年生、就職活動中または準備中", scores: {A:3, B:4, C:3, D:4, E:1}},
+                    {text: "社会人経験があり、転職やキャリアチェンジを考えている", scores: {A:1, B:2, C:5, D:3, E:5}},
+                    {text: "その他・未定", scores: {A:2, B:2, C:2, D:2, E:2}}
+                ]
+            },
+            {
+                q: "キャリアに関する情報蒐集や活動をどの程度しています か?",
+                multipleChoice: false,
+                options: [
+                    {text: "ほとんどしていない、これから始める", scores: {A:5, B:4, C:1, D:3, E:0}},
+                    {text: "少しずつ始めている", scores: {A:3, B:3, C:2, D:3, E:1}},
+                    {text: "積極的に活動している", scores: {A:2, B:3, C:4, D:3, E:3}},
+                    {text: "かなり進んでおり、具体的な選択肢がある", scores: {A:1, B:2, C:5, D:2, E:5}}
+                ]
+            },
+            {
+                q: "職業や仕事について、どの程度知識があります か?",
+                multipleChoice: false,
+                options: [
+                    {text: "ほとんど知らない", scores: {A:5, B:3, C:0, D:2, E:0}},
+                    {text: "一般的な職業は知っている程度", scores: {A:4, B:3, C:2, D:3, E:1}},
+                    {text: "興味のある分野についてはよく調べている", scores: {A:2, B:3, C:4, D:3, E:3}},
+                    {text: "実務経験があり、仕事の実態をよく理解している", scores: {A:0, B:1, C:5, D:2, E:5}}
+                ]
+            },
+            {
+                q: "アルバイトやインターンシップの経験はあります か?",
+                multipleChoice: false,
+                options: [
+                    {text: "ほとんどない", scores: {A:5, B:3, C:0, D:3, E:0}},
+                    {text: "少しある(1-2回程度)", scores: {A:3, B:3, C:2, D:3, E:1}},
+                    {text: "複数の経験がある", scores: {A:2, B:2, C:3, D:3, E:3}},
+                    {text: "豊富な経験がある、または社会人経験がある", scores: {A:0, B:1, C:5, D:2, E:5}}
+                ]
+            },
+            {
+                q: "将来のキャリアについて、どの程度具体的にイメージできていますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "全くイメージできていない", scores: {A:5, B:4, C:0, D:3, E:0}},
+                    {text: "漠然とした方向性はあるが、まとまっていない", scores: {A:3, B:3, C:2, D:3, E:2}},
+                    {text: "いくつかの選択肢を考えている", scores: {A:2, B:2, C:5, D:2, E:3}},
+                    {text: "かなり具体的にしている", scores: {A:1, B:1, C:4, D:2, E:5}}
+                ]
+            },
+
+            // カテゴリ2: 自己理解度(Q6-10)
+            {
+                q: "自分の性格や特徴について、どの程度理解していますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "あまり理解していない", scores: {A:3, B:5, C:1, D:4, E:0}},
+                    {text: "なんとなく分かる程度", scores: {A:3, B:4, C:2, D:4, E:2}},
+                    {text: "よく理解している", scores: {A:2, B:2, C:4, D:3, E:4}},
+                    {text: "深く理解しており、言葉で説明できる", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+            {
+                q: "自分の得意なこと・苦手なことを、他人に説明できますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "うまく説明できない", scores: {A:3, B:4, C:2, D:5, E:1}},
+                    {text: "少しは説明できる", scores: {A:3, B:3, C:2, D:4, E:2}},
+                    {text: "ある程度説明できる", scores: {A:2, B:2, C:3, D:3, E:3}},
+                    {text: "具体的に明確に説明できる", scores: {A:1, B:1, C:4, D:2, E:5}}
+                ]
+            },
+            {
+                q: "これまでの人生で、「自分らしさ」を感じた瞬間を思い出せますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "思い出せない、または考えたことがない", scores: {A:3, B:3, C:2, D:3, E:0}},
+                    {text: "少しは思い出せる", scores: {A:3, B:3, C:3, D:3, E:2}},
+                    {text: "いくつか思い出せる", scores: {A:2, B:2, C:3, D:2, E:4}},
+                    {text: "明確に思い出せ、それが今の自分にどう影響しているかも分かる", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+            {
+                q: "自分の価値観(何を大切にしているか)について、どの程度明確ですか?",
+                multipleChoice: false,
+                options: [
+                    {text: "よく分からない", scores: {A:3, B:3, C:5, D:2, E:1}},
+                    {text: "なんとなく分かる", scores: {A:3, B:3, C:4, D:3, E:2}},
+                    {text: "ある程度明確である", scores: {A:2, B:2, C:3, D:2, E:4}},
+                    {text: "非常に明確で、それに基づいて行動している", scores: {A:1, B:1, C:2, D:2, E:5}}
+                ]
+            },
+            {
+                q: "日記を書いたり、自分の考えを整理する習慣がありますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "全くない", scores: {A:3, B:3, C:2, D:3, E:0}},
+                    {text: "たまにする", scores: {A:3, B:3, C:3, D:3, E:2}},
+                    {text: "時々している", scores: {A:2, B:2, C:3, D:2, E:4}},
+                    {text: "習慣的にしている", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+
+            // カテゴリ3: 現在の課題(Q11-15) - 複数選択可能
+            {
+                q: "今、最も困っていることは何ですか?",
+                multipleChoice: true,
+                maxChoices: 2,
+                options: [
+                    {text: "そもそも何に興味があるのか分からない", scores: {A:5, B:3, C:2, D:3, E:1}},
+                    {text: "自分がどんな性格・タイプなのか知りたい", scores: {A:2, B:5, C:2, D:2, E:2}},
+                    {text: "複数の選択肢があって決められない", scores: {A:1, B:2, C:5, D:2, E:3}},
+                    {text: "自分の強みが分からない、自信がない", scores: {A:2, B:2, C:2, D:5, E:2}}
+                ]
+            },
+            {
+                q: "キャリア相談で期待することは?",
+                multipleChoice: true,
+                maxChoices: 2,
+                options: [
+                    {text: "自分に合った職業分野を知りたい", scores: {A:5, B:3, C:2, D:2, E:1}},
+                    {text: "自分の特性や性格を客観的に知りたい", scores: {A:2, B:5, C:2, D:3, E:1}},
+                    {text: "迷いを整理し、判断基準を明確にしたい", scores: {A:1, B:2, C:5, D:2, E:2}},
+                    {text: "これまでの経験を整理し、意味づけたい", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+            {
+                q: "今の悩みの原因は何だと思いますか?",
+                multipleChoice: true,
+                maxChoices: 2,
+                options: [
+                    {text: "情報や知識が不足している", scores: {A:5, B:3, C:2, D:2, E:1}},
+                    {text: "自分自身のことが分かっていない", scores: {A:3, B:5, C:2, D:5, E:2}},
+                    {text: "価値観の優先順位がつけられない", scores: {A:1, B:2, C:5, D:2, E:3}},
+                    {text: "過去の経験が整理できていない", scores: {A:1, B:1, C:3, D:3, E:5}}
+                ]
+            },
+            {
+                q: "キャリア選択で迷う主な理由は?",
+                multipleChoice: true,
+                maxChoices: 2,
+                options: [
+                    {text: "選択肢が多すぎて何から考えればいいか分からない", scores: {A:5, B:3, C:2, D:3, E:1}},
+                    {text: "自分に向いている仕事が分からない", scores: {A:3, B:5, C:2, D:2, E:2}},
+                    {text: "どれも魅力的で、何を優先すべきか分からない", scores: {A:1, B:2, C:5, D:2, E:3}},
+                    {text: "本当にやりたいことが見つからない", scores: {A:2, B:2, C:3, D:3, E:5}}
+                ]
+            },
+            {
+                q: "就職・キャリアについて、どんな不安がありますか?",
+                multipleChoice: true,
+                maxChoices: 2,
+                options: [
+                    {text: "どんな仕事が存在するのか、よく知らない", scores: {A:5, B:2, C:1, D:2, E:1}},
+                    {text: "自分に適した仕事が分からない", scores: {A:3, B:5, C:2, D:3, E:1}},
+                    {text: "選んだ道が本当に正しいのか不安", scores: {A:1, B:2, C:5, D:2, E:4}},
+                    {text: "自分の能力に自信がない", scores: {A:2, B:2, C:2, D:5, E:2}}
+                ]
+            },
+
+            // カテゴリ4: キャリア決定段階(Q16-20)
+            {
+                q: "キャリア選択において、今の段階を次のどれに当てはめますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "探索段階:様々な可能性を広く知りたい", scores: {A:5, B:3, C:2, D:3, E:1}},
+                    {text: "絞り込み段階:選択肢を絞り込みたい", scores: {A:2, B:3, C:5, D:3, E:2}},
+                    {text: "決定段階:最終的な判断をしたい", scores: {A:1, B:2, C:5, D:2, E:3}},
+                    {text: "確認段階:自分の選択が正しいか確認したい", scores: {A:1, B:2, C:4, D:2, E:5}}
+                ]
+            },
+            {
+                q: "理想的なキャリア支援とは?",
+                multipleChoice: false,
+                options: [
+                    {text: "具体的な職業や分野の提案", scores: {A:5, B:3, C:2, D:2, E:1}},
+                    {text: "客観的なデータに基づいた診断結果", scores: {A:3, B:5, C:2, D:3, E:1}},
+                    {text: "迷いを整理し、判断基準を明確にすること", scores: {A:1, B:2, C:5, D:2, E:3}},
+                    {text: "対話を通じて自分自身を深く理解すること", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+            {
+                q: "進路や職業について、現時点でどの程度決まっていますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "全く決まっていない", scores: {A:5, B:3, C:1, D:3, E:1}},
+                    {text: "大まかな方向性は考えている", scores: {A:3, B:3, C:3, D:3, E:2}},
+                    {text: "2-3の選択肢に絞られている", scores: {A:2, B:2, C:5, D:2, E:3}},
+                    {text: "ほぼ決まっており、確認したい段階", scores: {A:1, B:2, C:4, D:2, E:5}}
+                ]
+            },
+            {
+                q: "志望する業界や職種について、説明できますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "まだ何も考えていない", scores: {A:5, B:3, C:1, D:3, E:1}},
+                    {text: "興味のある分野はあるが、詳しくない", scores: {A:4, B:3, C:2, D:3, E:2}},
+                    {text: "いくつか調べており、説明できる", scores: {A:2, B:2, C:5, D:2, E:3}},
+                    {text: "詳しく調べており、明確に説明できる", scores: {A:1, B:2, C:4, D:2, E:5}}
+                ]
+            },
+            {
+                q: "就職活動(または転職活動)をどの程度具体的に考えていますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "まだ考え始めていない", scores: {A:5, B:3, C:1, D:3, E:1}},
+                    {text: "情報蒐集を始めた段階", scores: {A:3, B:3, C:2, D:3, E:2}},
+                    {text: "具体的に動き始めている", scores: {A:2, B:2, C:5, D:2, E:3}},
+                    {text: "かなり進んでおり、最終判断の段階", scores: {A:1, B:2, C:4, D:2, E:5}}
+                ]
+            },
+
+            // カテゴリ5: 思考スタイル(Q21-25)
+            {
+                q: "物事を考える時、どちらのスタイルが近いですか?",
+                multipleChoice: false,
+                options: [
+                    {text: "データや客観的な情報を重視する", scores: {A:4, B:5, C:2, D:3, E:1}},
+                    {text: "どちらかといえば論理的・構造的", scores: {A:3, B:4, C:3, D:3, E:2}},
+                    {text: "どちらかといえば直感的・感覚的", scores: {A:2, B:2, C:4, D:2, E:4}},
+                    {text: "自分の内面や感情を重視する", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+            {
+                q: "診断やテストを受ける時、どう感じますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "客観的な結果が出るので信頼できる", scores: {A:5, B:5, C:1, D:4, E:0}},
+                    {text: "参考になる情報として活用したい", scores: {A:3, B:4, C:3, D:3, E:2}},
+                    {text: "結果よりも、考えるプロセスが大事だと思う", scores: {A:2, B:2, C:5, D:2, E:4}},
+                    {text: "自分で答えを見つけたい、診断に頼りたくない", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+            {
+                q: "アドバイスを受ける時、どんな形が好きですか?",
+                multipleChoice: false,
+                options: [
+                    {text: "明確な答えや方向性を示してほしい", scores: {A:5, B:5, C:2, D:3, E:1}},
+                    {text: "選択肢を提示してもらい、自分で選びたい", scores: {A:3, B:3, C:5, D:3, E:2}},
+                    {text: "質問を投げかけてもらい、自分で考えたい", scores: {A:2, B:2, C:4, D:2, E:4}},
+                    {text: "対話を通じて一緒に答えを見つけたい", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+            {
+                q: "問題解決のアプローチとして、どちらが好きですか?",
+                multipleChoice: false,
+                options: [
+                    {text: "体系的な方法やフレームワークを使う", scores: {A:5, B:5, C:3, D:3, E:1}},
+                    {text: "論理的に分析して答えを導く", scores: {A:3, B:4, C:3, D:3, E:2}},
+                    {text: "自由に発想し、様々な角度から考える", scores: {A:2, B:2, C:4, D:2, E:4}},
+                    {text: "経験や物語から学び、意味を見出す", scores: {A:1, B:1, C:2, D:2, E:5}}
+                ]
+            },
+            {
+                q: "自分を知るために、どの方法が一番しっくりきますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "テストや診断で客観的に分析する", scores: {A:5, B:5, C:2, D:3, E:0}},
+                    {text: "他人からのフィードバックを聞く", scores: {A:3, B:4, C:3, D:4, E:2}},
+                    {text: "様々な経験をして、自分で気づく", scores: {A:2, B:2, C:4, D:2, E:4}},
+                    {text: "じっくり内省し、自分の内面と向き合う", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+
+            // カテゴリ6: 行動傾向(Q26-30)
+            {
+                q: "エントリーシートや面接で、自己PRができる準備はありますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "全くできていない", scores: {A:3, B:3, C:2, D:5, E:1}},
+                    {text: "少し考えているが、まとまっていない", scores: {A:3, B:3, C:3, D:4, E:2}},
+                    {text: "ある程度できている", scores: {A:2, B:2, C:3, D:3, E:3}},
+                    {text: "しっかり準備できている", scores: {A:1, B:1, C:2, D:2, E:5}}
+                ]
+            },
+            {
+                q: "キャリアの方向性について、どの程度確信がありますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "全く確信がない", scores: {A:5, B:4, C:2, D:3, E:1}},
+                    {text: "少し不安がある", scores: {A:3, B:3, C:3, D:3, E:2}},
+                    {text: "だいたい自信がある", scores: {A:2, B:2, C:4, D:2, E:4}},
+                    {text: "かなり確信している", scores: {A:1, B:1, C:4, D:2, E:5}}
+                ]
+            },
+            {
+                q: "自分を知るために、どの方法が一番しっくりきますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "テストや診断で客観的に分析する", scores: {A:5, B:5, C:2, D:3, E:0}},
+                    {text: "他人からのフィードバックを聞く", scores: {A:3, B:4, C:3, D:4, E:2}},
+                    {text: "様々な経験をして、自分で気づく", scores: {A:2, B:2, C:4, D:2, E:4}},
+                    {text: "じっくり内省し、自分の内面と向き合う", scores: {A:1, B:1, C:3, D:2, E:5}}
+                ]
+            },
+            {
+                q: "キャリアについて、周囲(家族・友人)とどの程度話し合っていますか?",
+                multipleChoice: false,
+                options: [
+                    {text: "ほとんど話していない", scores: {A:3, B:3, C:2, D:3, E:1}},
+                    {text: "たまに話す程度", scores: {A:3, B:3, C:3, D:3, E:2}},
+                    {text: "よく話し合っている", scores: {A:2, B:2, C:4, D:2, E:4}},
+                    {text: "深く話し合い、様々な視点を得ている", scores: {A:1, B:1, C:4, D:2, E:5}}
+                ]
+            },
+            {
+                q: "今、最も欲しいものは何ですか?",
+                multipleChoice: true,
+                maxChoices: 2,
+                options: [
+                    {text: "具体的な情報や知識", scores: {A:5, B:3, C:2, D:2, E:1}},
+                    {text: "自分についての客観的な理解", scores: {A:2, B:5, C:2, D:3, E:1}},
+                    {text: "迷いを解消するための判断基準", scores: {A:1, B:2, C:5, D:2, E:2}},
+                    {text: "自信や前に進む勇気", scores: {A:2, B:2, C:2, D:5, E:3}}
+                ]
+            }
+        ];
+        
+        let currentQuestion = 0;
+        let answers = [];
+        
+        // 診断情報の詳細
+        const assessmentInfo = {
+            A: {
+                title: "A. 興味・関心ベース診断(VPI/VRT型)",
+                shortTitle: "VPI診断",
+                reason: "あなたは現在、キャリア探索の初期段階にあり、まずはどんな分野・職業に興味があるのかを明確にすることが最優先です。VPI診断は、ホランド理論に基づいて6つの興味タイプを分析し、あなたの適職分野を見つけるのに最適です。"
+            },
+            B: {
+                title: "B. 性格・特性ベース診断(MBTI型)",
+                shortTitle: "MBTI診断",
+                reason: "あなたは自分の性格タイプや特性を客観的に知ることで、キャリア選択の判断ができる段階にあります。MBTI診断は、16の性格タイプに分類し、各タイプに適した働き方や職業環境を示します。自分の本質を理解することが次のステップです。"
+            },
+            C: {
+                title: "C. 価値観ベース診断(キャリア・アンカー型)",
+                shortTitle: "キャリア・アンカー診断",
+                reason: "あなたは複数の選択肢の中で迷っており、何を優先すべきかの判断基準が必要な段階です。キャリア・アンカー診断は、仕事で大切にしたい価値観を8つの軸から分析し、あなたの『譲れない価値観』を明確にします。これが意思決定の羅針盤になります。"
+            },
+            D: {
+                title: "D. 強み・能力ベース診断",
+                shortTitle: "強み診断",
+                reason: "あなたは自分の強みや能力を認識することで、より自信を持ってキャリア選択に進める必要があります。強み診断は、8つの領域から得意なことを分析し、その強みをどう活かすかのヒントを提供します。自己PRの材料としても活用できます。"
+            },
+            E: {
+                title: "E. ナラティブ・対話型診断",
+                shortTitle: "ナラティブ診断",
+                reason: "あなたはこれまでの人生経験を整理し、深く内省することでキャリアの意味を見出す必要があります。ナラティブ診断は、あなたの人生ストーリーから一貫したテーマを抽出し、真の適職を見つけるのに役立ちます。時間をかけた自己対話が効果的です。"
+            }
+        };
+        
+        // 画面遷移関数
+        function showMetaAssessment() {
+            document.getElementById('welcome').classList.add('hidden');
+            document.getElementById('intro').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+        
+        function showDirectChoice() {
+            document.getElementById('welcome').classList.add('hidden');
+            document.getElementById('directChoice').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+        
+        function backToWelcome() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('directChoice').classList.add('hidden');
+            document.getElementById('assessment').classList.add('hidden');
+            document.getElementById('welcome').classList.remove('hidden');
+            currentQuestion = 0;
+            answers = [];
+            window.scrollTo(0, 0);
+        }
+        
+        function backToIntro() {
+            document.getElementById('assessment').classList.add('hidden');
+            document.getElementById('intro').classList.remove('hidden');
+            currentQuestion = 0;
+            answers = [];
+            window.scrollTo(0, 0);
+        }
+        
+        function startAssessment() {
+            document.getElementById('intro').classList.add('hidden');
+            document.getElementById('assessment').classList.remove('hidden');
+            renderQuestions();
+            updateProgress();
+            window.scrollTo(0, 0);
+        }
+        
+        // 質問表示関数
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            const question = questions[currentQuestion];
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-container active';
+            
+            let optionsHTML = '';
+            const inputType = question.multipleChoice ? 'checkbox' : 'radio';
+            const inputName = question.multipleChoice ? `q${currentQuestion}[]` : `q${currentQuestion}`;
+            
+            question.options.forEach((option, optIndex) => {
+                const isChecked = question.multipleChoice 
+                    ? (answers[currentQuestion] && answers[currentQuestion].includes(optIndex))
+                    : (answers[currentQuestion] === optIndex);
+                
+                optionsHTML += `
+                    <div class="option ${isChecked ? 'selected' : ''}" onclick="selectOption(${currentQuestion}, ${optIndex})">
+                        <input type="${inputType}" name="${inputName}" id="q${currentQuestion}_${optIndex}" value="${optIndex}" ${isChecked ? 'checked' : ''}>
+                        <label for="q${currentQuestion}_${optIndex}">${option.text}</label>
+                    </div>
+                `;
+            });
+            
+            const multipleChoiceNotice = question.multipleChoice 
+                ? `<div class="multiple-choice-notice">
+                    📌 複数ある場合は、複数にチェックを入れてください(最大${question.maxChoices}つ)
+                   </div>` 
+                : '';
+            
+            const selectionCount = question.multipleChoice 
+                ? `<span class="selection-count">選択数: ${answers[currentQuestion] ? answers[currentQuestion].length : 0}/${question.maxChoices}</span>`
+                : '';
+            
+            questionDiv.innerHTML = `
+                <div class="question">
+                    <div class="question-number">質問 ${currentQuestion + 1} / ${questions.length}</div>
+                    <div class="question-text">${question.q}</div>
+                    ${multipleChoiceNotice}
+                    <div class="options">
+                        ${optionsHTML}
+                    </div>
+                    ${selectionCount}
+                </div>
+            `;
+            
+            container.appendChild(questionDiv);
+            updateButtons();
+        }
+        
+        function selectOption(questionIndex, optionIndex) {
+            const question = questions[questionIndex];
+            
+            if (question.multipleChoice) {
+                if (!answers[questionIndex]) {
+                    answers[questionIndex] = [];
+                }
+                
+                const index = answers[questionIndex].indexOf(optionIndex);
+                if (index > -1) {
+                    answers[questionIndex].splice(index, 1);
+                } else {
+                    if (answers[questionIndex].length < question.maxChoices) {
+                        answers[questionIndex].push(optionIndex);
+                    }
+                }
+                
+                const checkbox = document.getElementById(`q${questionIndex}_${optionIndex}`);
+                checkbox.checked = answers[questionIndex].includes(optionIndex);
+                
+            } else {
+                answers[questionIndex] = optionIndex;
+                document.getElementById(`q${questionIndex}_${optionIndex}`).checked = true;
+            }
+            
+            const options = document.querySelectorAll('.option');
+            options.forEach((opt) => {
+                const input = opt.querySelector('input');
+                if (input.checked) {
+                    opt.classList.add('selected');
+                } else {
+                    opt.classList.remove('selected');
+                }
+            });
+            
+            if (question.multipleChoice) {
+                const countSpan = document.querySelector('.selection-count');
+                if (countSpan) {
+                    countSpan.textContent = `選択数: ${answers[questionIndex].length}/${question.maxChoices}`;
+                }
+            }
+            
+            updateButtons();
+        }
+        
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const submitBtn = document.getElementById('submitBtn');
+            const question = questions[currentQuestion];
+            
+            prevBtn.disabled = currentQuestion === 0;
+            
+            let hasAnswer = false;
+            if (question.multipleChoice) {
+                hasAnswer = answers[currentQuestion] && answers[currentQuestion].length > 0;
+            } else {
+                hasAnswer = answers[currentQuestion] !== undefined;
+            }
+            
+            if (currentQuestion === questions.length - 1) {
+                nextBtn.classList.add('hidden');
+                submitBtn.classList.remove('hidden');
+                submitBtn.disabled = !hasAnswer;
+            } else {
+                nextBtn.classList.remove('hidden');
+                submitBtn.classList.add('hidden');
+                nextBtn.disabled = !hasAnswer;
+            }
+        }
+        
+        function nextQuestion() {
+            const question = questions[currentQuestion];
+            let hasAnswer = false;
+            
+            if (question.multipleChoice) {
+                hasAnswer = answers[currentQuestion] && answers[currentQuestion].length > 0;
+            } else {
+                hasAnswer = answers[currentQuestion] !== undefined;
+            }
+            
+            if (currentQuestion < questions.length - 1 && hasAnswer) {
+                currentQuestion++;
+                renderQuestions();
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                renderQuestions();
+                updateProgress();
+                window.scrollTo(0, 0);
+            }
+        }
+        
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+        }
+        
+        // スコア計算関数（改善版：複数選択時は平均化）
+        function calculateResult() {
+            const scores = {A: 0, B: 0, C: 0, D: 0, E: 0};
+            let totalWeight = 0;
+            
+            answers.forEach((answer, questionIndex) => {
+                const question = questions[questionIndex];
+                let questionScores = {A: 0, B: 0, C: 0, D: 0, E: 0};
+                let optionCount = 0;
+                
+                if (question.multipleChoice && Array.isArray(answer)) {
+                    // 複数選択：選択肢ごとのスコアを平均化
+                    answer.forEach(optionIndex => {
+                        const selectedOption = question.options[optionIndex];
+                        Object.keys(selectedOption.scores).forEach(type => {
+                            questionScores[type] += selectedOption.scores[type];
+                        });
+                        optionCount++;
+                    });
+                    
+                    // 平均化
+                    Object.keys(questionScores).forEach(type => {
+                        questionScores[type] = questionScores[type] / optionCount;
+                    });
+                } else {
+                    // 単一選択
+                    const selectedOption = question.options[answer];
+                    questionScores = selectedOption.scores;
+                    optionCount = 1;
+                }
+                
+                // 累積加算
+                Object.keys(questionScores).forEach(type => {
+                    scores[type] += questionScores[type];
+                });
+                
+                totalWeight += optionCount;
+            });
+            
+            // スコアを正規化（質問数で平均化）
+            Object.keys(scores).forEach(type => {
+                scores[type] = Math.round(scores[type] / questions.length * 10) / 10;
+            });
+            
+            // 最高スコアを特定
+            const sortedScores = Object.entries(scores)
+                .sort((a, b) => b[1] - a[1])
+                .map(([type, score]) => ({type, score}));
+            
+            displayResult(sortedScores, scores);
+        }
+        
+        // 結果表示関数
+        function displayResult(sortedScores, scores) {
+            const topRecommendation = sortedScores[0];
+            
+            // 最高スコアの診断
+            const topRecommendationsHTML = `
+                <div class="recommendation-section">
+                    <h3>📊 あなたに最も適切な診断</h3>
+                    <div class="result-title">${assessmentInfo[topRecommendation.type].title}</div>
+                    <div class="result-description">
+                        <h3>推奨理由</h3>
+                        <p>${assessmentInfo[topRecommendation.type].reason}</p>
+                        <h3 style="margin-top: 20px;">このアプローチが効果的な理由</h3>
+                        <ul>
+                            <li>現在のあなたのキャリア段階に最も適した診断です</li>
+                            <li>優先順位が明確になり、次のステップが見えてきます</li>
+                            <li>モチベーションを保ちながら進めることができます</li>
+                        </ul>
+                    </div>
+                    <div style="text-align: center; margin-top: 20px;">
+                        <a href="${{A: 'vpi-assessment.html', B: 'mbti-assessment.html', C: 'career-anchor-assessment.html', D: 'strengths-assessment.html', E: 'narrative-assessment.html'}[topRecommendation.type]}" target="_blank" class="recommended-link">
+                            ${assessmentInfo[topRecommendation.type].shortTitle}を開始する →
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // スコアチャート
+            const scoreChartHTML = `
+                <div class="recommendation-section">
+                    <h3>📈 各診断タイプとの適合度</h3>
+                    <div class="score-chart">
+                        ${sortedScores.map((item, idx) => `
+                            <div class="score-bar">
+                                <div class="score-label">
+                                    <span><strong>${item.type}. ${assessmentInfo[item.type].shortTitle}</strong></span>
+                                    <span>${item.score.toFixed(1)}点</span>
+                                </div>
+                                <div style="background: #e0e0e0; height: 25px; border-radius: 5px; overflow: hidden;">
+                                    <div class="score-bar-fill" style="width: ${(item.score / 5) * 100}%;">
+                                        ${Math.round((item.score / 5) * 100)}%
+                                    </div>
+                                </div>
+                            </div>
+                        `).join('')}
+                        <p style="margin-top: 20px; font-size: 14px; color: #666; text-align: center;">
+                            ※ スコアが高いほど、その診断があなたに適しています
+                        </p>
+                    </div>
+                </div>
+            `;
+            
+            // 他の診断の情報
+            const otherAssessmentsHTML = `
+                <div class="other-assessments">
+                    <h3>他の診断も試してみる</h3>
+                    <p style="text-align: center; color: #666; margin-bottom: 20px;">
+                        推奨診断以外にも興味があれば、こちらからアクセスできます。複数の診断を組み合わせることで、より深い自己理解が得られます。
+                    </p>
+                    <div class="assessment-links">
+                        <a href="vpi-assessment.html" target="_blank" class="assessment-link ${topRecommendation.type === 'A' ? 'recommended' : ''}" id="link-A">
+                            <div class="assessment-link-title">A. VPI診断</div>
+                            <div class="assessment-link-desc">興味・関心から職を探す</div>
+                        </a>
+                        <a href="mbti-assessment.html" target="_blank" class="assessment-link ${topRecommendation.type === 'B' ? 'recommended' : ''}" id="link-B">
+                            <div class="assessment-link-title">B. MBTI診断</div>
+                            <div class="assessment-link-desc">性格タイプを知る</div>
+                        </a>
+                        <a href="career-anchor-assessment.html" target="_blank" class="assessment-link ${topRecommendation.type === 'C' ? 'recommended' : ''}" id="link-C">
+                            <div class="assessment-link-title">C. キャリア・アンカー</div>
+                            <div class="assessment-link-desc">価値観を明確にする</div>
+                        </a>
+                        <a href="strengths-assessment.html" target="_blank" class="assessment-link ${topRecommendation.type === 'D' ? 'recommended' : ''}" id="link-D">
+                            <div class="assessment-link-title">D. 強み診断</div>
+                            <div class="assessment-link-desc">あなたの強みを発見</div>
+                        </a>
+                        <a href="narrative-assessment.html" target="_blank" class="assessment-link ${topRecommendation.type === 'E' ? 'recommended' : ''}" id="link-E">
+                            <div class="assessment-link-title">E. ナラティブ診断</div>
+                            <div class="assessment-link-desc">ストーリーから探る</div>
+                        </a>
+                    </div>
+                </div>
+            `;
+            
+            // 結果を表示
+            document.getElementById('assessment').classList.add('hidden');
+            document.getElementById('result').classList.add('active');
+            
+            document.getElementById('recommendedAssessmentsContainer').innerHTML = topRecommendationsHTML + scoreChartHTML;
+            document.getElementById('resultDescription').innerHTML = otherAssessmentsHTML;
+            
+            window.scrollTo(0, 0);
+        }
+        
+        function restart() {
+            currentQuestion = 0;
+            answers = [];
+            document.getElementById('result').classList.remove('active');
+            document.getElementById('welcome').classList.remove('hidden');
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
