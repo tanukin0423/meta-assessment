@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>職業マトリックス</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1, h2, h4 {
+            text-align: center;
+        }
+        .matrix {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: repeat(2, 1fr);
+            gap: 10px;
+            width: 100%;
+            max-width: 800px;
+            height: 600px;
+        }
+        .category {
+            padding: 10px;
+            background-color: #f0f0f0;
+            cursor: pointer;
+            font-weight: bold;
+            position: relative;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        .jobs {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            overflow-y: auto;
+        }
+        .jobs-content {
+            background-color: white;
+            margin: 10% auto;
+            padding: 20px;
+            width: 80%;
+            max-width: 800px;
+            position: relative;
+        }
+        .close-button,
+        .print-button {
+            position: absolute;
+            top: 10px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            background-color: #f0f0f0;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+        .close-button {
+            right: 50px;
+        }
+        .print-button {
+            right: 10px;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            list-style-type: disc;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .print-area, .print-area * {
+                visibility: visible;
+            }
+            .print-area {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+            }
+        }
+        /* 新しいスタイル */
+        .category.high-goal-low-interaction {
+            background-color: #FFB3BA;
+        }
+        .category.high-goal-high-interaction {
+            background-color: #BAFFC9;
+        }
+        .category.low-goal-low-interaction {
+            background-color: #BAE1FF;
+        }
+        .category.low-goal-high-interaction {
+            background-color: #FFFFBA;
+        }
+        .matrix-explanation {
+            background-color: #ecf0f1;
+            border-left: 5px solid #3498db;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .goal-legend {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .axis-explanation {
+            margin-bottom: 15px;
+        }
+        .career-types {
+            background-color: #e8f6f3;
+            border: 1px solid #1abc9c;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        .career-type {
+            margin-bottom: 15px;
+        }
+        .career-type-title {
+            font-weight: bold;
+            color: #16a085;
+        }
+        .conclusion {
+            font-style: italic;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>職業マトリックス</h1>
+    <div class="matrix-explanation">
+        <div class="goal-legend">
+            ◎：目標管理が明確・〇：比較的目標がある・◇：目標管理はさほどない・◆：殆どない
+        </div>
+        <div class="axis-explanation">
+            この職業マトリックスは、異なる職業を<strong>「目標管理が明確の度合い」と「人との関わりの度合い」</strong>という2つの軸で分類しています。<br>
+            さらに、目標管理について<strong>4段階（◎、〇、◇、◆）</strong>で評価することで、各職業の特性をより詳細に理解できるようにしています。
+        </div>
+    </div>
+
+    <p>★このような分類は、キャリア選択や転職を考える際に非常に役立ちます。例えば、</p>
+
+    <div class="career-types">
+        <div class="career-type">
+            <span class="career-type-title">１・目標達成型の方：</span>
+            ◎や〇の多い職業（営業職やコンサルタント）が適しているかもしれません。<br>
+            明確な目標があることで、自分の進捗を測りやすく、達成感も得られます。
+        </div>
+        <div class="career-type">
+            <span class="career-type-title">２・人との関わりを大切にする方：</span>
+            右側の2つのカテゴリー（教育や医療など）が向いているかもしれません。<br>
+            数値的な目標よりも、人々との交流や支援から満足を得られます。
+        </div>
+        <div class="career-type">
+            <span class="career-type-title">３・自律的に働きたい方：</span>
+            ◇や◆の多い職業（データ入力やクリエイティブワークなど）がお勧めです。<br>
+            厳しい目標管理がないため、自分のペースで仕事ができます。
+        </div>
+        <div class="career-type">
+            <span class="career-type-title">４・バランスを求める方：</span>
+            〇や◇の職業（ソフトウェア開発やイベントプランナーなど）が良いでしょう。<br>
+            適度な目標管理と人との関わりがあります。
+        </div>
+    </div>
+
+    <p class="conclusion">
+        このマトリックスは、自分の価値観や働き方の好みを反映した職業選択をサポートするツールとして活用できます。<br>
+        自分に合った職業を見つけることで、仕事への満足度や生産性が高まることが期待できます。
+    </p>
+        <div class="matrix">
+            <div class="category high-goal-low-interaction">目標管理が明確（比較的高いものも含む）、人と関わる要素が少ない仕事</div>
+            <div class="category high-goal-high-interaction">目標管理が明確◎（比較的高いものも含む〇）、人と関わる要素が多い仕事</div>
+            <div class="category low-goal-low-interaction">目標管理がさほど高くない（低いものも含む）、人と関わる要素が少ない仕事</div>
+            <div class="category low-goal-high-interaction">目標管理がさほど高くない（低いものも含む）、人と関わる要素が多い仕事</div>
+        </div>
+    <div class="jobs">
+        <div class="jobs-content">
+            <button class="close-button">×</button>
+            <button class="print-button">🖨️</button>
+            <div class="print-area"></div>
+        </div>
+    </div>
+    <script>
+        const jobData = {
+            'high-goal-low-interaction': `
+                <div>金融・投資
+                    <ul>
+                        <li>◎金融アナリスト（ＩＲ広報担当）<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/445" class="job-description">企業の財務状況を分析し、投資判断をサポート</a></li>
+                    <li>◎投資アナリスト<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/457" class="job-description">株式や債券の価値を評価し、投資戦略を立案</a></li>
+                    <li>◎ポートフォリオ（ファンド）マネージャー<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/470" class="job-description">投資家の資産を最適に配分し、運用</a></li>
+                    <li>〇アクチュアリー<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/468" class="job-description">確率・統計を用いて保険料や年金を設計</a></li>
+                </div>
+                <div>ソフトウェア開発
+                <ul>
+                    <li>〇ソフトウェアエンジニア<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/316" class="job-description">顧客ニーズに合わせてソフトウェアを設計・開発</a></li>
+                    <li>〇システムエンジニア（ＷＥＢサイト開発）<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/314" class="job-description">ウェブサイトを設計し開発</a></li>
+                    <li>〇フルスタックデベロッパー<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/312" class="job-description">フロントエンドとバックエンドの両方を開発</a></li>
+                    <li>〇モバイルアプリ開発者<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/317" class="job-description">iOSやAndroidのスマホアプリを開発</a></li>
+                </ul>
+                </div>
+                 <div>データサイエンス
+                <ul>
+                    <li>◇データサイエンティスト<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/323" class="job-description">データを分析し、ビジネスに活用できる洞察を導き出す専門家</a></li>
+                    <li>◇データエンジニア<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/523" class="job-description">膨大なデータを分析できるよう整理・管理、データサイエンティストをサポート</a></li>
+                    <li>◆統計学者<br><span class="job-description">統計的手法を用いてデータの傾向や関係性を分析</span></li>
+                    <li>◇ＡＩエンジニア<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/325" class="job-description">AIモデルを開発し、データから学習させて予測や分類を行う</a></li>
+                    <li>◇機械学習エンジニア<br><span class="job-description">AIモデルを開発し、データから学習させて予測や分類を行う</span></li>
+                    <li>◇ビッグデータエンジニア<br><span class="job-description">大規模データを効率的に処理・管理するシステムを構築</span></li>
+                </ul>
+            </div>
+            <div>リサーチ・アナリシス
+                <ul>
+                    <li>◆研究科学者<br><span class="job-description">特定分野で仮説を立て、実験・検証を行う</span></li>
+                    <li>◇市場調査アナリスト<br><span class="job-description">消費者動向や市場ニーズを調査・分析</span></li>
+                    <li>◇政策アナリスト<br><span class="job-description">政策の影響を評価し、改善案を提案</span></li>
+                    <li>◆臨床研究員<br><span class="job-description">新薬や治療法の有効性・安全性を検証</span></li>
+                    <li>◇環境アナリスト<br><span class="job-description">環境問題の原因を分析し、対策を提案</span></li>
+                </ul>
+            </div>
+            <div>品質管理・テスト
+                <ul>
+                    <li>〇生産・品質管理技術者<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/296" class="job-description">製品の品質基準を設定・監視し、改善を指導</a></li>
+                    <li>◇ソフトウェアテスター・デバッグ作業<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/540" class="job-description">ソフトウェアのバグや不具合を特定</a></li>
+                    <li>〇プロダクトテスター<br><span class="job-description">製品の安全性・耐久性・使いやすさを検証</span></li>
+                    <li>◇QAアナリスト<br><span class="job-description">品質保証プロセスを分析・改善</span></li>
+                    <li>◇検査技師<br><span class="job-description">製品が仕様や規格に適合しているか確認</span></li>
+                </ul>
+            </div>
+                <!-- 他のセクションも同様に追加 -->
+            `,
+            'high-goal-high-interaction': `
+                <div>提案型営業・◎コンサル系職
+                    <ul>
+                     <li>◎経営コンサルタント<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/81" class="job-description">顧客の問題を理解し、最適な解決策を提案・販売</a></li>
+                    <li>◎ビジネス開発担当<br><span class="job-description">新規市場や商品の機会を見つけ、事業を拡大</span></li>
+                    <li>◎ITコンサルタント<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/362" class="job-description">IT戦略を立案し、システム導入を支援</a></li>
+                    <li>◎ＷＥＢマーケティング営業
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/240" class="job-description">webマーケティング（ネット広告・販売促進）</a></li>
+                    <li>◎セールスエンジニア<br><span class="job-description">技術的な製品の利点を説明し、販売を促進</span></li>
+                    <li>◎アカウントマネージャー<br><span class="job-description">主要顧客との長期的な関係を構築・維持</span></li>   
+                    </ul>
+                </div>
+                <div>接客中心・提案型の営業職
+                <ul>
+                    <li>◎不動産営業 <br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/59" class="job-description">顧客のニーズに合った物件を提案・交渉</a></li>
+                    <li>〇自動車ディーラー<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/60" class="job-description">顧客のライフスタイルに合った車を提案・販売</a></li>
+                    <li>◎MR(医薬情報担当者)<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/63" class="job-description">医師に新薬の効果や使用法を説明・提案</a></li>
+                    <li>◎証券・保険・銀行系営業<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/463" class="job-description">●証券外務員（資産運用）の売上目標達成に向けて営業活動</a></li>
+                    <li>◎事業性融資担当<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/454" class="job-description">●事業性融資（個人のローンや資産運用）の売上目標達成に向けて営業活動</a></li>
+                    <li>◎保険営業<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/453" class="job-description">●保険商品の売上目標達成に向けて営業活動</a></li>
+                    <li>〇旅行代理店<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/109" class="job-description">顧客の希望に沿った旅行プランを提案・手配</a></li>
+                    <li>〇ツアーコンダクター<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/110" class="job-description">旅行の当日同行・進行管理を行う</a></li>
+                </ul>
+            </div>
+            <div>メーカー系営業職
+                <ul>
+                    <li>◎製品セールス<br><span class="job-description">自社製品の利点を説明し、販売・納入</span></li>
+                    <li>◎技術営業<br><span class="job-description">技術的な製品の仕様を説明し、導入を促進</span></li>
+                    <li>◎製造業セールス<br><span class="job-description">工場の生産性向上に寄与する製品を提案</span></li>
+                    <li>◎機械部品セールス<br><span class="job-description">機械の性能向上に必要な部品を提案・販売</span></li>
+                    <li>◎産業機械セールス<br><span class="job-description">大規模な産業機械の導入を提案・交渉</span></li>
+                </ul>
+            </div>
+            <div>ルートセールス
+                <ul>
+                    <li>◎飲料販売員<br><span class="job-description">店舗を巡回し、飲料の補充・新商品の提案</span></li>
+                    <li>◎食品メーカー営業・配達セールス<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/527" class="job-description">飲食店に食材を定期的に配達・販売</a></li>
+                    <li>◎薬品セールス<br><span class="job-description">薬局や病院に医薬品を定期的に納入</span></li>
+                    <li>◎日用品セールス<br><span class="job-description">小売店に日用品を定期的に補充・提案</span></li>
+                    <li>〇ルート配送員<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/482" class="job-description">決まったルートで商品を配達し、在庫管理</a></li>
+                </ul>
+            </div>
+            <div>IT・PG系営業職
+                <ul>
+                    <li>◎ソフトウェアセールス<br><span class="job-description">企業の業務改善に役立つソフトを提案</span></li>
+                    <li>◎クラウドサービス営業<br><span class="job-description">クラウド移行の利点を説明し、導入を促進</span></li>
+                    <li>◎ネットワークソリューション営業<br><span class="job-description">ネットワーク最適化案を提案・導入</span></li>
+                    <li>◎データベースセールス<br><span class="job-description">データ管理の効率化を提案・支援</span></li>
+                    <li>◎サイバーセキュリティ営業<br><span class="job-description">セキュリティリスクを説明し、対策を提案</span></li>
+                </ul>
+            </div>
+            <div>販売・小売
+                <ul>
+                    <li>〇デパート店員<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/54" class="job-description">商品紹介から会計まで顧客対応</a></li>
+                    <li>〇スーパーマーケット店員<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/57" class="job-description">顧客対応から会計まで</a></li>
+                    <li>〇アパレル・ファッションアドバイザー<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/73" class="job-description">顧客の好みに合ったコーディネートを提案</a></li>
+                    <li>〇美容部員<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/464" class="job-description">化粧品の使い方や効果を説明・提案</a></li>
+                    <li>〇携帯電話販売員<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/450" class="job-description">最適な機種やプランを提案</a></li>
+                    <li>〇家電アドバイザー<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/67" class="job-description">顧客のニーズに合った家電を提案</a></li>
+                </ul>
+            </div>
+
+                <!-- 他のセクションも同様に追加 -->
+            `,
+            'low-goal-low-interaction': `
+                <div>データ入力・管理
+                    <ul>
+                      <li>◆データ入力スタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/429" class="job-description">正確かつ迅速にデータをシステムに入力</a></li>
+                    <li>◆一般事務<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/428" class="job-description">様々な定型的な事務の仕事。企業活動を多方面からサポート</a></li>
+                    <li>◆出荷・受荷事務<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/542" class="job-description">資材・製品などの受け入れ・検品・保管・発送に関する仕事</a></li>
+                    <li>◆生産・工程管理事務<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/437" class="job-description">生産・工程管理をする上で生じるデータ入力や書類作成</a></li>  
+                    </ul>
+                </div>
+                <div>ITサポート・メンテナンス
+                <ul>
+                    <li>◆ITサポートスタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/320" class="job-description">社内の技術的問題を解決し、業務を支援</a></li>
+                    <li>◆システム保守担当<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/319" class="job-description">システムの稼働状態を監視・維持</a></li>
+                    <li>◆ネットワーク監視スタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/321" class="job-description">ネットワークの安定性・安全性を確保</a></li>
+                    <li>◆ハードウェアメンテナンススタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/318" class="job-description">PCやサーバーの修理・交換を行う</a></li>
+                    <li>◆バックアップ管理担当<br><span class="job-description">定期的にデータのバックアップを取り、管理</span></li>
+                </ul>
+            </div>
+            <div>クリエイティブワーク
+                <ul>
+                     <li>◇広告デザイナー・イラストレーター<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/332" class="job-description">商業用のイラストや挿絵を制作</a></li>
+                    <li>◇ライター<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/209"  class="job-description">記事や広告のテキストを執筆</a></li>
+                    <li>◇コピーライター<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/335"  class="job-description">広告の印象的なフレーズを考案</a></li>
+                    <li>◇ウェブデザイナー<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/326" class="job-description">ウェブサイトのレイアウトやグラフィックを設計</a></li>
+                    <li>◇ゲームクリエイター<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/330"  class="job-description">スマートフォン、ＰＣ等のゲーム（アプリ）を制作</a></li>
+                </ul>
+            </div>
+            <div>テクニカルワーク
+                <ul>
+                     <li>◇機械製品の組み立て・管理スタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/265" class="job-description">機械製品の組み立て・品質基準への適合を確認</a></li>
+                     <li>◇ＰＣの組み立て・管理スタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/531" class="job-description">ＰＣの組み立て・品質基準への適合を確認</a></li>
+                    <li>◇検査工（食品）<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/548" class="job-description">食品・製品の安全性耐久性検証</a></li>
+                    <li>◆技術文書作成者<br><span class="job-description">マニュアルや仕様書など技術文書を執筆</span></li>
+                    <li>◆ラボテクニシャン<br><span class="job-description">研究室で実験や分析を実施</span></li>
+                    <li>◇食品技術者<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/288" class="job-description">加工食品開発・品質管理の仕事</a></li>
+                </ul>
+            </div>
+
+                <!-- 他のセクションも同様に追加 -->
+            `,
+            'low-goal-high-interaction': `
+                <div>医療・介護
+                    <ul>
+                    <li>◇看護師<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/156 " class="job-description">患者の健康管理と日常生活の支援を行う</a></li>
+                    <li>◆介護福祉士<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/133 " class="job-description">高齢者や障害者の生活を総合的に支える</a></li>
+                    <li>◆理学療法士<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/167 " class="job-description">運動機能の回復・維持・向上を支援</a></li>
+                    <li>◆作業療法士<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/168 " class="job-description">日常生活動作の改善を支援</a></li>
+                    <li>◆臨床心理士<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/411 " class="job-description">心理的問題の診断・治療を行う</a></li>   
+                    </ul>
+                </div>
+                <div>教育
+                <ul>
+                     <li>◇教師<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/180 " class="job-description">生徒に知識を伝え、成長を支援</a></li>
+                    <li>◆保育士<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/131 " class="job-description">乳幼児の発達と健康を促進</a></li>
+                    <li>◆特別支援教育の教師<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/395 " class="job-description">特別なニーズを持つ生徒を個別に支援</a></li>
+                    <li>◆学習支援スタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/242 " class="job-description">学習困難を抱える生徒を助ける</a></li>
+                    <li>〇塾講師<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/396 " class="job-description">小グループで補習や受験指導を行う</a></li>
+                </ul>
+            </div>
+            <div>サービス業
+                <ul>
+                     <li>◆レストランスタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/417 " class="job-description">お客様に快適な食事体験を提供</a></li>
+                    <li>◆ホテルスタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/414 " class="job-description">宿泊客の滞在を快適にサポート</a></li>
+                    <li>◆コンシェルジュ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/416 " class="job-description">旅行者の要望に合わせたサービスを手配</a></li>
+                    <li>◆エアラインスタッフ<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/205 " class="job-description">機内で乗客の安全と快適さを確保</a></li>
+                    <li>◇エステティシャン<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/117 " class="job-description">美容ケアを通じて心身のリラックスを提供</a></li>
+                </ul>
+            </div>
+            <div>カスタマーサポート
+                <ul>
+                    <li>◇カスタマーサポートエージェント<br><span class="job-description">顧客の問題を理解し、解決を助ける</span></li>
+                    <li>◇コールセンターオペレーター<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/64 " class="job-description">電話で顧客の質問や苦情に対応</a></li>
+                    <li>◇テクニカルサポート<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/320 " class="job-description">技術的な問題を遠隔で解決支援</a></li>
+                    <li>◇チャットサポート担当<br><span class="job-description">オンラインチャットで即時サポート</span></li>
+                    <li>〇カスタマーリレーションマネージャー<br><span class="job-description">長期的な顧客満足度を管理</span></li>
+                </ul>
+            </div>
+            <div>イベント・エンターテイメント
+                <ul>
+                    <li>〇イベントプランナー<br><span class="job-description">クライアントの要望に合わせてイベントを企画</span></li>
+                    <li>〇イベントコーディネーター<br><span class="job-description">イベント当日の進行をスムーズに管理</span></li>
+                    <li>◆ツアーガイド<br><span class="job-description">観光客に地域の魅力を伝える</span></li>
+                    <li>〇パーティーオーガナイザー<br><span class="job-description">パーティーの雰囲気作りを担当</span></li>
+                    <li>◆レクリエーションスタッフ<br><span class="job-description">グループ活動を通じて楽しみを提供</span></li>
+                </ul>
+            </div>
+            <div>ウェルネス・パーソナルケア
+                <ul>
+                    <li>〇パーソナルトレーナー<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/120 " class="job-description">個人の目標に合わせたトレーニングを指導</a></li>
+                    <li>◇ヨガインストラクター<br><span class="job-description">心身の調和を目指すヨガを教える</span></li>
+                    <li>◇栄養士<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/171 " class="job-description">個人の健康目標に合わせた食事を提案</a></li>
+                    <li>〇美容師<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/116" class="job-description">顧客の希望に合わせたヘアスタイルを提供</a></li>
+                    <li>〇エステティシャン<br>
+                        <a href="https://shigoto.mhlw.go.jp/User/Occupation/Detail/117 " class="job-description">顔や身体の手入れの「全身美容」を行う</a></li>
+                </ul>
+            </div>
+                <!-- 他のセクションも同様に追加 -->
+            `
+        };
+
+        document.querySelectorAll('.category').forEach(category => {
+            category.addEventListener('click', function() {
+                const jobsElement = document.querySelector('.jobs');
+                const printArea = jobsElement.querySelector('.print-area');
+                const categoryClass = Array.from(this.classList).find(cls => cls !== 'category');
+                
+                printArea.innerHTML = jobData[categoryClass];
+                jobsElement.style.display = 'block';
+            });
+        });
+        
+        document.querySelector('.close-button').addEventListener('click', function() {
+            document.querySelector('.jobs').style.display = 'none';
+        });
+
+        document.querySelector('.print-button').addEventListener('click', function() {
+            window.print();
+        });
+
+        // ツール1（適職診断）からのURL連携
+        // 例: jobserch-print-1050ver6.html?cat=high-goal-high-interaction
+        // 該当カテゴリのジョブリストを自動表示する
+        (function autoOpenFromUrl() {
+            const params = new URLSearchParams(window.location.search);
+            const cat = params.get('cat');
+            const validCats = [
+                'high-goal-high-interaction',
+                'high-goal-low-interaction',
+                'low-goal-high-interaction',
+                'low-goal-low-interaction'
+            ];
+            if (cat && validCats.includes(cat) && jobData[cat]) {
+                const jobsElement = document.querySelector('.jobs');
+                const printArea = jobsElement.querySelector('.print-area');
+                printArea.innerHTML = jobData[cat];
+                jobsElement.style.display = 'block';
+                // ヒント表示（上部に「診断結果から開かれました」バナー）
+                const banner = document.createElement('div');
+                banner.style.cssText = 'background:#e3f2fd;border-left:4px solid #1976d2;padding:10px 15px;margin-bottom:15px;border-radius:4px;font-size:0.9em;color:#0d47a1;';
+                banner.innerHTML = '🌱 <strong>適職診断の結果から開かれました。</strong>このカテゴリの職業リストを表示しています。';
+                printArea.insertBefore(banner, printArea.firstChild);
+            }
+        })();
+    </script>
+</body>
+</html>

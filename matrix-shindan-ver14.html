@@ -1,0 +1,1966 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>自己分析マトリクス診断 ver14</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    /* グローバルなボックスサイジング */
+    * {
+      box-sizing: border-box;
+    }
+    
+    /* ボディの基本スタイル */
+    body {
+      font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #eef2f6;
+      padding: 20px;
+      color: #333;
+      max-width: 1000px;
+      margin: 0 auto;
+      line-height: 1.6;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+      border-radius: 12px;
+      background-color: #ffffff;
+    }
+    
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    .version-tag {
+      text-align: center;
+      color: #7f8c8d;
+      font-size: 0.85em;
+      margin-bottom: 25px;
+    }
+
+    .intro {
+      background-color: #f0f7ff;
+      border-left: 4px solid #3498db;
+      padding: 15px 20px;
+      margin-bottom: 25px;
+      border-radius: 6px;
+      font-size: 0.95em;
+      color: #555;
+    }
+
+    .intro strong {
+      color: #2c3e50;
+    }
+
+    .section-header {
+      background: linear-gradient(90deg, #3498db 0%, #2980b9 100%);
+      color: #fff;
+      padding: 10px 15px;
+      border-radius: 8px;
+      margin: 25px 0 15px 0;
+      font-weight: 600;
+      font-size: 1em;
+    }
+    
+    .question-section {
+      padding: 20px;
+      border-radius: 10px;
+      background-color: #f8faff;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .question {
+      background: #ffffff;
+      padding: 18px;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      border: 1px solid #e0e6ed;
+      transition: all 0.2s ease-in-out;
+    }
+    
+    .question:hover {
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transform: translateY(-2px);
+    }
+    
+    .question p {
+      font-weight: 600;
+      color: #34495e;
+      margin-bottom: 10px;
+    }
+    
+    label {
+      display: block;
+      margin: 8px 0;
+      cursor: pointer;
+      font-size: 0.95em;
+      color: #555;
+      transition: color 0.2s ease-in-out;
+    }
+    
+    label:hover {
+      color: #3498db;
+    }
+    
+    input[type="radio"] {
+      margin-right: 8px;
+      accent-color: #3498db;
+    }
+    
+    button {
+      background: linear-gradient(145deg, #3498db, #2980b9);
+      color: #fff;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1.1em;
+      font-weight: 600;
+      display: block;
+      margin: 25px auto;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+      transition: all 0.2s ease-in-out;
+    }
+    
+    button:hover {
+      background: linear-gradient(145deg, #2980b9, #21618c);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+      transform: translateY(-2px);
+    }
+    
+    .print-button {
+      background: linear-gradient(145deg, #27ae60, #229954);
+      margin-top: 20px;
+    }
+
+    .print-button:hover {
+      background: linear-gradient(145deg, #229954, #1e8449);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+    }
+    
+    .matrix-container {
+      display: none;
+      width: 100%;
+      margin: 30px auto;
+      padding: 20px 0;
+      justify-content: center;
+    }
+    
+    .matrix-wrapper {
+      display: flex;
+      align-items: center;
+      max-width: 900px;
+      width: 100%;
+    }
+    
+    .y-axis-label {
+      writing-mode: vertical-rl;
+      font-weight: 600;
+      color: #c0392b;
+      padding: 20px 10px;
+      text-align: center;
+      height: 800px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 50px;
+      white-space: nowrap;
+      transform: rotate(180deg);
+    }
+    
+    .canvas-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex-grow: 1;
+    }
+    
+    #matrixCanvas {
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      width: 800px;
+      height: 800px;
+      max-width: 100%;
+    }
+    
+    .x-axis-label {
+      text-align: center;
+      font-weight: 600;
+      color: #e67e22;
+      margin-top: 15px;
+      width: 100%;
+    }
+    
+    #result {
+      margin: 30px auto 0;
+      background: #ffffff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      border: 1px solid #dcdcdc;
+      display: none;
+      max-width: 800px;
+      width: 100%;
+    }
+    
+    #result h3 {
+      color: #2c3e50;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+    
+    #result p {
+      margin-bottom: 8px;
+      color: #555;
+    }
+    
+    #result strong {
+      color: #3498db;
+      font-weight: 700;
+    }
+
+    .score-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .score-box {
+      background: #f8faff;
+      padding: 15px;
+      border-radius: 8px;
+      border: 1px solid #e0e6ed;
+    }
+
+    .score-box .label {
+      font-size: 0.85em;
+      color: #7f8c8d;
+      margin-bottom: 5px;
+    }
+
+    .score-box .value {
+      font-size: 1.5em;
+      font-weight: 700;
+      color: #2980b9;
+    }
+
+    .score-box .range {
+      font-size: 0.75em;
+      color: #95a5a6;
+    }
+    
+    .job-recommendation {
+      font-weight: bold;
+      font-size: 1.3em;
+      color: #2980b9;
+      margin-top: 15px;
+      padding: 12px;
+      background-color: #eaf6ff;
+      border-radius: 8px;
+    }
+    
+    .job-examples {
+      font-size: 0.95em;
+      color: #666;
+      margin-top: 10px;
+      padding: 12px;
+      background-color: #f0f8ff;
+      border-radius: 6px;
+      border: 1px dashed #cceeff;
+      text-align: left;
+    }
+
+    .interpretation {
+      background: #fff9e6;
+      border-left: 4px solid #f39c12;
+      padding: 12px 15px;
+      margin-top: 15px;
+      border-radius: 6px;
+      text-align: left;
+      font-size: 0.9em;
+      color: #7d5a00;
+    }
+
+    /* ============================================
+       【ver14 新機能】軸の種セクション
+       ============================================ */
+    .axis-seed-section {
+      background: linear-gradient(135deg, #fffdf5 0%, #fdf6e3 100%);
+      border: 2px solid #f1c40f;
+      border-radius: 12px;
+      padding: 20px 22px;
+      margin-top: 25px;
+      text-align: left;
+      box-shadow: 0 3px 10px rgba(241, 196, 15, 0.15);
+    }
+
+    .axis-seed-header {
+      font-size: 1.2em;
+      font-weight: 700;
+      color: #b7950b;
+      margin-bottom: 12px;
+      padding-bottom: 10px;
+      border-bottom: 2px dashed #f1c40f;
+      text-align: center;
+    }
+
+    .axis-seed-lead {
+      font-size: 0.93em;
+      color: #5d4e00;
+      line-height: 1.6;
+      margin-bottom: 18px;
+      background: rgba(255, 255, 255, 0.6);
+      padding: 10px 12px;
+      border-radius: 6px;
+    }
+
+    .axis-seed-lead strong {
+      color: #b7950b;
+    }
+
+    .axis-seed-subsection {
+      margin: 15px 0;
+      padding: 14px 16px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .axis-seed-positive {
+      border-left: 4px solid #27ae60;
+    }
+
+    .axis-seed-negative {
+      border-left: 4px solid #e67e22;
+    }
+
+    .axis-seed-candidates {
+      border-left: 4px solid #3498db;
+    }
+
+    .axis-seed-subheader {
+      font-size: 1.05em;
+      font-weight: 700;
+      color: #34495e;
+      margin-bottom: 6px;
+    }
+
+    .axis-seed-note {
+      font-size: 0.85em;
+      color: #7f8c8d;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .axis-seed-note strong {
+      color: #34495e;
+    }
+
+    .axis-seed-list {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0;
+    }
+
+    .axis-seed-list li {
+      padding: 10px 12px;
+      margin: 6px 0;
+      background: #fff;
+      border-radius: 6px;
+      font-size: 0.98em;
+      color: #2c3e50;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      border: 1px solid #f0e68c;
+    }
+
+    .seed-rank {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 24px;
+      height: 24px;
+      background: #27ae60;
+      color: #fff;
+      border-radius: 50%;
+      font-size: 0.85em;
+      font-weight: 700;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    .axis-seed-negative .axis-seed-list li {
+      border: 1px solid #fce4cc;
+      color: #7d5a00;
+      background: #fefaf5;
+    }
+
+    .axis-candidate-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .axis-tag {
+      display: inline-block;
+      padding: 7px 14px;
+      background: #fff;
+      border: 2px solid #3498db;
+      color: #2980b9;
+      border-radius: 20px;
+      font-size: 0.9em;
+      font-weight: 500;
+      cursor: default;
+      transition: all 0.2s ease-in-out;
+    }
+
+    .axis-tag:hover {
+      background: #3498db;
+      color: #fff;
+      transform: translateY(-2px);
+      box-shadow: 0 3px 8px rgba(52, 152, 219, 0.3);
+    }
+
+    .axis-seed-prompt {
+      margin-top: 10px;
+      padding: 8px 12px;
+      background: #fff9e6;
+      border-radius: 6px;
+      font-size: 0.88em;
+      color: #7d5a00;
+      line-height: 1.5;
+    }
+
+    .axis-seed-prompt strong {
+      color: #c0392b;
+    }
+
+    .axis-seed-empty {
+      padding: 12px 14px;
+      background: #f8f9fa;
+      border: 1px dashed #bdc3c7;
+      border-radius: 6px;
+      color: #5a6c7d;
+      font-size: 0.95em;
+      line-height: 1.6;
+    }
+
+    .axis-seed-empty strong {
+      color: #34495e;
+    }
+
+    .axis-seed-closing {
+      margin-top: 18px;
+      padding: 14px 16px;
+      background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+      border-radius: 8px;
+      text-align: center;
+      font-size: 0.95em;
+      color: #2e7d32;
+      line-height: 1.7;
+      border: 1px dashed #81c784;
+    }
+
+    .axis-seed-closing strong {
+      color: #1b5e20;
+    }
+
+    /* jobtagカタログへのリンクボックス */
+    .catalog-link-box {
+      background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
+      border: 2px solid #81c784;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-top: 20px;
+      text-align: left;
+      box-shadow: 0 2px 6px rgba(129, 199, 132, 0.15);
+    }
+
+    .catalog-link-header {
+      font-size: 1.1em;
+      font-weight: 700;
+      color: #2e7d32;
+      margin-bottom: 10px;
+    }
+
+    .catalog-link-desc {
+      font-size: 0.95em;
+      color: #33691e;
+      margin-bottom: 10px;
+      line-height: 1.5;
+    }
+
+    .catalog-link-desc strong {
+      color: #1b5e20;
+    }
+
+    .catalog-link-note {
+      font-size: 0.8em;
+      color: #558b2f;
+      margin-bottom: 12px;
+      font-style: italic;
+    }
+
+    .catalog-link-button {
+      display: inline-block;
+      background: linear-gradient(145deg, #66bb6a, #43a047);
+      color: #fff !important;
+      padding: 10px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1em;
+      box-shadow: 0 3px 8px rgba(67, 160, 71, 0.3);
+      transition: all 0.2s ease-in-out;
+    }
+
+    .catalog-link-button:hover {
+      background: linear-gradient(145deg, #43a047, #2e7d32);
+      box-shadow: 0 5px 12px rgba(67, 160, 71, 0.4);
+      transform: translateY(-2px);
+    }
+    
+    .message-box {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      z-index: 1000;
+      text-align: center;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+      max-width: 90%;
+      width: 300px;
+    }
+
+    .popup-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1001;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .popup-content {
+      background-color: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      max-width: 500px;
+      width: 90%;
+      text-align: left;
+      position: relative;
+      font-family: 'Inter', sans-serif;
+      color: #333;
+    }
+
+    .popup-content h4 {
+      color: #2980b9;
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 1.2em;
+    }
+
+    .popup-content p {
+      font-size: 0.95em;
+      color: #555;
+      margin-bottom: 10px;
+    }
+
+    .popup-content strong {
+      color: #3498db;
+    }
+
+    .popup-content h5 {
+      color: #27ae60;
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-size: 1em;
+    }
+
+    .popup-content ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .popup-content li {
+      font-size: 0.85em;
+      color: #666;
+      margin-bottom: 5px;
+      padding: 4px 0;
+      border-bottom: 1px dashed #eee;
+    }
+
+    .close-button {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5em;
+      cursor: pointer;
+      color: #888;
+      background: none;
+      border: none;
+      padding: 0;
+      line-height: 1;
+    }
+
+    .close-button:hover {
+      color: #333;
+    }
+
+    /* ============================================
+       印刷用スタイル (A4 縦向き 1枚に収める)
+       ============================================ */
+    @media print {
+      /* ページ設定 */
+      @page {
+        size: A4 portrait;
+        margin: 10mm 10mm 10mm 10mm;
+      }
+
+      /* 全体リセット */
+      html, body {
+        background: #fff !important;
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        max-width: none !important;
+        width: 100% !important;
+        color: #000 !important;
+        font-size: 10pt !important;
+        line-height: 1.4 !important;
+      }
+
+      /* 印刷時に非表示 */
+      button,
+      .question-section,
+      .popup-overlay,
+      .intro,
+      .section-header,
+      .version-tag {
+        display: none !important;
+      }
+
+      /* 印刷専用ヘッダーを表示 */
+      .print-only-header {
+        display: flex !important;
+        justify-content: space-between;
+        align-items: baseline;
+        border-bottom: 1.5pt solid #2c3e50;
+        padding-bottom: 4pt;
+        margin-bottom: 8pt;
+      }
+      .print-only-header .print-title {
+        font-size: 14pt;
+        font-weight: 700;
+        color: #2c3e50;
+      }
+      .print-only-header .print-meta {
+        font-size: 9pt;
+        color: #555;
+      }
+      .print-only-header .print-meta span {
+        display: inline-block;
+        border-bottom: 0.5pt solid #666;
+        min-width: 20mm;
+        padding: 0 3pt;
+      }
+
+      /* h1 印刷時は非表示(ヘッダーで代替) */
+      h1 {
+        display: none !important;
+      }
+
+      /* 上段：マトリクス + 診断結果を横並びに */
+      .print-upper {
+        display: flex !important;
+        flex-direction: row !important;
+        gap: 6pt;
+        margin-bottom: 8pt;
+        page-break-inside: avoid;
+      }
+
+      /* 左側：マトリクス */
+      .matrix-container {
+        display: flex !important;
+        flex: 0 0 auto;
+        width: 105mm;
+        margin: 0 !important;
+        padding: 0 !important;
+        box-shadow: none !important;
+        border: none !important;
+        justify-content: flex-start !important;
+      }
+      .matrix-wrapper {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center;
+        max-width: 105mm !important;
+        width: 105mm !important;
+      }
+      .y-axis-label {
+        writing-mode: vertical-rl !important;
+        transform: rotate(180deg) !important;
+        height: 95mm !important;
+        min-width: 5mm !important;
+        padding: 2mm 1mm !important;
+        font-size: 7.5pt !important;
+        color: #c0392b !important;
+        font-weight: 600 !important;
+      }
+      .canvas-area {
+        flex-grow: 1;
+      }
+      #matrixCanvas {
+        width: 95mm !important;
+        height: 95mm !important;
+        max-width: 95mm !important;
+        box-shadow: none !important;
+        border: 0.5pt solid #666 !important;
+      }
+      .x-axis-label {
+        text-align: center !important;
+        font-weight: 600 !important;
+        color: #e67e22 !important;
+        font-size: 7.5pt !important;
+        margin-top: 2mm !important;
+        width: 100% !important;
+      }
+
+      /* 右側：診断結果 */
+      #result {
+        display: block !important;
+        flex: 1 1 auto;
+        margin: 0 !important;
+        padding: 4pt 6pt !important;
+        box-shadow: none !important;
+        border: 0.5pt solid #999 !important;
+        border-radius: 3pt !important;
+        text-align: left !important;
+        background: #fff !important;
+        max-width: none !important;
+        width: auto !important;
+        font-size: 9pt !important;
+        line-height: 1.4 !important;
+      }
+      #result h3 {
+        font-size: 11pt !important;
+        margin: 0 0 4pt 0 !important;
+        padding-bottom: 2pt;
+        border-bottom: 0.5pt dashed #2980b9;
+        color: #2c3e50 !important;
+        text-align: center;
+      }
+
+      /* スコアグリッド：印刷時はコンパクトに */
+      .score-grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        gap: 3pt !important;
+        margin: 3pt 0 !important;
+      }
+      .score-box {
+        background: #f8faff !important;
+        padding: 3pt 4pt !important;
+        border-radius: 2pt !important;
+        border: 0.3pt solid #ccc !important;
+      }
+      .score-box .label {
+        font-size: 7.5pt !important;
+        margin-bottom: 1pt !important;
+        color: #555 !important;
+      }
+      .score-box .value {
+        font-size: 13pt !important;
+        font-weight: 700 !important;
+        color: #2980b9 !important;
+        line-height: 1.1 !important;
+      }
+      .score-box .range {
+        font-size: 6.5pt !important;
+        color: #888 !important;
+      }
+
+      /* 向いている職業群 */
+      #result > p {
+        margin: 2pt 0 !important;
+        font-size: 8.5pt !important;
+      }
+      .job-recommendation {
+        font-size: 11pt !important;
+        padding: 4pt !important;
+        margin: 3pt 0 !important;
+        background-color: #eaf6ff !important;
+        color: #2980b9 !important;
+        border-radius: 2pt !important;
+        text-align: center;
+        font-weight: 700 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .job-examples {
+        font-size: 8pt !important;
+        padding: 4pt !important;
+        margin: 3pt 0 !important;
+        background-color: #f8faff !important;
+        border: 0.3pt dashed #bbb !important;
+        border-radius: 2pt !important;
+        line-height: 1.35 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .job-examples p {
+        margin: 1pt 0 !important;
+      }
+      .interpretation {
+        font-size: 8pt !important;
+        padding: 4pt 5pt !important;
+        margin: 3pt 0 !important;
+        background: #fff9e6 !important;
+        border-left: 2pt solid #f39c12 !important;
+        border-radius: 2pt !important;
+        line-height: 1.4 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* 印刷時: カタログリンクボックスをコンパクトに */
+      .catalog-link-box {
+        font-size: 7.5pt !important;
+        padding: 3pt 5pt !important;
+        margin: 3pt 0 !important;
+        background: #f1f8e9 !important;
+        border: 0.5pt solid #81c784 !important;
+        border-radius: 2pt !important;
+        line-height: 1.3 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .catalog-link-header {
+        font-size: 8pt !important;
+        margin-bottom: 1pt !important;
+        color: #2e7d32 !important;
+      }
+      .catalog-link-desc {
+        font-size: 7pt !important;
+        margin-bottom: 1pt !important;
+        color: #33691e !important;
+      }
+      .catalog-link-note {
+        display: none !important;
+      }
+      .catalog-link-button {
+        display: inline-block !important;
+        font-size: 7pt !important;
+        padding: 1pt 4pt !important;
+        background: #fff !important;
+        color: #2e7d32 !important;
+        border: 0.5pt solid #2e7d32 !important;
+        border-radius: 2pt !important;
+        box-shadow: none !important;
+      }
+
+      /* 印刷時: 軸の種セクションは新規ページ(2枚目)に配置 */
+      .axis-seed-section {
+        page-break-before: always !important;
+        break-before: page !important;
+        background: #fffdf5 !important;
+        border: 0.8pt solid #f1c40f !important;
+        border-radius: 4pt !important;
+        padding: 8pt 10pt !important;
+        margin: 0 !important;
+        font-size: 9pt !important;
+        line-height: 1.5 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .axis-seed-header {
+        font-size: 12pt !important;
+        margin-bottom: 6pt !important;
+        padding-bottom: 4pt !important;
+        border-bottom: 0.8pt dashed #f1c40f !important;
+        color: #b7950b !important;
+      }
+      .axis-seed-lead {
+        font-size: 8.5pt !important;
+        padding: 5pt 6pt !important;
+        margin-bottom: 8pt !important;
+        background: #fff !important;
+        border-radius: 3pt !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .axis-seed-subsection {
+        padding: 6pt 8pt !important;
+        margin: 6pt 0 !important;
+        background: #fff !important;
+        border-radius: 3pt !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .axis-seed-positive {
+        border-left: 2pt solid #27ae60 !important;
+      }
+      .axis-seed-negative {
+        border-left: 2pt solid #e67e22 !important;
+      }
+      .axis-seed-candidates {
+        border-left: 2pt solid #3498db !important;
+      }
+      .axis-seed-subheader {
+        font-size: 10pt !important;
+        margin-bottom: 3pt !important;
+        color: #2c3e50 !important;
+      }
+      .axis-seed-note {
+        font-size: 7.5pt !important;
+        margin-bottom: 4pt !important;
+      }
+      .axis-seed-list {
+        padding: 0 !important;
+        margin: 3pt 0 !important;
+      }
+      .axis-seed-list li {
+        padding: 3pt 5pt !important;
+        margin: 2pt 0 !important;
+        font-size: 8.5pt !important;
+        background: #fafafa !important;
+        border: 0.3pt solid #ddd !important;
+        border-radius: 2pt !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .seed-rank {
+        width: 14pt !important;
+        height: 14pt !important;
+        margin-right: 5pt !important;
+        font-size: 7pt !important;
+        background: #27ae60 !important;
+        color: #fff !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .axis-candidate-tags {
+        margin: 3pt 0 !important;
+        gap: 3pt !important;
+      }
+      .axis-tag {
+        padding: 2pt 6pt !important;
+        font-size: 8pt !important;
+        border: 0.5pt solid #3498db !important;
+        color: #2980b9 !important;
+        background: #fff !important;
+        border-radius: 10pt !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .axis-seed-prompt {
+        margin-top: 4pt !important;
+        padding: 4pt 6pt !important;
+        font-size: 7.5pt !important;
+        background: #fff9e6 !important;
+        border-radius: 2pt !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .axis-seed-closing {
+        margin-top: 8pt !important;
+        padding: 6pt 8pt !important;
+        font-size: 8.5pt !important;
+        background: #f1f8e9 !important;
+        border: 0.5pt dashed #81c784 !important;
+        border-radius: 3pt !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      .axis-seed-empty {
+        padding: 5pt 7pt !important;
+        font-size: 8pt !important;
+        background: #f8f9fa !important;
+        border: 0.3pt dashed #bdc3c7 !important;
+        border-radius: 2pt !important;
+        color: #5a6c7d !important;
+        line-height: 1.5 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      /* 結果ボックス内の「※」注記は印刷時非表示 */
+      #result > p:last-of-type {
+        display: none !important;
+      }
+
+      /* 面談メモ欄（印刷時のみ表示） */
+      .print-only-memo {
+        display: block !important;
+        margin-top: 6pt;
+        padding: 5pt 6pt;
+        border: 0.5pt solid #999;
+        border-radius: 3pt;
+        page-break-inside: avoid;
+      }
+      .print-only-memo .memo-title {
+        font-size: 9.5pt;
+        font-weight: 700;
+        color: #2c3e50;
+        margin-bottom: 4pt;
+        padding-bottom: 2pt;
+        border-bottom: 0.3pt dashed #999;
+      }
+      .print-only-memo .memo-lines {
+        display: block;
+      }
+      .print-only-memo .memo-line {
+        display: block;
+        border-bottom: 0.3pt solid #bbb;
+        height: 6mm;
+        margin-bottom: 0;
+      }
+
+      /* フッター */
+      .print-only-footer {
+        display: block !important;
+        margin-top: 4pt;
+        text-align: center;
+        font-size: 7pt;
+        color: #888;
+        border-top: 0.3pt solid #ccc;
+        padding-top: 2pt;
+      }
+
+      /* 背景色を印刷に反映させる */
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
+    }
+
+    /* 印刷専用要素は画面上では非表示 */
+    .print-only-header,
+    .print-only-memo,
+    .print-only-footer {
+      display: none;
+    }
+    
+    @media (max-width: 900px) {
+      .matrix-wrapper {
+        flex-direction: column;
+      }
+      .y-axis-label {
+        writing-mode: horizontal-tb;
+        height: auto;
+        transform: none;
+        margin-bottom: 10px;
+      }
+      #matrixCanvas {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1/1;
+      }
+      .score-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<h1>🌱 自己分析マトリクス診断</h1>
+<div class="version-tag">ver14 — 就活の木</div>
+
+<!-- 印刷時のみ表示されるヘッダー -->
+<div class="print-only-header">
+  <div class="print-title">🌱 自己分析マトリクス診断　ver14 — 就活の木</div>
+  <div class="print-meta">
+    氏名: <span>&nbsp;</span>　日付: <span>&nbsp;</span>
+  </div>
+</div>
+
+<div class="intro">
+  この診断は、あなたの「<strong>人との関わり方</strong>」と「<strong>仕事への向き合い方</strong>」の2軸で、
+  16の職業群の中からあなたの傾向に合う領域を見つけるツールです。<br>
+  全40問、直感で答えてください。正解はありません。今のあなたに素直に答えてみましょう。
+</div>
+
+<div class="question-section" id="questions"></div>
+<button onclick="calculateMatrix()">診断する</button>
+
+<!-- 印刷時に横並びにするラッパー -->
+<div class="print-upper">
+  <div class="matrix-container">
+    <div class="matrix-wrapper">
+      <div class="y-axis-label">プロセス・品質志向重視　←　仕事への向き合い方　→　成果・達成志向重視</div>
+      <div class="canvas-area">
+        <canvas id="matrixCanvas" width="800" height="800"></canvas>
+        <div class="x-axis-label">協調的対人連携　←　人との関わり方　→　積極的対人関与</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="result"></div>
+</div>
+
+<!-- 印刷時のみ表示される面談メモ欄 -->
+<div class="print-only-memo">
+  <div class="memo-title">📝 面談メモ欄　─ 学生の言葉・気づき・次のアクション</div>
+  <div class="memo-lines">
+    <div class="memo-line"></div>
+    <div class="memo-line"></div>
+    <div class="memo-line"></div>
+    <div class="memo-line"></div>
+    <div class="memo-line"></div>
+    <div class="memo-line"></div>
+    <div class="memo-line"></div>
+  </div>
+</div>
+
+<!-- 印刷時のみ表示されるフッター -->
+<div class="print-only-footer">
+  🌱 就活の木 ─ あなたの就活を、木を育てるように丁寧にサポート
+</div>
+
+<div id="popupOverlay" class="popup-overlay">
+  <div class="popup-content">
+    <button class="close-button" onclick="hidePopup()">&times;</button>
+    <h4>職業群: <span id="popupJobGroup"></span></h4>
+    <p><strong>具体的な仕事の例:</strong></p>
+    <p id="popupJobExamples" style="padding:10px;background:#f8faff;border-radius:6px;"></p>
+    <div id="popupNearbyJobs">
+      <h5>周辺の職業群（隣接セル）</h5>
+      <ul id="popupNearbyJobList"></ul>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ====================================================
+  // 自己分析マトリクス診断 ver14
+  // 修正履歴:
+  //   ver10 → ver11:
+  //     1. 逆転項目の方向ねじれを修正
+  //     2. 両端の質問数を対等化（各軸10問ずつ、合計40問）
+  //     3. 中央値3で完全中央に着地する正規化に修正
+  //     4. Y軸ラベルの上下方向を正しい向きに修正
+  //     5. 診断結果の解釈文を追加
+  //   ver11 → ver12:
+  //     6. 印刷レイアウトをA4縦1枚に最適化
+  //   ver12 → ver13:
+  //     7. jobtagカタログツール(ver6)へのリンク連携を追加
+  //   ver13 → ver14:
+  //     8. 「軸の種」発見機能を追加
+  //        - 相対値判定で、控えめな学生にも「響いた言葉」を必ず提示
+  //        - ポジティブ側（響いた言葉Top3）と
+  //          ネガティブ側（避けたい傾向）の両面から軸の種を抽出
+  //        - 象限に応じた「軸の候補語」を提示
+  //        - 「軸は種であって、育てていくもの」というメッセージを追加
+  // ====================================================
+
+  const questionContainer = document.getElementById("questions");
+  const matrixContainer = document.querySelector('.matrix-container');
+  const resultDiv = document.getElementById("result");
+  const canvas = document.getElementById("matrixCanvas");
+  const ctx = canvas.getContext("2d");
+  
+  const popupOverlay = document.getElementById("popupOverlay");
+  const popupJobGroupSpan = document.getElementById("popupJobGroup");
+  const popupJobExamplesSpan = document.getElementById("popupJobExamples");
+  const popupNearbyJobsDiv = document.getElementById("popupNearbyJobs");
+  const popupNearbyJobListUl = document.getElementById("popupNearbyJobList");
+
+  let activeInterpersonalScore = 10; // 0〜20スケール（中央=10）
+  let achievementScore = 10;
+  let hasResult = false;
+  let currentHighlightedCell = { row: -1, col: -1 };
+
+  const userIconImage = new Image();
+  userIconImage.src = "https://cdn-icons-png.flaticon.com/512/1946/1946429.png";
+  userIconImage.onload = () => {
+    if (hasResult) drawMatrixAndUserIcon();
+  };
+
+  // ====================================================
+  // 質問一覧：4軸×各10問 = 40問
+  // type の意味:
+  //   active: 積極的対人関与（スコアに加点→右へ）
+  //   collaborative: 協調的対人連携（スコアから減点→左へ）
+  //   achievement: 成果・達成志向（スコアに加点→上へ）
+  //   process: プロセス・品質志向（スコアから減点→下へ）
+  // ====================================================
+  const questions = [
+    // 【セクション1】人との関わり方 - 積極的対人関与（10問）
+    { q: "Q1: 自分の意見を積極的に発信することが得意だ", type: "active", section: 1, seed: "自分の意見を発信すること" },
+    { q: "Q2: 初対面の人とも臆することなく会話を始められる", type: "active", section: 1, seed: "初対面の人とも自然に関わること" },
+    { q: "Q3: 新しい人脈を築くために、自ら行動を起こす方だ", type: "active", section: 1, seed: "人脈を自ら広げていくこと" },
+    { q: "Q4: 人前でプレゼンテーションをすることに抵抗はない", type: "active", section: 1, seed: "人前で発表・表現すること" },
+    { q: "Q5: 交渉や説得を通じて、相手の考えを変化させることに自信がある", type: "active", section: 1, seed: "交渉や説得で動かすこと" },
+    { q: "Q6: チームやグループをまとめるリーダーシップを発揮したい", type: "active", section: 1, seed: "リーダーシップを発揮すること" },
+    { q: "Q7: 異なる意見を持つ人とも、積極的に議論を深められる", type: "active", section: 1, seed: "違う意見と議論を深めること" },
+    { q: "Q8: 自分のアイデアや企画を、熱意を持って他者に伝えられる", type: "active", section: 1, seed: "アイデアを熱意で伝えること" },
+    { q: "Q9: 困難な状況でも、率先して解決策を提案し、実行できる", type: "active", section: 1, seed: "率先して動き解決すること" },
+    { q: "Q10: 変化を恐れず、新しい環境や役割に積極的に適応しようとする", type: "active", section: 1, seed: "変化に積極的に適応すること" },
+
+    // 【セクション2】人との関わり方 - 協調的対人連携（10問）
+    { q: "Q11: 他者の話を聞き、共感することに長けている", type: "collaborative", section: 2, seed: "人の話を聴き共感すること" },
+    { q: "Q12: チームの一員として、周囲と協力しながら進めることが得意だ", type: "collaborative", section: 2, seed: "チームで協力して進めること" },
+    { q: "Q13: 定められた役割の中で、円滑な人間関係を築くことを重視する", type: "collaborative", section: 2, seed: "円滑な人間関係を築くこと" },
+    { q: "Q14: 相手の意図を正確に理解し、適切に対応することに自信がある", type: "collaborative", section: 2, seed: "相手の意図を丁寧に汲むこと" },
+    { q: "Q15: チーム内の調和を保つために、自分の意見よりも協調性を優先することがある", type: "collaborative", section: 2, seed: "チームの調和を守ること" },
+    { q: "Q16: 相手の立場や気持ちを考えて、言葉を選んで話す方だ", type: "collaborative", section: 2, seed: "相手を思いやって言葉を選ぶこと" },
+    { q: "Q17: 対立するより、お互いに歩み寄って解決する方が好きだ", type: "collaborative", section: 2, seed: "歩み寄って解決すること" },
+    { q: "Q18: 目立つより、裏方として人を支える役割にやりがいを感じる", type: "collaborative", section: 2, seed: "裏方として人を支えること" },
+    { q: "Q19: 誰かに頼られたり相談されたりすることが多い", type: "collaborative", section: 2, seed: "誰かに頼られ相談されること" },
+    { q: "Q20: 集団の中では、全体の空気や流れを読むように意識している", type: "collaborative", section: 2, seed: "空気や流れを読むこと" },
+
+    // 【セクション3】仕事への向き合い方 - 成果・達成志向（10問）
+    { q: "Q21: 明確な数値目標があると、モチベーションが大きく上がる", type: "achievement", section: 3, seed: "明確な数値目標を持つこと" },
+    { q: "Q22: 困難な課題や未経験の挑戦に、積極的に取り組むことが好きだ", type: "achievement", section: 3, seed: "困難な挑戦に取り組むこと" },
+    { q: "Q23: 一度決めたことは、困難があっても最後までやり抜く方だ", type: "achievement", section: 3, seed: "最後までやり抜くこと" },
+    { q: "Q24: プレッシャーがかかる状況でも、パフォーマンスを発揮できる", type: "achievement", section: 3, seed: "プレッシャーで力を発揮すること" },
+    { q: "Q25: 常に現状を打破し、より高い成果を目指したいという上昇志向がある", type: "achievement", section: 3, seed: "現状を打破する上昇志向" },
+    { q: "Q26: 結果を出すために、計画を柔軟に変更したり、新しい方法を試すことに抵抗はない", type: "achievement", section: 3, seed: "柔軟に新しい方法を試すこと" },
+    { q: "Q27: 競争環境に身を置くことで、自分の能力を最大限に引き出せる", type: "achievement", section: 3, seed: "競争環境で成長すること" },
+    { q: "Q28: 責任ある立場に立ち、大きな裁量を持って仕事を進めたい", type: "achievement", section: 3, seed: "責任と裁量を持つこと" },
+    { q: "Q29: 失敗を恐れず、新しいことに挑戦する意欲がある", type: "achievement", section: 3, seed: "失敗を恐れず挑戦すること" },
+    { q: "Q30: 常に効率を追求し、生産性を高める工夫をしている", type: "achievement", section: 3, seed: "効率や生産性を高めること" },
+
+    // 【セクション4】仕事への向き合い方 - プロセス・品質志向（10問）
+    { q: "Q31: 定められた手順やルールを守り、正確に作業を進めることを重視する", type: "process", section: 4, seed: "手順やルールを守ること" },
+    { q: "Q32: 細かい作業でも、丁寧さと正確性を追求することに喜びを感じる", type: "process", section: 4, seed: "丁寧さと正確性を追求すること" },
+    { q: "Q33: 安定した環境で、着実に業務をこなすことに安心感を覚える", type: "process", section: 4, seed: "安定した環境で着実に進めること" },
+    { q: "Q34: 既存の仕組みや品質を維持・改善することにやりがいを感じる", type: "process", section: 4, seed: "仕組みや品質を改善すること" },
+    { q: "Q35: 計画通りに物事を進めることに安心感と達成感を感じる", type: "process", section: 4, seed: "計画通りに進めること" },
+    { q: "Q36: 派手な成果より、地道に積み上げる仕事の方が性に合っている", type: "process", section: 4, seed: "地道に積み上げること" },
+    { q: "Q37: 作業の精度を高めるため、何度も見直したり確認したりする", type: "process", section: 4, seed: "精度を高めるため見直すこと" },
+    { q: "Q38: 変化が激しい環境より、安定した環境で力を発揮できる", type: "process", section: 4, seed: "安定した環境で力を発揮すること" },
+    { q: "Q39: ミスを防ぐため、慎重に段取りを組んで仕事を進めたい", type: "process", section: 4, seed: "慎重に段取りを組むこと" },
+    { q: "Q40: 決められた基準や品質を守ることに、プロとしての誇りを感じる", type: "process", section: 4, seed: "基準や品質を守ること" }
+  ];
+
+  // ====================================================
+  // 【ver14 新機能】16セルごとの「軸の候補語」
+  // 診断結果のセルに応じて、学生が自分の軸を言語化する
+  // ヒントとなる候補語を4つずつ提示する
+  // ====================================================
+  const cellAxisCandidates = [
+    // row 0（成果・達成志向 強）
+    [
+      // [0][0] 専門技術開発
+      ["専門性を深めること", "研究・探究すること", "静かな環境で集中すること", "一人で価値を生み出すこと"],
+      // [0][1] システム設計・構築
+      ["仕組みを設計すること", "技術で社会を支えること", "論理的に組み立てること", "専門技術を磨くこと"],
+      // [0][2] 事業企画・推進
+      ["新しい事業を生み出すこと", "戦略を描くこと", "人を巻き込んで進めること", "社会にインパクトを与えること"],
+      // [0][3] 成果志向型営業
+      ["数字で結果を出すこと", "人を動かすこと", "競争に挑むこと", "大きな裁量を持つこと"]
+    ],
+    // row 1（やや成果志向）
+    [
+      // [1][0] 品質保証・改善
+      ["品質を守り抜くこと", "細部まで見極めること", "プロセスを改善すること", "信頼を積み重ねること"],
+      // [1][1] 生産・効率管理
+      ["仕組みを整えること", "効率を高めること", "着実に積み上げること", "周囲と調和して成果を出すこと"],
+      // [1][2] 専門営業・管理
+      ["顧客との信頼関係を築くこと", "専門知識で人の役に立つこと", "プロジェクトを推進すること", "調整と実行を両立すること"],
+      // [1][3] 対人成果追求
+      ["人を引きつけること", "場を創り出すこと", "発信で影響を与えること", "新しい出会いをつくること"]
+    ],
+    // row 2（ややプロセス志向）
+    [
+      // [2][0] データ処理・入力
+      ["正確に記録すること", "コツコツ積み重ねること", "自分のペースで進めること", "縁の下で支えること"],
+      // [2][1] 文書作成・管理
+      ["情報を整理すること", "丁寧に記録を残すこと", "仕組みを守ること", "専門業務で貢献すること"],
+      // [2][2] 顧客対応・支援
+      ["困っている人を助けること", "丁寧に応えること", "感謝される仕事をすること", "誰かの頼りになること"],
+      // [2][3] 情報発信・調整
+      ["情報を届けること", "人と人をつなぐこと", "場の雰囲気を大切にすること", "さりげなく貢献すること"]
+    ],
+    // row 3（プロセス・品質志向 強）
+    [
+      // [3][0] 施設管理・保守
+      ["場を整え守ること", "日々の安心を支えること", "静かに任務を果たすこと", "自分のペースで働くこと"],
+      // [3][1] 製造・補助作業
+      ["手を動かして作ること", "確実に仕上げること", "チームで完成させること", "モノづくりに携わること"],
+      // [3][2] 教育・指導
+      ["人の成長に関わること", "誰かの可能性を引き出すこと", "わかりやすく伝えること", "寄り添って導くこと"],
+      // [3][3] 店舗運営・接客
+      ["お客さまに喜んでもらうこと", "目の前の人を大切にすること", "現場で動き回ること", "チームで場を創ること"]
+    ]
+  ];
+
+  // ====================================================
+  // 職業群16領域（4×4マトリクス）
+  // jobMatrixDetails[row][col]
+  //   row 0: 最上（成果・達成志向強）
+  //   row 3: 最下（プロセス・品質志向強）
+  //   col 0: 最左（協調的対人連携強）
+  //   col 3: 最右（積極的対人関与強）
+  // ====================================================
+  const jobMatrixDetails = [
+    [
+      { group: "専門技術開発\n(研究・アルゴリズム)", examples: "AI研究者、データサイエンティスト、数理モデル開発者、基礎研究員、R&Dエンジニア、宇宙工学者、量子コンピューティング研究者", category: "high-goal-low-interaction" },
+      { group: "システム設計・構築\n(アーキテクト・バックエンド)", examples: "システムアーキテクト、バックエンドエンジニア、クラウドエンジニア、SaaS開発者、DevOpsエンジニア、ネットワークエンジニア、セキュリティエンジニア", category: "high-goal-low-interaction" },
+      { group: "事業企画・推進\n(企画・マーケティング)", examples: "事業企画、マーケティング戦略担当、商品企画、プロジェクト推進、広報戦略、経営企画、新規事業開発、ブランドマネージャー", category: "high-goal-high-interaction" },
+      { group: "成果志向型営業\n(コンサル・ソリューション)", examples: "企画営業、ソリューション営業、ビジネスコンサルタント、金融営業、M&Aコンサルタント、不動産投資顧問、保険営業、製薬MR", category: "high-goal-high-interaction" }
+    ],
+    [
+      { group: "品質保証・改善\n(QA・生産技術)", examples: "品質保証エンジニア、テストエンジニア、生産技術、プロセス改善コンサルタント、品質管理責任者、信頼性エンジニア、監査担当", category: "high-goal-low-interaction" },
+      { group: "生産・効率管理\n(生産管理・SCM)", examples: "生産管理、サプライチェーンマネージャー、ロジスティクス管理者、工場長、在庫管理、調達担当、倉庫マネージャー", category: "high-goal-low-interaction" },
+      { group: "専門営業・管理\n(法人営業・PM)", examples: "法人営業、プロジェクトマネージャー、アカウントマネージャー、ITコンサルタント、カスタマーサクセスマネージャー、技術営業、HRコンサルタント", category: "high-goal-high-interaction" },
+      { group: "対人成果追求\n(顧客開拓・イベントP)", examples: "新規事業開発営業、イベントプロデューサー、マーケティングディレクター、広報戦略担当、PRコンサルタント、インフルエンサーマーケター、ブランドアンバサダー", category: "high-goal-high-interaction" }
+    ],
+    [
+      { group: "データ処理・入力\n(事務・経理仕訳)", examples: "一般事務、データ入力、経理事務、人事事務、総務、会計事務、秘書、法務事務", category: "low-goal-low-interaction" },
+      { group: "文書作成・管理\n(資料整理・庶務)", examples: "秘書、法務事務、図書館司書、記録管理、契約事務、行政書士補助、情報管理担当", category: "low-goal-low-interaction" },
+      { group: "顧客対応・支援\n(CS・ヘルプデスク)", examples: "カスタマーサポート、ヘルプデスク、テクニカルサポート、コールセンターオペレーター、サービスデスク、サポートエンジニア", category: "low-goal-high-interaction" },
+      { group: "情報発信・調整\n(広報・コミュニティM)", examples: "社内広報、コミュニティマネージャー、イベントコーディネーター、SNS運用担当、ウェブコンテンツ編集者、マーケティングアシスタント", category: "low-goal-high-interaction" }
+    ],
+    [
+      { group: "施設管理・保守\n(清掃・警備)", examples: "清掃員、警備員、設備管理、ビルメンテナンス、用務員、施設管理者、環境衛生管理士", category: "low-goal-low-interaction" },
+      { group: "製造・補助作業\n(ライン・倉庫作業)", examples: "製造ライン作業員、倉庫作業員、ピッキング作業員、軽作業、組立作業、物流作業員、品質検査員", category: "low-goal-low-interaction" },
+      { group: "教育・指導\n(研修・カウンセラー)", examples: "研修講師、キャリアカウンセラー、学習塾講師、インストラクター、メンター、コーチ、スクールカウンセラー", category: "low-goal-high-interaction" },
+      { group: "店舗運営・接客\n(店舗M・専門販売)", examples: "店舗マネージャー、販売員、フロアスタッフ、サービススタッフ、飲食業スタッフ、ホテルスタッフ、ブライダルコーディネーター", category: "low-goal-high-interaction" }
+    ]
+  ];
+
+  // ====================================================
+  // jobtag カテゴリ情報
+  // ツール2(jobserch-print-1050ver6.html) の4カテゴリに対応
+  // ====================================================
+  const jobCatalogInfo = {
+    "high-goal-high-interaction": {
+      label: "目標管理が明確 × 人と関わる要素が多い仕事",
+      description: "営業・コンサルタント・接客型営業など、数値目標を追いながら人と関わる職業群"
+    },
+    "high-goal-low-interaction": {
+      label: "目標管理が明確 × 人と関わる要素が少ない仕事",
+      description: "金融・ソフトウェア開発・データサイエンス・品質管理など、目標を追いながら専門性を極める職業群"
+    },
+    "low-goal-high-interaction": {
+      label: "目標管理はさほど高くない × 人と関わる要素が多い仕事",
+      description: "医療・介護・教育・サービス業など、人を支えることにやりがいを感じる職業群"
+    },
+    "low-goal-low-interaction": {
+      label: "目標管理はさほど高くない × 人と関わる要素が少ない仕事",
+      description: "事務・クリエイティブ・テクニカルワークなど、自分のペースで着実に進める職業群"
+    }
+  };
+
+  // ツール2のHTMLファイルパス（同じフォルダに配置されている前提）
+  const JOB_CATALOG_PATH = "jobserch-print-1050ver6.html";
+
+  // 回答文
+  const answerLabels = [
+    "非常に当てはまる / 強くそう思う",
+    "当てはまる / そう思う",
+    "どちらとも言えない",
+    "あまり当てはまらない",
+    "全く当てはまらない"
+  ];
+
+  const sectionTitles = {
+    1: "【セクション1】人との関わり方 ─ 積極的な関与",
+    2: "【セクション2】人との関わり方 ─ 協調的な連携",
+    3: "【セクション3】仕事への向き合い方 ─ 成果・達成志向",
+    4: "【セクション4】仕事への向き合い方 ─ プロセス・品質志向"
+  };
+
+  // ページ読み込み時に質問を表示
+  document.addEventListener('DOMContentLoaded', () => {
+    let currentSection = 0;
+    questions.forEach((q, i) => {
+      // セクション見出しの挿入
+      if (q.section !== currentSection) {
+        currentSection = q.section;
+        const header = document.createElement("div");
+        header.className = "section-header";
+        header.textContent = sectionTitles[currentSection];
+        questionContainer.appendChild(header);
+      }
+
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `
+        <p>${q.q}</p>
+        <label><input type="radio" name="q${i}" value="5"> ${answerLabels[0]}</label>
+        <label><input type="radio" name="q${i}" value="4"> ${answerLabels[1]}</label>
+        <label><input type="radio" name="q${i}" value="3"> ${answerLabels[2]}</label>
+        <label><input type="radio" name="q${i}" value="2"> ${answerLabels[3]}</label>
+        <label><input type="radio" name="q${i}" value="1"> ${answerLabels[4]}</label>
+      `;
+      questionContainer.appendChild(div);
+    });
+  });
+
+  // ====================================================
+  // 【ver14 新機能】軸の種を抽出する関数
+  // 回答パターンから、学生に「響いた言葉」「避けたい傾向」を
+  // 相対的判定で抽出する。控えめな学生（5を選ばない学生）にも
+  // 必ず種が返るよう、絶対値ではなく順位で判定する。
+  //
+  // 設計のポイント:
+  //  - 響いた種: 平均値より上の回答のみを採用（平均以下は「特に響いた言葉なし」）
+  //  - 避けたい種: 平均値より下の回答のみを採用
+  //  - 診断セルに寄与するタイプに高いボーナスを与え、
+  //    2軸（XとY）の両方が響いた種Top3にバランスよく入るようにする
+  // ====================================================
+  function extractAxisSeeds(answers, rowIndex, colIndex) {
+    // 診断結果セルが属する軸の方向を判定
+    const xAxisDominant = colIndex >= 2 ? "active" : "collaborative";
+    const yAxisDominant = rowIndex <= 1 ? "achievement" : "process";
+
+    // 平均値を計算（相対的判定の基準）
+    const avgVal = answers.reduce((a, b) => a + b, 0) / answers.length;
+
+    // 各回答にメタ情報を付与
+    const scored = answers.map((val, i) => {
+      const q = questions[i];
+      const isDominant = (q.type === xAxisDominant || q.type === yAxisDominant);
+      return {
+        index: i,
+        val,
+        type: q.type,
+        seed: q.seed,
+        isDominant,
+        // ポジティブスコア: 高値 × 診断セル寄与タイプに強いボーナス
+        posScore: val * 10 + (isDominant ? 8 : 0),
+        // ネガティブスコア: 低値 × 診断セル寄与の「逆」タイプに強いボーナス
+        negScore: (6 - val) * 10 + (isDominant ? 0 : 8)
+      };
+    });
+
+    // ポジティブ側「響いた種」
+    // 条件: 回答値が平均値+0.3以上（相対的に高いもの）のみ採用
+    // 診断セルの2軸（x/y）それぞれから最低1つずつ選ぶよう配慮
+    const positiveThreshold = avgVal + 0.3;
+    const positiveCandidates = scored
+      .filter(s => s.val >= positiveThreshold)
+      .sort((a, b) => {
+        if (b.posScore !== a.posScore) return b.posScore - a.posScore;
+        return a.index - b.index;
+      });
+
+    // 2軸のバランスを取る: x軸寄与とy軸寄与から最低1つずつ入れる
+    const positives = [];
+    const xCandidates = positiveCandidates.filter(s => s.type === xAxisDominant);
+    const yCandidates = positiveCandidates.filter(s => s.type === yAxisDominant);
+    const othersCandidates = positiveCandidates.filter(s => !s.isDominant);
+
+    // x軸から1つ、y軸から1つ、残り1つは最高スコアから
+    if (xCandidates.length > 0) positives.push(xCandidates[0]);
+    if (yCandidates.length > 0) positives.push(yCandidates[0]);
+    // 3つ目: まだ追加していない候補から最高スコアを採用
+    for (const cand of positiveCandidates) {
+      if (positives.length >= 3) break;
+      if (!positives.find(p => p.index === cand.index)) {
+        positives.push(cand);
+      }
+    }
+    // それでも3つに満たない場合（候補が少ない場合）はそのまま
+
+    // ネガティブ側「避けたい種」
+    // 条件: 回答値が平均値-0.3以下（相対的に低いもの）のみ採用
+    const negativeThreshold = avgVal - 0.3;
+    const negatives = scored
+      .filter(s => s.val <= negativeThreshold)
+      .sort((a, b) => {
+        if (b.negScore !== a.negScore) return b.negScore - a.negScore;
+        return a.index - b.index;
+      })
+      .slice(0, 2);
+
+    // 学生の回答傾向を分析
+    const maxVal = Math.max(...answers);
+    const modestMode = maxVal <= 4; // 5を一度も選んでいない＝控えめタイプ
+    const topVal = positives.length > 0 ? positives[0].val : 0;
+    const hasFlat = (maxVal === Math.min(...answers)); // 回答に差がない場合
+
+    return {
+      positives,       // 響いた種（0〜3件）
+      negatives,       // 避けたい種（0〜2件）
+      modestMode,      // 控えめな回答傾向か
+      topVal,          // 最も高い回答値
+      avgVal,          // 平均値
+      hasFlat          // 回答にメリハリがないか
+    };
+  }
+
+  // ====================================================
+  // 診断計算 ─ 修正ロジック
+  // ====================================================
+  function calculateMatrix() {
+    // 未回答チェック
+    for (let i = 0; i < questions.length; i++) {
+      if (!document.querySelector(`input[name='q${i}']:checked`)) {
+        showMessageBox(`Q${i+1} に回答してください`);
+        // 該当質問までスクロール
+        const el = document.querySelector(`input[name='q${i}']`).closest('.question');
+        if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+      }
+    }
+
+    // スコア計算（差分方式）
+    // 各回答を -2〜+2 の差分として扱い、軸ごとに加減算
+    let rawActive = 0;      // 理論レンジ: -40 〜 +40
+    let rawAchievement = 0; // 理論レンジ: -40 〜 +40
+    const answers = []; // 各質問の生の回答値（1〜5）
+
+    questions.forEach((q, i) => {
+      const val = parseInt(document.querySelector(`input[name='q${i}']:checked`).value);
+      answers.push(val);
+      const delta = val - 3; // -2, -1, 0, +1, +2
+
+      if (q.type === "active") {
+        rawActive += delta;       // 積極性が高い→右へ（加点）
+      } else if (q.type === "collaborative") {
+        rawActive -= delta;       // 協調性が高い→左へ（減点）
+      } else if (q.type === "achievement") {
+        rawAchievement += delta;  // 達成志向が高い→上へ（加点）
+      } else if (q.type === "process") {
+        rawAchievement -= delta;  // プロセス志向が高い→下へ（減点）
+      }
+    });
+
+    // 0〜20スケールに正規化（中央=10）
+    // -40 → 0, 0 → 10, +40 → 20
+    activeInterpersonalScore = ((rawActive + 40) / 80) * 20;
+    achievementScore = ((rawAchievement + 40) / 80) * 20;
+
+    // クリップ（念のため）
+    activeInterpersonalScore = Math.max(0, Math.min(20, activeInterpersonalScore));
+    achievementScore = Math.max(0, Math.min(20, achievementScore));
+
+    // 結果表示エリアを表示
+    matrixContainer.style.display = 'flex';
+    resultDiv.style.display = 'block';
+    hasResult = true;
+
+    drawMatrixAndUserIcon();
+
+    // セル判定
+    const colIndex = Math.min(3, Math.max(0, Math.floor(activeInterpersonalScore / 5)));
+    const rowIndex = Math.min(3, Math.max(0, Math.floor((20 - achievementScore) / 5)));
+
+    const recommendedJob = jobMatrixDetails[rowIndex][colIndex];
+    const jobsHere = recommendedJob.group.replace(/\n/g, "、");
+    const jobExamples = recommendedJob.examples;
+
+    // 傾向の解釈文
+    const interpretation = generateInterpretation(activeInterpersonalScore, achievementScore);
+
+    // jobtag カタログ情報
+    const catalogCategory = recommendedJob.category;
+    const catalogInfo = jobCatalogInfo[catalogCategory];
+
+    // 【ver14】軸の種を抽出
+    const seeds = extractAxisSeeds(answers, rowIndex, colIndex);
+    const axisCandidates = cellAxisCandidates[rowIndex][colIndex];
+
+    // 「響いた言葉」の導入文を、回答傾向に応じて調整
+    let positiveIntro, positiveContent;
+    if (seeds.positives.length === 0) {
+      // 響いた種が見つからないケース（全問同じ値など）
+      positiveIntro = `あなたの回答には、<strong>大きな起伏が見られませんでした</strong>。`;
+      positiveContent = `
+        <div class="axis-seed-empty">
+          これは「まだ自分の軸がぼんやりしている」サインかもしれません。<br>
+          下の<strong>「軸の候補語」</strong>の中から、<strong>気になる言葉</strong>を選んでみてください。
+        </div>`;
+    } else if (seeds.modestMode) {
+      // 控えめタイプ: 5を選んでいない学生への配慮
+      positiveIntro = `あなたの回答の中で、<strong>比較的強く共感した言葉</strong>です。<br><span style="font-size:0.85em;color:#7f8c8d;">※控えめに答えた方にも響いた言葉を丁寧に拾いました。</span>`;
+      positiveContent = `
+        <ul class="axis-seed-list">
+          ${seeds.positives.map((s, idx) => `
+            <li><span class="seed-rank">${idx+1}</span>${s.seed}</li>
+          `).join('')}
+        </ul>
+        <div class="axis-seed-prompt">
+          💭 この中で、特に<strong>ハッとした言葉</strong>はありましたか？<br>
+          その言葉の裏には、どんな経験や気持ちがあるでしょう？
+        </div>`;
+    } else if (seeds.topVal === 5) {
+      positiveIntro = `あなたが「強くそう思う」と感じた言葉の中から、特に中心的な3つです。`;
+      positiveContent = `
+        <ul class="axis-seed-list">
+          ${seeds.positives.map((s, idx) => `
+            <li><span class="seed-rank">${idx+1}</span>${s.seed}</li>
+          `).join('')}
+        </ul>
+        <div class="axis-seed-prompt">
+          💭 この中で、特に<strong>ハッとした言葉</strong>はありましたか？<br>
+          その言葉の裏には、どんな経験や気持ちがあるでしょう？
+        </div>`;
+    } else {
+      positiveIntro = `あなたの回答の中で、<strong>比較的強く共感した言葉</strong>です。`;
+      positiveContent = `
+        <ul class="axis-seed-list">
+          ${seeds.positives.map((s, idx) => `
+            <li><span class="seed-rank">${idx+1}</span>${s.seed}</li>
+          `).join('')}
+        </ul>
+        <div class="axis-seed-prompt">
+          💭 この中で、特に<strong>ハッとした言葉</strong>はありましたか？<br>
+          その言葉の裏には、どんな経験や気持ちがあるでしょう？
+        </div>`;
+    }
+
+    // 「避けたい傾向」の導入文と内容
+    let negativeIntro, negativeContent;
+    if (seeds.negatives.length === 0) {
+      negativeIntro = `あなたの回答には、<strong>はっきりと避けたい傾向は見られませんでした</strong>。`;
+      negativeContent = `
+        <div class="axis-seed-empty">
+          すべての項目に<strong>オープンに向き合おうとしている</strong>姿勢が見えます。<br>
+          これは、いろいろな可能性を探る時期のあなたらしい答え方かもしれません。
+        </div>`;
+    } else {
+      if (seeds.avgVal > 3.5) {
+        negativeIntro = `あなたの回答の中で、<strong>比較的当てはまらなかった言葉</strong>です。`;
+      } else {
+        negativeIntro = `あなたが<strong>あまり当てはまらない</strong>と感じた言葉です。`;
+      }
+      negativeContent = `
+        <ul class="axis-seed-list">
+          ${seeds.negatives.map(s => `
+            <li>${s.seed}</li>
+          `).join('')}
+        </ul>
+        <div class="axis-seed-prompt">
+          💭 「これは違う」と感じることも、<strong>あなたの軸を映す鏡</strong>です。
+        </div>`;
+    }
+
+    resultDiv.innerHTML = `
+      <h3>🌱 あなたの診断結果</h3>
+      <div class="score-grid">
+        <div class="score-box">
+          <div class="label">人との関わり方</div>
+          <div class="value">${activeInterpersonalScore.toFixed(1)}</div>
+          <div class="range">← 協調的(0) ─ 中央(10) ─ 積極的(20) →</div>
+        </div>
+        <div class="score-box">
+          <div class="label">仕事への向き合い方</div>
+          <div class="value">${achievementScore.toFixed(1)}</div>
+          <div class="range">← プロセス(0) ─ 中央(10) ─ 成果(20) →</div>
+        </div>
+      </div>
+      <p>あなたに向いている可能性がある職業群：</p>
+      <p class="job-recommendation">${jobsHere}</p>
+      <div class="job-examples">
+        <p><strong>💼 具体的な仕事の例：</strong></p>
+        <p>${jobExamples}</p>
+      </div>
+      <div class="interpretation">
+        <strong>💡 傾向の解釈：</strong><br>
+        ${interpretation}
+      </div>
+
+      <div class="axis-seed-section">
+        <div class="axis-seed-header">🌱 あなたの「軸の種」を探してみましょう</div>
+        <div class="axis-seed-lead">
+          「あなたの就活の軸は？」と聞かれて、うまく言葉にできない——それは当たり前のことです。<br>
+          軸は一度で見つかるものではなく、<strong>育てていくもの</strong>。
+          まずは下の言葉たちから、あなたの<strong>軸の種</strong>を見つけてみましょう。
+        </div>
+
+        <div class="axis-seed-subsection axis-seed-positive">
+          <div class="axis-seed-subheader">💚 あなたの中で響いた言葉</div>
+          <div class="axis-seed-note">${positiveIntro}</div>
+          ${positiveContent}
+        </div>
+
+        <div class="axis-seed-subsection axis-seed-negative">
+          <div class="axis-seed-subheader">🔸 あなたが大切にしたくない（避けたい）傾向</div>
+          <div class="axis-seed-note">${negativeIntro}</div>
+          ${negativeContent}
+        </div>
+
+        <div class="axis-seed-subsection axis-seed-candidates">
+          <div class="axis-seed-subheader">🔖 こんな軸があるかもしれません</div>
+          <div class="axis-seed-note">あなたの診断結果から考えられる、軸の候補語です。<br>しっくりくる言葉はありますか？</div>
+          <div class="axis-candidate-tags">
+            ${axisCandidates.map(word => `<span class="axis-tag">${word}</span>`).join('')}
+          </div>
+          <div class="axis-seed-prompt">
+            💭 これらの中に、<strong>あなたの気持ちに合う言葉</strong>はありましたか？<br>
+            自分の言葉で言い換えるとしたら、どう表現しますか？
+          </div>
+        </div>
+
+        <div class="axis-seed-closing">
+          🌱 <strong>軸は、あなたが社会と出会いながら育てていくものです。</strong><br>
+          この診断は、その<strong>最初の種まき</strong>。<br>
+          今日の気づきを、面談で、友達と、ESで、何度も言葉にしてみてください。
+        </div>
+      </div>
+
+      <div class="catalog-link-box">
+        <div class="catalog-link-header">
+          📚 さらに詳しく職業を調べてみる
+        </div>
+        <div class="catalog-link-desc">
+          <strong>${catalogInfo.label}</strong><br>
+          ${catalogInfo.description}
+        </div>
+        <div class="catalog-link-note">
+          ※実際のjobtag（厚生労働省）の職業情報へリンクされています
+        </div>
+        <a class="catalog-link-button" href="${JOB_CATALOG_PATH}?cat=${catalogCategory}" target="_blank" rel="noopener">
+          職業カタログを開く →
+        </a>
+      </div>
+      <p style="margin-top:20px;font-size:0.85em;color:#7f8c8d;">
+        ※マトリクス上の他のセルもクリックすると、周辺の職業群を確認できます
+      </p>
+      <button class="print-button" onclick="window.print()">📄 結果を印刷する</button>
+    `;
+
+    canvas.addEventListener('click', handleCanvasClick);
+
+    // 結果エリアまでスクロール
+    setTimeout(() => {
+      resultDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  // 傾向解釈文の生成
+  function generateInterpretation(active, achievement) {
+    let xTrend, yTrend;
+    
+    if (active >= 15) xTrend = "積極的に人と関わり、自分から働きかけていくタイプ";
+    else if (active >= 10) xTrend = "やや積極的に人と関わるタイプ";
+    else if (active >= 5) xTrend = "協調を大切にしながら人と関わるタイプ";
+    else xTrend = "協調的に、周囲と調和しながら関わるタイプ";
+
+    if (achievement >= 15) yTrend = "明確な目標を設定し、成果を追い求める志向";
+    else if (achievement >= 10) yTrend = "やや成果志向で、挑戦を大切にする志向";
+    else if (achievement >= 5) yTrend = "手順や品質を大切にしながら進める志向";
+    else yTrend = "プロセスや正確さを重視し、着実に積み上げる志向";
+
+    return `あなたは「${xTrend}」で、仕事に対しては「${yTrend}」を持っています。<br>
+    この傾向は、あなたの強みの一側面です。診断結果は固定したものではなく、経験や環境によって変化します。
+    面談では、この結果を出発点に、あなた自身の言葉で「なぜそう感じるか」を一緒に深めていきましょう。`;
+  }
+
+  // キャンバスクリック
+  function handleCanvasClick(event) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const x = (event.clientX - rect.left) * scaleX;
+    const y = (event.clientY - rect.top) * scaleY;
+
+    const cellSize = canvas.width / 4;
+    const col = Math.floor(x / cellSize);
+    const row = Math.floor(y / cellSize);
+
+    if (row >= 0 && row < 4 && col >= 0 && col < 4) {
+      currentHighlightedCell = { row, col };
+      drawMatrixAndUserIcon();
+      drawCellHighlights(row, col);
+      updatePopupContent(row, col);
+      showPopup();
+    } else {
+      hidePopup();
+      drawMatrixAndUserIcon();
+    }
+  }
+
+  // マトリクスとユーザーアイコンを描画
+  function drawMatrixAndUserIcon() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const cellSize = canvas.width / 4;
+
+    for (let row = 0; row < 4; row++) {
+      for (let col = 0; col < 4; col++) {
+        // セル色のグラデーション
+        // 上（row=0, 成果志向）ほど濃く、右（col=3, 積極）ほど暖色寄り
+        const hue = 220 - (col * (220 - 160) / 3);
+        const saturation = 30 + (3 - row) * (70 - 30) / 3;
+        const lightness = 95 - (3 - row) * (95 - 60) / 3;
+        ctx.fillStyle = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+        ctx.fillRect(col * cellSize, row * cellSize, cellSize, cellSize);
+
+        ctx.strokeStyle = "#c0d9ed";
+        ctx.lineWidth = 1;
+        ctx.strokeRect(col * cellSize, row * cellSize, cellSize, cellSize);
+
+        // 職業群ラベル
+        ctx.fillStyle = "#2c3e50";
+        ctx.font = `${Math.max(10, cellSize / 13)}px 'Inter', sans-serif`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        const lines = jobMatrixDetails[row][col].group.split("\n");
+        lines.forEach((line, idx) => {
+          ctx.fillText(
+            line,
+            col * cellSize + cellSize / 2,
+            row * cellSize + cellSize / 2 + (idx - (lines.length - 1) / 2) * (cellSize / 10)
+          );
+        });
+      }
+    }
+
+    // ユーザーアイコンを描画（結果表示時のみ）
+    if (hasResult) {
+      // X: activeScore 0〜20 を canvas.width にマップ
+      const px = (activeInterpersonalScore / 20) * canvas.width;
+      // Y: achievementScore 0〜20 を canvas.height にマップ（上下反転: スコア高=上）
+      const py = canvas.height - (achievementScore / 20) * canvas.height;
+      const iconSize = Math.max(32, canvas.width / 18);
+
+      if (userIconImage.complete && userIconImage.naturalHeight !== 0) {
+        ctx.drawImage(userIconImage, px - iconSize / 2, py - iconSize / 2, iconSize, iconSize);
+      } else {
+        ctx.beginPath();
+        ctx.arc(px, py, Math.max(12, canvas.width / 36), 0, Math.PI * 2, false);
+        ctx.fillStyle = "#e74c3c";
+        ctx.fill();
+        ctx.strokeStyle = "#c0392b";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+      }
+
+      // アイコン周囲の赤い円
+      ctx.beginPath();
+      ctx.arc(px, py, iconSize / 1.5, 0, Math.PI * 2, false);
+      ctx.strokeStyle = "#e74c3c";
+      ctx.lineWidth = 3;
+      ctx.stroke();
+    }
+  }
+
+  // セルのハイライト
+  function drawCellHighlights(highlightRow, highlightCol) {
+    const cellSize = canvas.width / 4;
+
+    if (highlightRow >= 0 && highlightRow < 4 && highlightCol >= 0 && highlightCol < 4) {
+      ctx.strokeStyle = "#007bff";
+      ctx.lineWidth = 4;
+      ctx.strokeRect(highlightCol * cellSize, highlightRow * cellSize, cellSize, cellSize);
+
+      const neighbors = [
+        { r: highlightRow - 1, c: highlightCol },
+        { r: highlightRow + 1, c: highlightCol },
+        { r: highlightRow, c: highlightCol - 1 },
+        { r: highlightRow, c: highlightCol + 1 }
+      ];
+
+      neighbors.forEach(n => {
+        if (n.r >= 0 && n.r < 4 && n.c >= 0 && n.c < 4) {
+          ctx.strokeStyle = "#28a745";
+          ctx.lineWidth = 2;
+          ctx.strokeRect(n.c * cellSize, n.r * cellSize, cellSize, cellSize);
+        }
+      });
+    }
+  }
+
+  // ポップアップ内容更新
+  function updatePopupContent(targetRow, targetCol) {
+    if (targetRow >= 0 && targetRow < 4 && targetCol >= 0 && targetCol < 4) {
+      const targetJob = jobMatrixDetails[targetRow][targetCol];
+      popupJobGroupSpan.textContent = targetJob.group.replace(/\n/g, "、");
+      popupJobExamplesSpan.textContent = targetJob.examples;
+
+      popupNearbyJobListUl.innerHTML = '';
+
+      const neighbors = [
+        { r: targetRow - 1, c: targetCol, dir: "↑" },
+        { r: targetRow + 1, c: targetCol, dir: "↓" },
+        { r: targetRow, c: targetCol - 1, dir: "←" },
+        { r: targetRow, c: targetCol + 1, dir: "→" }
+      ];
+
+      let hasNearbyJobs = false;
+      neighbors.forEach(n => {
+        if (n.r >= 0 && n.r < 4 && n.c >= 0 && n.c < 4) {
+          const nearbyJob = jobMatrixDetails[n.r][n.c];
+          const listItem = document.createElement('li');
+          listItem.innerHTML = `<strong>${n.dir} ${nearbyJob.group.replace(/\n/g, "、")}</strong><br>${nearbyJob.examples.split('、').slice(0, 3).join('、')}...`;
+          popupNearbyJobListUl.appendChild(listItem);
+          hasNearbyJobs = true;
+        }
+      });
+
+      popupNearbyJobsDiv.style.display = hasNearbyJobs ? 'block' : 'none';
+    } else {
+      popupJobGroupSpan.textContent = '';
+      popupJobExamplesSpan.textContent = '';
+      popupNearbyJobListUl.innerHTML = '';
+      popupNearbyJobsDiv.style.display = 'none';
+    }
+  }
+
+  function showPopup() {
+    popupOverlay.style.display = 'flex';
+  }
+
+  function hidePopup() {
+    popupOverlay.style.display = 'none';
+    popupJobGroupSpan.textContent = '';
+    popupJobExamplesSpan.textContent = '';
+    popupNearbyJobListUl.innerHTML = '';
+    popupNearbyJobsDiv.style.display = 'none';
+    drawMatrixAndUserIcon();
+    currentHighlightedCell = { row: -1, col: -1 };
+  }
+
+  function showMessageBox(message) {
+    const messageBox = document.createElement("div");
+    messageBox.className = "message-box";
+    messageBox.innerHTML = `
+      <p style="margin-bottom: 20px; font-size: 1.1em;">${message}</p>
+      <button style="
+        background: #3498db;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 1em;
+        display: inline-block;
+        margin: 0 auto;
+      " onclick="this.parentElement.remove()">OK</button>
+    `;
+    document.body.appendChild(messageBox);
+  }
+
+  window.onresize = () => {
+    if (matrixContainer.style.display === 'flex' && hasResult) {
+      drawMatrixAndUserIcon();
+      if (popupOverlay.style.display === 'flex' && currentHighlightedCell.row !== -1) {
+        drawCellHighlights(currentHighlightedCell.row, currentHighlightedCell.col);
+      }
+    }
+  };
+
+  // オーバーレイクリックでポップアップを閉じる
+  popupOverlay.addEventListener('click', (e) => {
+    if (e.target === popupOverlay) hidePopup();
+  });
+</script>
+</body>
+</html>
