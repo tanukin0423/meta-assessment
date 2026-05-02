@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>神経発達症学生 キャリア支援 拡充マニュアル | キャリ爺</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green-deep: #1e4620;
+  --green-mid: #3a7d44;
+  --green-light: #6aaa72;
+  --green-pale: #e6f4e8;
+  --green-mist: #f3faf4;
+  --amber: #c97a00;
+  --amber-light: #fff4dc;
+  --amber-dark: #7a4a00;
+  --blue: #1a5fa8;
+  --blue-light: #e8f0fb;
+  --rose: #c0334a;
+  --rose-light: #fde8ec;
+  --purple: #6b3fa0;
+  --purple-light: #f0eaf8;
+  --teal: #00796b;
+  --teal-light: #e0f2f0;
+  --text-dark: #141e14;
+  --text-mid: #3a4e3a;
+  --text-soft: #617061;
+  --border: #d0e4d0;
+  --white: #ffffff;
+  --shadow-sm: 0 2px 10px rgba(30,70,32,0.08);
+  --shadow-md: 0 4px 24px rgba(30,70,32,0.13);
+  --shadow-lg: 0 8px 40px rgba(30,70,32,0.18);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--green-mist);
+  color: var(--text-dark);
+  line-height: 1.85;
+  font-size: 14px;
+}
+
+/* ===== HEADER ===== */
+header {
+  background: linear-gradient(160deg, var(--green-deep) 0%, #2e6b35 55%, var(--green-mid) 100%);
+  padding: 56px 24px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '🌳';
+  position: absolute; font-size: 260px; opacity: 0.05;
+  top: -60px; right: -40px; transform: rotate(-10deg); pointer-events: none;
+}
+header::after {
+  content: '🌱';
+  position: absolute; font-size: 140px; opacity: 0.06;
+  bottom: -30px; left: -10px; transform: rotate(10deg); pointer-events: none;
+}
+.h-chip {
+  display: inline-block;
+  background: rgba(255,255,255,0.15);
+  color: #b8ecc0;
+  font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+  padding: 5px 18px; border-radius: 20px; margin-bottom: 18px;
+  text-transform: uppercase;
+}
+header h1 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(20px, 4.5vw, 30px);
+  color: #fff; font-weight: 700; line-height: 1.4;
+  margin-bottom: 12px;
+}
+header .h-sub {
+  color: #a8deb0; font-size: 13px; margin-bottom: 18px;
+}
+.h-badges {
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+}
+.h-badge {
+  background: rgba(255,255,255,0.13);
+  color: #d4f4d8; font-size: 12px; font-weight: 600;
+  padding: 5px 16px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.2);
+}
+
+/* ===== NAV (目次) ===== */
+.toc {
+  background: var(--green-deep);
+  padding: 28px 24px;
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 3px solid var(--green-mid);
+}
+.toc-inner {
+  max-width: 900px; margin: 0 auto;
+  display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+}
+.toc a {
+  color: #b8e8c0; font-size: 12px; font-weight: 600;
+  text-decoration: none;
+  background: rgba(255,255,255,0.1);
+  padding: 5px 14px; border-radius: 16px;
+  border: 1px solid rgba(255,255,255,0.15);
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+.toc a:hover { background: var(--green-mid); color: white; }
+
+/* ===== MAIN ===== */
+main { max-width: 900px; margin: 0 auto; padding: 36px 16px 72px; }
+
+/* ===== CHAPTER TITLE ===== */
+.chapter {
+  display: flex; align-items: center; gap: 14px;
+  margin: 52px 0 24px;
+}
+.chapter-num {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--green-deep); color: white;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px; font-weight: 900; flex-shrink: 0;
+}
+.chapter h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(17px, 3.5vw, 22px);
+  color: var(--green-deep); font-weight: 700;
+}
+.chapter .line { flex:1; height:2px; background: linear-gradient(to right, var(--green-mid), transparent); }
+
+/* ===== SECTION INTRO ===== */
+.sec-intro {
+  background: white; border-left: 5px solid var(--green-mid);
+  border-radius: 0 14px 14px 0;
+  padding: 20px 24px; margin-bottom: 24px;
+  box-shadow: var(--shadow-sm);
+  font-size: 13.5px; color: var(--text-mid); line-height: 1.9;
+}
+
+/* ===== DISORDER TABS ===== */
+.tabs {
+  display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px;
+}
+.tab-btn {
+  padding: 7px 16px; border-radius: 20px; border: 2px solid var(--border);
+  background: white; color: var(--text-soft); font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all 0.2s; font-family: 'Noto Sans JP', sans-serif;
+}
+.tab-btn.active, .tab-btn:hover {
+  background: var(--green-deep); color: white; border-color: var(--green-deep);
+}
+
+/* ===== DISORDER PANEL ===== */
+.disorder-panels { position: relative; }
+.panel { display: none; }
+.panel.active { display: block; }
+.panel-card {
+  background: white; border-radius: 20px;
+  box-shadow: var(--shadow-md);
+  overflow: hidden; margin-bottom: 20px;
+}
+.panel-head {
+  display: flex; align-items: center; gap: 14px;
+  padding: 18px 24px;
+  color: white;
+}
+.panel-head .p-icon { font-size: 28px; }
+.panel-head h3 { font-size: 18px; font-weight: 700; line-height: 1.3; }
+.panel-head .p-abbr {
+  margin-left: auto; font-size: 13px; font-weight: 800;
+  background: rgba(255,255,255,0.2); padding: 4px 14px; border-radius: 14px;
+}
+
+/* 色バリエーション */
+.ph-1 { background: linear-gradient(135deg, #1a5fa8, #3a82d4); }
+.ph-2 { background: linear-gradient(135deg, #a0194a, #d44478); }
+.ph-3 { background: linear-gradient(135deg, #b85c00, #e87c20); }
+.ph-4 { background: linear-gradient(135deg, #5b2d8a, #8b54c0); }
+.ph-5 { background: linear-gradient(135deg, #006858, #00967c); }
+.ph-6 { background: linear-gradient(135deg, #a01818, #d44040); }
+.ph-7 { background: linear-gradient(135deg, #3a6318, #62a030); }
+
+.panel-body { padding: 22px 24px; }
+
+/* ===== SECTION CARD (接し方・応酬話法 etc) ===== */
+.sub-sec {
+  margin-bottom: 20px;
+}
+.sub-sec-title {
+  display: flex; align-items: center; gap: 8px;
+  font-size: 14px; font-weight: 700; color: var(--green-deep);
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px dashed var(--border);
+}
+.sub-sec-title .icon-badge {
+  width: 28px; height: 28px; border-radius: 8px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; flex-shrink: 0;
+}
+.ib-green { background: var(--green-pale); }
+.ib-amber { background: var(--amber-light); }
+.ib-blue  { background: var(--blue-light); }
+.ib-rose  { background: var(--rose-light); }
+.ib-purple{ background: var(--purple-light); }
+.ib-teal  { background: var(--teal-light); }
+
+/* 接し方リスト */
+.approach-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.approach-list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: 13px; color: var(--text-mid); line-height: 1.8;
+}
+.approach-list li::before {
+  content: '▶';
+  color: var(--green-mid); font-size: 10px; margin-top: 5px; flex-shrink: 0;
+}
+
+/* 応酬話法 */
+.dialog-box {
+  background: var(--green-mist);
+  border-radius: 12px; padding: 14px 16px;
+  margin-bottom: 10px;
+}
+.dialog-student {
+  display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px;
+}
+.dialog-counselor {
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.d-avatar {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; flex-shrink: 0; margin-top: 2px;
+}
+.av-s { background: #e0e8ff; }
+.av-c { background: var(--green-pale); }
+.d-bubble {
+  border-radius: 12px; padding: 10px 14px;
+  font-size: 13px; line-height: 1.75; flex: 1;
+}
+.bs { background: white; border: 1.5px solid #c8d8ff; color: var(--text-mid); }
+.bc { background: var(--green-pale); border: 1.5px solid #b0d8b4; color: var(--text-dark); }
+.d-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; margin-bottom: 4px; }
+.ls { color: #4060c0; }
+.lc { color: var(--green-deep); }
+
+/* 就職支援カード */
+.support-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  margin-bottom: 14px;
+}
+@media(max-width: 560px){ .support-grid { grid-template-columns: 1fr; } }
+.support-card {
+  background: var(--green-mist);
+  border-radius: 12px; padding: 14px 16px;
+  border: 1.5px solid var(--border);
+}
+.support-card h4 {
+  font-size: 13px; font-weight: 700; color: var(--green-deep);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.support-card ul { list-style: none; }
+.support-card ul li {
+  font-size: 12.5px; color: var(--text-mid); padding: 3px 0;
+  display: flex; gap: 6px; align-items: flex-start; line-height: 1.7;
+}
+.support-card ul li::before { content: '・'; color: var(--green-mid); flex-shrink: 0; }
+
+/* 支援機関テーブル */
+.agency-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.agency-table th {
+  background: var(--green-deep); color: white;
+  padding: 10px 14px; text-align: left; font-weight: 700;
+}
+.agency-table td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--text-mid); vertical-align: top; line-height: 1.75; }
+.agency-table tr:nth-child(even) td { background: var(--green-mist); }
+.agency-table .tag-a {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  padding: 2px 8px; border-radius: 8px; margin: 2px 2px 2px 0;
+  background: var(--green-pale); color: var(--green-deep); border: 1px solid var(--green-light);
+}
+
+/* 職種カード */
+.job-grid {
+  display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px;
+  margin-bottom: 14px;
+}
+@media(max-width: 620px){ .job-grid { grid-template-columns: 1fr 1fr; } }
+@media(max-width: 400px){ .job-grid { grid-template-columns: 1fr; } }
+.job-card {
+  background: white; border-radius: 14px; padding: 14px;
+  box-shadow: var(--shadow-sm); border-top: 4px solid var(--green-mid);
+  text-align: center;
+}
+.job-card .j-icon { font-size: 26px; margin-bottom: 6px; }
+.job-card .j-name { font-size: 12.5px; font-weight: 700; color: var(--green-deep); margin-bottom: 4px; }
+.job-card .j-reason { font-size: 11px; color: var(--text-soft); line-height: 1.6; }
+
+/* 共通タグ */
+.warn-box {
+  background: #fff8e6; border: 1.5px solid #e8c870;
+  border-radius: 12px; padding: 14px 18px;
+  font-size: 13px; color: #6a4900; line-height: 1.85;
+  margin-bottom: 16px;
+}
+.warn-box strong { color: #a06800; }
+
+.tip-box {
+  background: var(--amber-light);
+  border-left: 4px solid var(--amber);
+  border-radius: 0 12px 12px 0;
+  padding: 12px 16px; margin-bottom: 12px;
+  font-size: 13px; color: var(--amber-dark); line-height: 1.8;
+}
+.tip-box .t-label { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: var(--amber); margin-bottom: 4px; }
+
+/* ===== GLOBAL AGENCY (章3) ===== */
+.agency-wrap {
+  background: white; border-radius: 18px;
+  box-shadow: var(--shadow-md); overflow: hidden; margin-bottom: 24px;
+}
+.agency-wrap h3 {
+  background: var(--green-deep); color: white;
+  padding: 14px 22px; font-size: 15px; font-weight: 700;
+}
+.agency-wrap .agency-inner { padding: 18px 22px; }
+
+/* ===== FOOTER ===== */
+footer {
+  text-align: center; padding: 36px 16px;
+  background: var(--green-deep); color: #8acc90;
+  font-size: 13px; line-height: 2;
+}
+footer strong { color: white; }
+.footer-sig {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 15px; color: #c0f0c4; margin-top: 14px;
+}
+
+/* ===== PRINT ===== */
+@media print {
+  .toc { position: static; }
+  .panel { display: block !important; }
+  .tabs { display: none; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-chip">キャリ爺 支援マニュアル Vol.3</div>
+  <h1>神経発達症（発達障害）学生<br>キャリア支援 拡充マニュアル</h1>
+  <p class="h-sub">接し方・応酬話法・就職支援・支援機関・適性職種 — 7分類 完全対応版</p>
+  <div class="h-badges">
+    <span class="h-badge">📘 DSM-5-TR 準拠</span>
+    <span class="h-badge">💬 応酬話法 事例あり</span>
+    <span class="h-badge">🏢 支援機関ガイド付き</span>
+    <span class="h-badge">💼 職種マッチング付き</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#ch1">① 接し方・応酬話法</a>
+    <a href="#ch2">② 就職支援の進め方</a>
+    <a href="#ch3">③ 就職支援機関の活用</a>
+    <a href="#ch4">④ 適性職種ガイド</a>
+    <a href="#ch5">⑤ キャリ爺のまとめ</a>
+  </div>
+</nav>
+
+<main>
+
+<!-- ============================================================ -->
+<!-- CHAPTER 1: 接し方・応酬話法 -->
+<!-- ============================================================ -->
+<div class="chapter" id="ch1">
+  <div class="chapter-num">1</div>
+  <h2>具体的な「接し方」と「応酬話法」事例</h2>
+  <div class="line"></div>
+</div>
+
+<div class="sec-intro">
+  特性ごとに「どう声をかけるか」「どう返すか」は大きく違います。<br>
+  ここでは各障害タイプごとに<strong>①基本的な接し方の原則</strong>と<strong>②面談でよくある学生の言葉への応酬話法（実例）</strong>を示します。<br>
+  ロジャーズの「共感・無条件の受容・一致」を土台に、具体的な言葉のキャッチボールを意識してください。
+</div>
+
+<!-- タブ -->
+<div class="tabs" id="tabs1">
+  <button class="tab-btn active" onclick="switchTab('t',1,1)">① ID（知的）</button>
+  <button class="tab-btn" onclick="switchTab('t',2,1)">② ASD</button>
+  <button class="tab-btn" onclick="switchTab('t',3,1)">③ ADHD</button>
+  <button class="tab-btn" onclick="switchTab('t',4,1)">④ CD（コミュニケーション）</button>
+  <button class="tab-btn" onclick="switchTab('t',5,1)">⑤ SLD（学習）</button>
+  <button class="tab-btn" onclick="switchTab('t',6,1)">⑥ DCD（協調運動）</button>
+  <button class="tab-btn" onclick="switchTab('t',7,1)">⑦ チック症</button>
+</div>
+
+<div class="disorder-panels">
+
+  <!-- ID -->
+  <div class="panel active" id="t1">
+    <div class="panel-card">
+      <div class="panel-head ph-1">
+        <div class="p-icon">🧠</div>
+        <h3>知的発達症（ID）の学生への<br>接し方と応酬話法</h3>
+        <div class="p-abbr">ID</div>
+      </div>
+      <div class="panel-body">
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-green">🤝</div>基本的な接し方の原則</div>
+          <ul class="approach-list">
+            <li>言葉はやさしく、短く、具体的に。「とりあえず考えてみて」は禁物。</li>
+            <li>一度に伝える情報は「1〜2つまで」。箇条書きや図で視覚化する。</li>
+            <li>理解できているか確認するとき「わかりましたか？」ではなく「もう一度言ってみてくれる？」と問い返しを促す。</li>
+            <li>できたことを必ず言語化してほめる。達成感の積み重ねが自信につながる。</li>
+            <li>否定表現を避ける。「〜してはダメ」→「〜しようね」と肯定形に言い換える。</li>
+          </ul>
+        </div>
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-amber">💬</div>応酬話法 — 面談での実例</div>
+          <div class="dialog-box">
+            <div class="dialog-student">
+              <div class="d-avatar av-s">👨‍🎓</div>
+              <div>
+                <div class="d-bubble bs"><div class="d-label ls">学生</div>「就活って何から始めればいいのか、ぜんぜんわかりません…」</div>
+              </div>
+            </div>
+            <div class="dialog-counselor">
+              <div class="d-avatar av-c">🌱</div>
+              <div>
+                <div class="d-bubble bc"><div class="d-label lc">キャリ爺</div>「そうだよね、最初は誰でもわからない。今日はね、たった一つだけ決めよう。『どんな仕事が好きかな？』って考えてみる。好きなこと、得意なことを一緒にリストにしようか。」</div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box">
+            <div class="t-label">💡 話法ポイント</div>
+            「全部一気に」ではなく「今日はたった一つ」と範囲を絞る。終わりを明確にすることで安心感が生まれる。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ASD -->
+  <div class="panel" id="t2">
+    <div class="panel-card">
+      <div class="panel-head ph-2">
+        <div class="p-icon">🔷</div>
+        <h3>自閉スペクトラム症（ASD）の学生への<br>接し方と応酬話法</h3>
+        <div class="p-abbr">ASD</div>
+      </div>
+      <div class="panel-body">
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-green">🤝</div>基本的な接し方の原則</div>
+          <ul class="approach-list">
+            <li>曖昧な言葉を避ける。「なんとなく気になる業界は？」→「製造・IT・医療・商社、どれが気になる？」と選択肢で問う。</li>
+            <li>指示は文字・メモ・メールで「目に見える形」で渡す。口頭のみは混乱の元。</li>
+            <li>急な予定変更を嫌うので、面談の構造（今日やること）を最初に伝える。</li>
+            <li>独特の言い回しや話の「こだわり」を否定しない。「そういう見方があるんだね」と受容する。</li>
+            <li>アイコンタクトを求めすぎない。視線が合わなくても話を聴いている。</li>
+          </ul>
+        </div>
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-amber">💬</div>応酬話法 — 面談での実例</div>
+          <div class="dialog-box">
+            <div class="dialog-student">
+              <div class="d-avatar av-s">👨‍🎓</div>
+              <div>
+                <div class="d-bubble bs"><div class="d-label ls">学生</div>「面接で『あなたの強みは何ですか？』と聞かれると頭が真っ白になります。強みって何ですか？」</div>
+              </div>
+            </div>
+            <div class="dialog-counselor">
+              <div class="d-avatar av-c">🌱</div>
+              <div>
+                <div class="d-bubble bc"><div class="d-label lc">キャリ爺</div>「いい質問だね。強みっていうのは、『人よりも自然にできてしまうこと』のことだよ。たとえば、データの整理が好き・ルールを守ることが得意・一つのことに集中し続けられる、こういうことが強みになる。あなたはどれに近い？」</div>
+              </div>
+            </div>
+          </div>
+          <div class="dialog-box" style="margin-top:12px">
+            <div class="dialog-student">
+              <div class="d-avatar av-s">👨‍🎓</div>
+              <div>
+                <div class="d-bubble bs"><div class="d-label ls">学生</div>「グループ面接が苦手です。人の話を聞きながら自分の意見を考えるのが難しくて…」</div>
+              </div>
+            </div>
+            <div class="dialog-counselor">
+              <div class="d-avatar av-c">🌱</div>
+              <div>
+                <div class="d-bubble bc"><div class="d-label lc">キャリ爺</div>「それは正直に言えたね。グループ面接は、実はみんな苦手なんだよ。一つコツを教えると、『自分の番が来たら、前の人の言葉を一言だけ引用して始める』という方法がある。『〇〇さんと同じように感じていて…』と言うだけで、自然な会話になるよ。一緒に練習しようか。」</div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box">
+            <div class="t-label">💡 話法ポイント</div>
+            「苦手」を責めず、具体的な「一つのコツ」を示す。抽象的なアドバイスは届かない——行動ベースで言語化する。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADHD -->
+  <div class="panel" id="t3">
+    <div class="panel-card">
+      <div class="panel-head ph-3">
+        <div class="p-icon">⚡</div>
+        <h3>注意欠如多動症（ADHD）の学生への<br>接し方と応酬話法</h3>
+        <div class="p-abbr">ADHD</div>
+      </div>
+      <div class="panel-body">
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-green">🤝</div>基本的な接し方の原則</div>
+          <ul class="approach-list">
+            <li>話が脱線しても責めない。「面白い発想だね。今日のテーマに戻ろうか」と穏やかに軌道修正。</li>
+            <li>「なんでできないの？」は禁句。本人も困っている。「どうすればできそう？」と一緒に対処法を考える。</li>
+            <li>面談は30〜40分に区切る。集中が続かないのは特性であり怠けではない。</li>
+            <li>行動の優先順位を一緒に「見える化」する（リスト・ホワイトボード・付箋）。</li>
+            <li>衝動的な発言を「感受性が豊か」として受け止め、表現の洗練を一緒に考える。</li>
+          </ul>
+        </div>
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-amber">💬</div>応酬話法 — 面談での実例</div>
+          <div class="dialog-box">
+            <div class="dialog-student">
+              <div class="d-avatar av-s">👨‍🎓</div>
+              <div>
+                <div class="d-bubble bs"><div class="d-label ls">学生</div>「ES書こうとするんですけど、なんかやる気が出なくて…気がついたらSNS見てて、気づいたら夜中になってます」</div>
+              </div>
+            </div>
+            <div class="dialog-counselor">
+              <div class="d-avatar av-c">🌱</div>
+              <div>
+                <div class="d-bubble bc"><div class="d-label lc">キャリ爺</div>「あー、それは本当によくある話。でもね、それは意志が弱いんじゃなくて、ADHDの特性として『始めることが難しい』んだよ。だから『やる気が出たらやる』じゃなくて、『始める儀式』を作るといい。たとえば、タイマーを5分だけセットして、その間だけ書く——5分経ったら止めていい、って決める。やってみる？」</div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box">
+            <div class="t-label">💡 話法ポイント</div>
+            「意志の問題」から「特性の問題」に言い換え、自己否定を解除する。「5分だけ」という超小さな行動提案が有効。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CD -->
+  <div class="panel" id="t4">
+    <div class="panel-card">
+      <div class="panel-head ph-4">
+        <div class="p-icon">🗣️</div>
+        <h3>コミュニケーション症群（CD）の学生への<br>接し方と応酬話法</h3>
+        <div class="p-abbr">CD</div>
+      </div>
+      <div class="panel-body">
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-green">🤝</div>基本的な接し方の原則</div>
+          <ul class="approach-list">
+            <li>言葉が出てくるのを焦って待たない——「ゆっくりでいいよ」と伝える。</li>
+            <li>吃音がある学生に対して「言い直さなくていい」「伝わってるよ」と示す。</li>
+            <li>書いてもらう・タイピングしてもらう、など代替コミュニケーション手段を積極的に用意する。</li>
+            <li>言葉の巧みさではなく「内容の豊かさ」に着目してフィードバックする。</li>
+            <li>「さっき言おうとしてたこと、書いてみてくれる？」と文字表現への橋渡しをする。</li>
+          </ul>
+        </div>
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-amber">💬</div>応酬話法 — 面談での実例</div>
+          <div class="dialog-box">
+            <div class="dialog-student">
+              <div class="d-avatar av-s">👨‍🎓</div>
+              <div>
+                <div class="d-bubble bs"><div class="d-label ls">学生（吃音あり）</div>「め、めんせ、…面接で、うまく、い、言葉が出なくて…企業に、わ、わかってもらえないと思うと…受けるのが怖いです」</div>
+              </div>
+            </div>
+            <div class="dialog-counselor">
+              <div class="d-avatar av-c">🌱</div>
+              <div>
+                <div class="d-bubble bc"><div class="d-label lc">キャリ爺</div>「ちゃんと伝わってるよ。それを話してくれてありがとう。面接でどもることを、恥ずかしいと思ってる？——それはね、あなたが誠実だからだよ。話し方は一つじゃない。合理的配慮を使って、『文字で補足していいか事前に確認する』という選択肢もある。それ、一緒に準備しようか。」</div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box">
+            <div class="t-label">💡 話法ポイント</div>
+            まず「伝わってる」と安心させる。「どもり＝誠実さ」という価値の転換。「合理的配慮」を具体策として提示。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLD -->
+  <div class="panel" id="t5">
+    <div class="panel-card">
+      <div class="panel-head ph-5">
+        <div class="p-icon">📖</div>
+        <h3>限局性学習症（SLD）の学生への<br>接し方と応酬話法</h3>
+        <div class="p-abbr">SLD</div>
+      </div>
+      <div class="panel-body">
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-green">🤝</div>基本的な接し方の原則</div>
+          <ul class="approach-list">
+            <li>「字が汚い」「書くのが遅い」を責めない。PCやタブレット入力を積極的に促す。</li>
+            <li>口頭では内容豊かに話せることを認める。「言葉は出てるじゃないか」と強みを言語化。</li>
+            <li>ESや履歴書の作成は「時間をかけて一緒に」。添削は赤ペンより「聞きながら直す」方式が◎。</li>
+            <li>計算が苦手な学生には「給与計算・業務数値管理」が必須でない職種を優先的に提案。</li>
+            <li>読むことが苦手なら、企業パンフレットを「読んできて」ではなく「一緒に確認しよう」にする。</li>
+          </ul>
+        </div>
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-amber">💬</div>応酬話法 — 面談での実例</div>
+          <div class="dialog-box">
+            <div class="dialog-student">
+              <div class="d-avatar av-s">👨‍🎓</div>
+              <div>
+                <div class="d-bubble bs"><div class="d-label ls">学生</div>「エントリーシートを書こうとしても、文字を書くのが異常に時間かかって。なんか自分だけすごく遅い気がして、もう就活やめたくなります」</div>
+              </div>
+            </div>
+            <div class="dialog-counselor">
+              <div class="d-avatar av-c">🌱</div>
+              <div>
+                <div class="d-bubble bc"><div class="d-label lc">キャリ爺</div>「そのしんどさ、ちゃんと聞いたよ。ねえ、今ここで口で言ってくれたこと、すごく内容よかったんだけど、気づいてた？書くのと話すのって、実は別の脳の働きなんだよ。だったら、まず話してもらって、私がメモする——そこからESを作る方法、やってみよう。書けないんじゃなくて、書き方が合ってなかっただけだよ。」</div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box">
+            <div class="t-label">💡 話法ポイント</div>
+            「書けない＝能力がない」の誤信念を解除。「口頭→メモ→ES化」という代替プロセスを即座に提案する。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DCD -->
+  <div class="panel" id="t6">
+    <div class="panel-card">
+      <div class="panel-head ph-6">
+        <div class="p-icon">🖐️</div>
+        <h3>発達性協調運動症（DCD）の学生への<br>接し方と応酬話法</h3>
+        <div class="p-abbr">DCD</div>
+      </div>
+      <div class="panel-body">
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-green">🤝</div>基本的な接し方の原則</div>
+          <ul class="approach-list">
+            <li>不器用さを「だらしない」「不注意」と誤解しない——脳の特性であり、努力でなかなか改善しない部分がある。</li>
+            <li>字が汚くてもPCで補える職場環境を想定した職種選びを一緒に考える。</li>
+            <li>「体を使う仕事」よりも「思考・企画・情報処理系」に強みが出やすいことを伝える。</li>
+            <li>本人が「不器用な自分」に強い自己否定を持っている場合が多い——「それ、知的能力とは全く関係ないんだよ」と明確に伝える。</li>
+          </ul>
+        </div>
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-amber">💬</div>応酬話法 — 面談での実例</div>
+          <div class="dialog-box">
+            <div class="dialog-student">
+              <div class="d-avatar av-s">👨‍🎓</div>
+              <div>
+                <div class="d-bubble bs"><div class="d-label ls">学生</div>「自分、すごく不器用で。バイトでも何か落としたり、書類を汚したりして迷惑かけてて…就職できる気がしない」</div>
+              </div>
+            </div>
+            <div class="dialog-counselor">
+              <div class="d-avatar av-c">🌱</div>
+              <div>
+                <div class="d-bubble bc"><div class="d-label lc">キャリ爺</div>「よく話してくれた。でも一つ聞いていい？その不器用さって、頭で考えることとは全然別の話なんだよ。今こうして話してる内容、すごくしっかりしてると思わない？世の中には『手先より頭』が勝負の仕事が山ほどある。たとえば企画・分析・相談業務——そっちで力を発揮できる場所、一緒に探そう。」</div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box">
+            <div class="t-label">💡 話法ポイント</div>
+            「不器用＝仕事できない」の誤解を解く。知的能力と運動協調は別物であることを明確に伝え、強みを再定義する。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- チック症 -->
+  <div class="panel" id="t7">
+    <div class="panel-card">
+      <div class="panel-head ph-7">
+        <div class="p-icon">🌀</div>
+        <h3>チック症群・常同運動症の学生への<br>接し方と応酬話法</h3>
+        <div class="p-abbr">TD</div>
+      </div>
+      <div class="panel-body">
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-green">🤝</div>基本的な接し方の原則</div>
+          <ul class="approach-list">
+            <li>チックが起きても「気にしてない」態度を示す。視線を向けすぎない、指摘しない。</li>
+            <li>「止めようとすればするほど出る」という特性を本人と共有し、責めない環境を作る。</li>
+            <li>緊張でチックが増える——面談の雰囲気をできる限りリラックスしたものにする。</li>
+            <li>「隠す就活」ではなく「理解してくれる職場を選ぶ就活」という考え方を伝える。</li>
+            <li>必要であれば合理的配慮の申請方法を一緒に確認する。</li>
+          </ul>
+        </div>
+        <div class="sub-sec">
+          <div class="sub-sec-title"><div class="icon-badge ib-amber">💬</div>応酬話法 — 面談での実例</div>
+          <div class="dialog-box">
+            <div class="dialog-student">
+              <div class="d-avatar av-s">👨‍🎓</div>
+              <div>
+                <div class="d-bubble bs"><div class="d-label ls">学生</div>「面接のとき、緊張するとチックが出て…面接官に変に思われるんじゃないかって、それが怖くて受けられないです」</div>
+              </div>
+            </div>
+            <div class="dialog-counselor">
+              <div class="d-avatar av-c">🌱</div>
+              <div>
+                <div class="d-bubble bc"><div class="d-label lc">キャリ爺</div>「その怖さ、ちゃんとわかるよ。でも一つ考え方を変えてみてほしいんだ。『チックを見て、まともに対応できない会社』には入らなくていい——という選び方もある。逆に言えば、チックがあっても『この人と働きたい』と思ってくれる会社が、本当にあなたに合った会社だよ。それを探す旅を、一緒にしよう。」</div>
+              </div>
+            </div>
+          </div>
+          <div class="tip-box">
+            <div class="t-label">💡 話法ポイント</div>
+            「隠さなければならない」という前提を覆す。「ありのままを受け入れる企業を選ぶ」という視点の転換が核心。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /disorder-panels -->
+
+
+<!-- ============================================================ -->
+<!-- CHAPTER 2: 就職支援の進め方 -->
+<!-- ============================================================ -->
+<div class="chapter" id="ch2">
+  <div class="chapter-num">2</div>
+  <h2>障害特性別「就職支援」の進め方</h2>
+  <div class="line"></div>
+</div>
+
+<div class="sec-intro">
+  「一般就労」か「障害者雇用」か——まずそこから一緒に整理します。<br>
+  学生が自分の特性を正確に理解し、「どの環境で力が出せるか」を選択できることがゴールです。<br>
+  支援は「決めてあげる」のではなく、「選択肢を一緒に広げる」プロセスです。
+</div>
+
+<!-- タブ（2章用） -->
+<div class="tabs" id="tabs2">
+  <button class="tab-btn active" onclick="switchTab('s',1,2)">① ID</button>
+  <button class="tab-btn" onclick="switchTab('s',2,2)">② ASD</button>
+  <button class="tab-btn" onclick="switchTab('s',3,2)">③ ADHD</button>
+  <button class="tab-btn" onclick="switchTab('s',4,2)">④ CD</button>
+  <button class="tab-btn" onclick="switchTab('s',5,2)">⑤ SLD</button>
+  <button class="tab-btn" onclick="switchTab('s',6,2)">⑥ DCD</button>
+  <button class="tab-btn" onclick="switchTab('s',7,2)">⑦ チック</button>
+</div>
+
+<div class="disorder-panels">
+
+  <div class="panel active" id="s1">
+    <div class="panel-card">
+      <div class="panel-head ph-1"><div class="p-icon">🧠</div><h3>知的発達症（ID）の就職支援</h3><div class="p-abbr">ID</div></div>
+      <div class="panel-body">
+        <div class="support-grid">
+          <div class="support-card">
+            <h4>🎯 支援の基本方針</h4>
+            <ul>
+              <li>障害者手帳取得を視野に入れた「障害者雇用枠」の検討を早期に</li>
+              <li>「できること」の棚卸しを具体的・作業ベースで行う</li>
+              <li>インターンシップ・職場体験を積極活用する</li>
+              <li>卒業後の福祉的就労（就労支援B型など）も選択肢として丁寧に説明</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>📋 ES・面接対策</h4>
+            <ul>
+              <li>ES文章は短く・実体験ベースで作成する</li>
+              <li>「できたこと」を箇条書きリストで整理し、本人が確認できる形にする</li>
+              <li>面接練習は繰り返し。台本を使っていい</li>
+              <li>「どんな仕事が好きか」から逆算してES内容を作る</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>🤲 職場定着支援</h4>
+            <ul>
+              <li>就労移行支援事業所との連携を早めに</li>
+              <li>就職後のジョブコーチ活用を企業と事前に相談</li>
+              <li>定着フォロー面談を定期実施（内定後も切らない）</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>⚠️ 注意点</h4>
+            <ul>
+              <li>「学生本人のペース」に合わせ、急かさない</li>
+              <li>保護者との連携が効果的な場合あり（本人の了解を得て）</li>
+              <li>「難しい企業は受けない」ではなく「合う企業を探す」視点で</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="s2">
+    <div class="panel-card">
+      <div class="panel-head ph-2"><div class="p-icon">🔷</div><h3>ASD学生の就職支援</h3><div class="p-abbr">ASD</div></div>
+      <div class="panel-body">
+        <div class="support-grid">
+          <div class="support-card">
+            <h4>🎯 支援の基本方針</h4>
+            <ul>
+              <li>自己理解を深め「自分の特性を言葉にする」ことから始める</li>
+              <li>特性を強みに変える「語り方」のトレーニング</li>
+              <li>職場環境の事前確認（騒音・照明・曖昧さのある指示など）を重視</li>
+              <li>「障害者雇用」か「一般雇用＋配慮申請」か、本人と一緒に検討</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>📋 ES・面接対策</h4>
+            <ul>
+              <li>自己PRは「こだわり＝専門性」として言語化する</li>
+              <li>「なぜこの会社？」は事実ベースで整理（曖昧な共感ではなく）</li>
+              <li>グループ面接対策：「引用して始める」など具体的スキルを練習</li>
+              <li>模擬面接は録画して振り返ると効果的</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>🤲 職場マッチング重視点</h4>
+            <ul>
+              <li>業務内容が明確な職種（マニュアル化されている）を優先</li>
+              <li>「人間関係の複雑さ」が少ない環境を確認</li>
+              <li>テレワーク・個室対応可否を事前確認</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>⚠️ 注意点</h4>
+            <ul>
+              <li>「空気を読む」が必要な営業・接客は疲弊しやすい</li>
+              <li>「こだわりが強い」を活かせる専門職・技術職が定着しやすい</li>
+              <li>内定後のオンボーディング（職場環境説明）まで支援する</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="s3">
+    <div class="panel-card">
+      <div class="panel-head ph-3"><div class="p-icon">⚡</div><h3>ADHD学生の就職支援</h3><div class="p-abbr">ADHD</div></div>
+      <div class="panel-body">
+        <div class="support-grid">
+          <div class="support-card">
+            <h4>🎯 支援の基本方針</h4>
+            <ul>
+              <li>就活スケジュールを「仕組み化」する（リマインダー・チェックリスト）</li>
+              <li>短期目標を細かく設定し、達成感を積み重ねる</li>
+              <li>「飽き性＝多動性」を「スピード感・好奇心」として言語化</li>
+              <li>ルーティンが少ない・変化のある職場への適性を確認する</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>📋 ES・面接対策</h4>
+            <ul>
+              <li>ESは「書く」より「話して録音→文字起こし→整理」の流れが有効</li>
+              <li>面接では「行動力・フットワーク・熱意」を前面に</li>
+              <li>衝動的な発言のリハーサル対策（一呼吸おいて話す練習）</li>
+              <li>締切管理は紙のカレンダー＋スマホアラームの二重管理を提案</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>🤲 職場マッチング重視点</h4>
+            <ul>
+              <li>単調なルーティン業務より、変化・裁量がある職場</li>
+              <li>成果報酬型・プロジェクト型の仕事が向く場合あり</li>
+              <li>「締切が明確」「フィードバックが早い」職場環境が安定しやすい</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>⚠️ 注意点</h4>
+            <ul>
+              <li>「飽き」による早期離職を防ぐため、成長実感がある職場選びを</li>
+              <li>薬物療法をしている場合、服薬管理の確認も必要</li>
+              <li>内定後の「職場での失敗体験」への対処法を事前に話し合う</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="s4">
+    <div class="panel-card">
+      <div class="panel-head ph-4"><div class="p-icon">🗣️</div><h3>コミュニケーション症群（CD）の就職支援</h3><div class="p-abbr">CD</div></div>
+      <div class="panel-body">
+        <div class="support-grid">
+          <div class="support-card">
+            <h4>🎯 支援の基本方針</h4>
+            <ul>
+              <li>「話すこと」を必須としない職種を積極的に検討する</li>
+              <li>文章・デザイン・データなど「話さない表現手段」を強みにする</li>
+              <li>合理的配慮申請（面接での補助・筆記回答等）のサポート</li>
+              <li>本人の言語化力を口頭以外のチャネルで引き出す支援</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>📋 ES・面接対策</h4>
+            <ul>
+              <li>ESは文章表現が得意なことを活かして丁寧に書く</li>
+              <li>面接は「事前に伝えること」を企業にお願いする文章を一緒に作る</li>
+              <li>電話選考が苦手なら、メール・Web対応可否を事前に確認する</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>🤲 職場マッチング重視点</h4>
+            <ul>
+              <li>文字コミュニケーション主体の職場（Slack・メール中心）が合いやすい</li>
+              <li>内勤・専門職・研究・クリエイティブ系を優先検討</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>⚠️ 注意点</h4>
+            <ul>
+              <li>「話せない＝コミュニケーション力がない」ではない——本人に繰り返し伝える</li>
+              <li>電話応対必須の職場は要確認。代替手段があるか事前交渉が必要</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="s5">
+    <div class="panel-card">
+      <div class="panel-head ph-5"><div class="p-icon">📖</div><h3>限局性学習症（SLD）の就職支援</h3><div class="p-abbr">SLD</div></div>
+      <div class="panel-body">
+        <div class="support-grid">
+          <div class="support-card">
+            <h4>🎯 支援の基本方針</h4>
+            <ul>
+              <li>「読む・書く・計算する」が必須ではない職種を優先的に提示</li>
+              <li>ICTツール（音声入力・スペルチェック等）の活用を就活段階から習慣化</li>
+              <li>口頭でのやりとりが得意な場合、その強みをフル活用する方向で</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>📋 ES・面接対策</h4>
+            <ul>
+              <li>ES作成は「口頭→録音→文字起こし→整形」のフローで支援</li>
+              <li>スペルミス・誤字は提出前に必ず一緒に確認</li>
+              <li>「書くのが苦手な理由」を恥ずかしがらず正直に言える準備を</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>🤲 職場マッチング重視点</h4>
+            <ul>
+              <li>報告書・文章量が少ない職場、または音声報告が可能な職場</li>
+              <li>数値分析が必須でない職種（デザイン・コンサル・営業等）</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>⚠️ 注意点</h4>
+            <ul>
+              <li>読字障害（ディスレクシア）は見逃されやすい——「なんとなく読みにくい」を放置しない</li>
+              <li>文書作成必須の職種でも「代替手段の有無」を確認してから判断</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="s6">
+    <div class="panel-card">
+      <div class="panel-head ph-6"><div class="p-icon">🖐️</div><h3>発達性協調運動症（DCD）の就職支援</h3><div class="p-abbr">DCD</div></div>
+      <div class="panel-body">
+        <div class="support-grid">
+          <div class="support-card">
+            <h4>🎯 支援の基本方針</h4>
+            <ul>
+              <li>「手先・身体作業」が中心でない職種に絞って探す</li>
+              <li>知的能力とは別物と伝え、自己否定を解除することが最優先</li>
+              <li>「不器用＝丁寧・慎重」という別の強みの表現方法を一緒に開発</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>📋 ES・面接対策</h4>
+            <ul>
+              <li>「慎重に確認する」「手順を大切にする」など特性をポジティブに言語化</li>
+              <li>体育会系の職場文化（素早さ・手先の器用さ重視）は事前に職場文化確認</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>🤲 職場マッチング重視点</h4>
+            <ul>
+              <li>デスクワーク・情報処理・企画・分析系が安定しやすい</li>
+              <li>手作業・接客・製造ラインは適性確認が必要</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>⚠️ 注意点</h4>
+            <ul>
+              <li>DCDは単独診断が少なく、ASDやADHDと併存するケースが多い</li>
+              <li>「なぜ不器用なのか」の自己理解が進むと自己否定が軽減される</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="s7">
+    <div class="panel-card">
+      <div class="panel-head ph-7"><div class="p-icon">🌀</div><h3>チック症群・常同運動症の就職支援</h3><div class="p-abbr">TD</div></div>
+      <div class="panel-body">
+        <div class="support-grid">
+          <div class="support-card">
+            <h4>🎯 支援の基本方針</h4>
+            <ul>
+              <li>「理解してくれる企業を選ぶ」就活戦略を基本に置く</li>
+              <li>合理的配慮の申請（面接での配慮・職場環境整備等）を積極活用</li>
+              <li>精神障害者保健福祉手帳の取得を医師と相談（トゥレット症など）</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>📋 ES・面接対策</h4>
+            <ul>
+              <li>「チックがある」ことを開示するかどうかを本人が決める</li>
+              <li>開示する場合の伝え方を一緒に準備（「業務への支障はない」ことを明確に）</li>
+              <li>面接でのリラックス法（事前準備・会場下見など）を一緒に考える</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>🤲 職場マッチング重視点</h4>
+            <ul>
+              <li>緊張が少ない・静かな環境の職場を優先</li>
+              <li>障害者雇用枠の活用も視野に入れて検討</li>
+            </ul>
+          </div>
+          <div class="support-card">
+            <h4>⚠️ 注意点</div>
+            <ul>
+              <li>「接客・対面販売」は緊張からチックが増える可能性あり——本人に確認</li>
+              <li>チックは「意志で止められない」ことを職場に説明できる準備を</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /disorder-panels ch2 -->
+
+
+<!-- ============================================================ -->
+<!-- CHAPTER 3: 就職支援機関の活用 -->
+<!-- ============================================================ -->
+<div class="chapter" id="ch3">
+  <div class="chapter-num">3</div>
+  <h2>活用できる「就職支援機関」一覧</h2>
+  <div class="line"></div>
+</div>
+
+<div class="sec-intro">
+  大学のキャリア支援課だけで抱え込まない——連携こそが最大の支援です。<br>
+  学生の状況に応じて、適切な外部機関につなぐことが「プロの判断」です。
+</div>
+
+<div class="agency-wrap">
+  <h3>🏢 主な就職支援機関 一覧</h3>
+  <div class="agency-inner">
+    <div style="overflow-x:auto;">
+    <table class="agency-table">
+      <thead>
+        <tr>
+          <th style="width:22%">機関名</th>
+          <th style="width:28%">主な対象・特徴</th>
+          <th style="width:28%">提供サービス</th>
+          <th style="width:22%">対象特性</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>新卒応援ハローワーク</strong></td>
+          <td>大学生・既卒者（3年以内）を対象にした無料就職支援。専任支援員が担当</td>
+          <td>個別相談・求人紹介・模擬面接・ES添削</td>
+          <td>
+            <span class="tag-a">全特性</span>
+            <span class="tag-a">一般雇用</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>障害者就業・生活支援センター（なかぽつ）</strong></td>
+          <td>就労と生活の両面から支援。地域の相談窓口として機能</td>
+          <td>就職前相談・職場定着支援・生活相談</td>
+          <td>
+            <span class="tag-a">ID</span><span class="tag-a">ASD</span><span class="tag-a">ADHD</span><span class="tag-a">手帳あり</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>就労移行支援事業所</strong></td>
+          <td>就職を目指す障害者向け。最大2年間の訓練・就活支援を実施</td>
+          <td>職業訓練・就活サポート・企業実習・定着支援</td>
+          <td>
+            <span class="tag-a">ID</span><span class="tag-a">ASD</span><span class="tag-a">ADHD</span><span class="tag-a">SLD</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>障害者職業センター（JEED）</strong></td>
+          <td>ハローワークと連携した専門機関。職業評価・リワーク支援も</td>
+          <td>職業評価・職業準備支援・ジョブコーチ派遣</td>
+          <td>
+            <span class="tag-a">全特性</span>
+            <span class="tag-a">手帳あり</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>発達障害者支援センター</strong></td>
+          <td>各都道府県に設置。発達障害に特化した相談・支援機関</td>
+          <td>相談・関係機関連携・情報提供</td>
+          <td>
+            <span class="tag-a">ASD</span><span class="tag-a">ADHD</span><span class="tag-a">SLD</span><span class="tag-a">DCD</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>障害者雇用専門の就活エージェント</strong><br>（Kaien・LITALICO・atGP等）</td>
+          <td>発達障害・精神障害専門の民間就活支援。無料で利用可能</td>
+          <td>求人紹介・面接対策・職場環境確認代行</td>
+          <td>
+            <span class="tag-a">ASD</span><span class="tag-a">ADHD</span><span class="tag-a">全般</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>大学の学生相談室・障害学生支援室</strong></td>
+          <td>学内連携の最初の窓口。心理士・専門スタッフが対応</td>
+          <td>心理相談・合理的配慮の調整・医療連携</td>
+          <td>
+            <span class="tag-a">全特性</span>
+            <span class="tag-a">未診断含む</span>
+          </td>
+        </tr>
+        <tr>
+          <td><strong>医療機関（精神科・発達外来）</strong></td>
+          <td>診断・投薬治療・診断書発行。就活との並行が必要な場合に</td>
+          <td>診断・処方・診断書作成・デイケア</td>
+          <td>
+            <span class="tag-a">全特性</span>
+            <span class="tag-a">診断前の学生</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="tip-box" style="margin-top:18px;">
+      <div class="t-label">💡 キャリ爺からのひとこと</div>
+      「支援機関につなぐこと」は学生を手放すことではありません。キャリア支援課が「コーディネーター」として機能することで、学生はより厚い支援の網に包まれます。つなぎ方・伝え方を一緒に準備することが大切です。
+    </div>
+  </div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- CHAPTER 4: 適性職種ガイド -->
+<!-- ============================================================ -->
+<div class="chapter" id="ch4">
+  <div class="chapter-num">4</div>
+  <h2>特性別「適性職種」ガイド</h2>
+  <div class="line"></div>
+</div>
+
+<div class="sec-intro">
+  「この障害だからこの仕事しかできない」ではありません。<br>
+  特性が「強みとして機能する環境」を見つけることが目標です。<br>
+  ここでは各特性に「合いやすい職種」と「確認が必要な職種」を整理します。
+</div>
+
+<div class="warn-box">
+  <strong>⚠️ 大切な注意：</strong>これはあくまでも「傾向」です。同じ診断名でも個人差は大きく、本人の強み・経験・希望によって適性は変わります。「あなたはこれしかダメ」という使い方は絶対にしないでください。
+</div>
+
+<!-- タブ（4章用） -->
+<div class="tabs" id="tabs3">
+  <button class="tab-btn active" onclick="switchTab('j',1,3)">① ID</button>
+  <button class="tab-btn" onclick="switchTab('j',2,3)">② ASD</button>
+  <button class="tab-btn" onclick="switchTab('j',3,3)">③ ADHD</button>
+  <button class="tab-btn" onclick="switchTab('j',4,3)">④ CD</button>
+  <button class="tab-btn" onclick="switchTab('j',5,3)">⑤ SLD</button>
+  <button class="tab-btn" onclick="switchTab('j',6,3)">⑥ DCD</button>
+  <button class="tab-btn" onclick="switchTab('j',7,3)">⑦ チック</button>
+</div>
+
+<div class="disorder-panels">
+
+  <div class="panel active" id="j1">
+    <div class="panel-card">
+      <div class="panel-head ph-1"><div class="p-icon">🧠</div><h3>ID — 知的発達症 適性職種</h3></div>
+      <div class="panel-body">
+        <div class="sub-sec-title"><div class="icon-badge ib-green">✅</div>合いやすい職種・環境</div>
+        <div class="job-grid">
+          <div class="job-card"><div class="j-icon">🏭</div><div class="j-name">軽作業・製造補助</div><div class="j-reason">手順が明確、繰り返し作業が多い</div></div>
+          <div class="job-card"><div class="j-icon">🧹</div><div class="j-name">清掃・環境整備</div><div class="j-reason">マニュアル化されている、評価基準が明確</div></div>
+          <div class="job-card"><div class="j-icon">🌿</div><div class="j-name">農業・園芸</div><div class="j-reason">身体を動かす・季節のリズムがある</div></div>
+          <div class="job-card"><div class="j-icon">📦</div><div class="j-name">物流・倉庫作業</div><div class="j-reason">ルーティン化しやすい・チームで動く</div></div>
+          <div class="job-card"><div class="j-icon">🍽️</div><div class="j-name">食品加工・調理補助</div><div class="j-reason">手順が決まっており習得しやすい</div></div>
+          <div class="job-card"><div class="j-icon">🖨️</div><div class="j-name">データ入力・封入作業</div><div class="j-reason">一定のパターンで進められる</div></div>
+        </div>
+        <div class="tip-box"><div class="t-label">⚠️ 確認が必要な職種</div>高い読み書き・判断力を要する事務職、複雑なコミュニケーションが必須のサービス業は、配慮内容の事前確認が必要。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="j2">
+    <div class="panel-card">
+      <div class="panel-head ph-2"><div class="p-icon">🔷</div><h3>ASD — 自閉スペクトラム症 適性職種</h3></div>
+      <div class="panel-body">
+        <div class="sub-sec-title"><div class="icon-badge ib-green">✅</div>合いやすい職種・環境</div>
+        <div class="job-grid">
+          <div class="job-card"><div class="j-icon">💻</div><div class="j-name">プログラマー・SE</div><div class="j-reason">論理的思考・ルール明確・集中力が活きる</div></div>
+          <div class="job-card"><div class="j-icon">📊</div><div class="j-name">データアナリスト</div><div class="j-reason">パターン認識・精密さが強みになる</div></div>
+          <div class="job-card"><div class="j-icon">🔬</div><div class="j-name">研究職・品質管理</div><div class="j-reason">専門知識・こだわり・正確さが価値</div></div>
+          <div class="job-card"><div class="j-icon">📝</div><div class="j-name">ライター・編集者</div><div class="j-reason">文字コミュニケーション中心・独立作業</div></div>
+          <div class="job-card"><div class="j-icon">📚</div><div class="j-name">図書館司書・アーキビスト</div><div class="j-reason">整理・分類・ルール遵守が強み</div></div>
+          <div class="job-card"><div class="j-icon">🎨</div><div class="j-name">デザイナー・イラストレーター</div><div class="j-reason">こだわりと集中が作品品質につながる</div></div>
+        </div>
+        <div class="tip-box"><div class="t-label">⚠️ 確認が必要な職種</div>「空気を読む」が必須の営業・対面サービス・コンサル系は疲弊しやすい。「やりがいはあるけど疲れる」かどうかを本人に確認。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="j3">
+    <div class="panel-card">
+      <div class="panel-head ph-3"><div class="p-icon">⚡</div><h3>ADHD — 注意欠如多動症 適性職種</h3></div>
+      <div class="panel-body">
+        <div class="sub-sec-title"><div class="icon-badge ib-green">✅</div>合いやすい職種・環境</div>
+        <div class="job-grid">
+          <div class="job-card"><div class="j-icon">📣</div><div class="j-name">営業職</div><div class="j-reason">行動力・話の展開力・フットワーク</div></div>
+          <div class="job-card"><div class="j-icon">💡</div><div class="j-name">企画・マーケティング</div><div class="j-reason">発想力・スピード感・アイデア量</div></div>
+          <div class="job-card"><div class="j-icon">🎙️</div><div class="j-name">メディア・広報</div><div class="j-reason">変化が多い・表現力が活きる</div></div>
+          <div class="job-card"><div class="j-icon">🚑</div><div class="j-name">救急・介護・支援職</div><div class="j-reason">瞬発力・状況対応力・熱量が活きる</div></div>
+          <div class="job-card"><div class="j-icon">🎭</div><div class="j-name">クリエイター・アーティスト</div><div class="j-reason">過集中・独創性・情熱が武器</div></div>
+          <div class="job-card"><div class="j-icon">🏃</div><div class="j-name">起業・フリーランス</div><div class="j-reason">自由度が高い・裁量のある仕事で力発揮</div></div>
+        </div>
+        <div class="tip-box"><div class="t-label">⚠️ 確認が必要な職種</div>細かい書類管理・長期的なルーティン事務・締切がルーズな職場は、「仕組みづくり」ができる環境かを確認する。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="j4">
+    <div class="panel-card">
+      <div class="panel-head ph-4"><div class="p-icon">🗣️</div><h3>CD — コミュニケーション症群 適性職種</h3></div>
+      <div class="panel-body">
+        <div class="sub-sec-title"><div class="icon-badge ib-green">✅</div>合いやすい職種・環境</div>
+        <div class="job-grid">
+          <div class="job-card"><div class="j-icon">✍️</div><div class="j-name">Webライター・コピーライター</div><div class="j-reason">文章表現中心・話さなくていい</div></div>
+          <div class="job-card"><div class="j-icon">🖥️</div><div class="j-name">ITエンジニア・プログラマー</div><div class="j-reason">コード・文字コミュニケーション中心</div></div>
+          <div class="job-card"><div class="j-icon">🎨</div><div class="j-name">グラフィックデザイナー</div><div class="j-reason">視覚表現が中心・口頭でなくても伝わる</div></div>
+          <div class="job-card"><div class="j-icon">🔬</div><div class="j-name">研究補助・実験職</div><div class="j-reason">専門的な文書コミュニケーション中心</div></div>
+          <div class="job-card"><div class="j-icon">📷</div><div class="j-name">カメラマン・映像制作</div><div class="j-reason">視覚で伝える・個人作業が多い</div></div>
+        </div>
+        <div class="tip-box"><div class="t-label">⚠️ 確認が必要な職種</div>電話応対・窓口業務・接客販売など「話す」が必須の職種は、代替手段や合理的配慮が整備されているかを確認。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="j5">
+    <div class="panel-card">
+      <div class="panel-head ph-5"><div class="p-icon">📖</div><h3>SLD — 限局性学習症 適性職種</h3></div>
+      <div class="panel-body">
+        <div class="sub-sec-title"><div class="icon-badge ib-green">✅</div>合いやすい職種・環境</div>
+        <div class="job-grid">
+          <div class="job-card"><div class="j-icon">🎙️</div><div class="j-name">営業・接客</div><div class="j-reason">口頭でのコミュニケーション力が活きる</div></div>
+          <div class="job-card"><div class="j-icon">🎨</div><div class="j-name">デザイン・アート系</div><div class="j-reason">視覚的思考・創造力が強みになる</div></div>
+          <div class="job-card"><div class="j-icon">🛠️</div><div class="j-name">技術職・職人系</div><div class="j-reason">体で覚える・口頭で指示を受けて動く</div></div>
+          <div class="job-card"><div class="j-icon">🧑‍🏫</div><div class="j-name">福祉・教育補助</div><div class="j-reason">共感力・対人スキル重視の職場</div></div>
+          <div class="job-card"><div class="j-icon">🎭</div><div class="j-name">エンタメ・スポーツ関連</div><div class="j-reason">身体感覚・パフォーマンス中心</div></div>
+        </div>
+        <div class="tip-box"><div class="t-label">⚠️ 確認が必要な職種</div>大量の文書作成・複雑な数値管理が必須の職種は、ICTツール活用の許可や補助体制の有無を確認する。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="j6">
+    <div class="panel-card">
+      <div class="panel-head ph-6"><div class="p-icon">🖐️</div><h3>DCD — 発達性協調運動症 適性職種</h3></div>
+      <div class="panel-body">
+        <div class="sub-sec-title"><div class="icon-badge ib-green">✅</div>合いやすい職種・環境</div>
+        <div class="job-grid">
+          <div class="job-card"><div class="j-icon">💻</div><div class="j-name">デスクワーク・事務（PC中心）</div><div class="j-reason">手書きより入力中心なら影響少ない</div></div>
+          <div class="job-card"><div class="j-icon">🧠</div><div class="j-name">企画・コンサルタント</div><div class="j-reason">思考力・言語化力が中心</div></div>
+          <div class="job-card"><div class="j-icon">📊</div><div class="j-name">データ分析・リサーチ</div><div class="j-reason">PCスキルで補える、精緻な思考が活きる</div></div>
+          <div class="job-card"><div class="j-icon">📝</div><div class="j-name">ライター・編集</div><div class="j-reason">手を使わない表現スタイル</div></div>
+        </div>
+        <div class="tip-box"><div class="t-label">⚠️ 確認が必要な職種</div>製造ライン・調理・精密機械操作・スポーツインストラクターなど、手先・身体協調が必須の職種は丁寧に適性を確認する。</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel" id="j7">
+    <div class="panel-card">
+      <div class="panel-head ph-7"><div class="p-icon">🌀</div><h3>チック症群 適性職種</h3></div>
+      <div class="panel-body">
+        <div class="sub-sec-title"><div class="icon-badge ib-green">✅</div>合いやすい職種・環境</div>
+        <div class="job-grid">
+          <div class="job-card"><div class="j-icon">💻</div><div class="j-name">IT・デジタル系</div><div class="j-reason">リモートワーク可・個人作業中心</div></div>
+          <div class="job-card"><div class="j-icon">📝</div><div class="j-name">ライター・研究職</div><div class="j-reason">自分のペースで作業できる</div></div>
+          <div class="job-card"><div class="j-icon">🏢</div><div class="j-name">障害者雇用枠の事務職</div><div class="j-reason">配慮が整備されている環境</div></div>
+          <div class="job-card"><div class="j-icon">🎨</div><div class="j-name">クリエイター系</div><div class="j-reason">個性が受け入れられやすい文化</div></div>
+        </div>
+        <div class="tip-box"><div class="t-label">⚠️ 確認が必要な職種</div>接客・窓口対応・講師など「人前で常に話す」職場は、チックへの理解がある職場かを事前に確認することが重要。</div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /disorder-panels ch4 -->
+
+
+<!-- ============================================================ -->
+<!-- CHAPTER 5: キャリ爺まとめ -->
+<!-- ============================================================ -->
+<div class="chapter" id="ch5">
+  <div class="chapter-num">5</div>
+  <h2>キャリ爺からの最後のメッセージ</h2>
+  <div class="line"></div>
+</div>
+
+<div style="background: var(--green-deep); border-radius: 20px; padding: 32px 28px; color: white; margin-bottom: 24px;">
+  <p style="font-family:'Noto Serif JP',serif; font-size:17px; color:#c8f0c8; font-weight:700; margin-bottom:18px;">🌳 木を育てるように——16年、18,000回の支援から</p>
+  <div style="display:flex; flex-direction:column; gap:14px;">
+    <div style="display:flex; gap:12px; align-items:flex-start; font-size:13.5px; line-height:1.85; color:#e0f4e0;">
+      <span style="background:var(--green-mid); border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; margin-top:2px;">🌱</span>
+      <span><strong style="color:white;">診断名はラベルではない。</strong>「ASDだから」「ADHDだから」ではなく、「この学生は何に困っていて、何が得意か」から始めてほしい。</span>
+    </div>
+    <div style="display:flex; gap:12px; align-items:flex-start; font-size:13.5px; line-height:1.85; color:#e0f4e0;">
+      <span style="background:var(--green-mid); border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; margin-top:2px;">🌿</span>
+      <span><strong style="color:white;">答えは学生の中にある。</strong>ロジャーズが言ったように、私たちの仕事は「答えを与えること」ではなく、「答えを引き出す環境を作ること」だ。</span>
+    </div>
+    <div style="display:flex; gap:12px; align-items:flex-start; font-size:13.5px; line-height:1.85; color:#e0f4e0;">
+      <span style="background:var(--green-mid); border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; margin-top:2px;">🍃</span>
+      <span><strong style="color:white;">つなぐことは、手放すことではない。</strong>外部機関への紹介は、学生を見捨てることではなく、支援の「幅を広げる」ことだ。</span>
+    </div>
+    <div style="display:flex; gap:12px; align-items:flex-start; font-size:13.5px; line-height:1.85; color:#e0f4e0;">
+      <span style="background:var(--green-mid); border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; margin-top:2px;">🌲</span>
+      <span><strong style="color:white;">内定はゴールではない。</strong>「その職場で自分らしく働き続けられるか」まで見届けることが、キャリア支援の本質だ。</span>
+    </div>
+    <div style="display:flex; gap:12px; align-items:flex-start; font-size:13.5px; line-height:1.85; color:#e0f4e0;">
+      <span style="background:var(--green-mid); border-radius:50%; width:26px; height:26px; display:flex; align-items:center; justify-content:center; font-size:12px; flex-shrink:0; margin-top:2px;">✨</span>
+      <span><strong style="color:white;">特性は個性だ。</strong>「障害がある学生」ではなく、「その特性が輝く場所をまだ見つけていない学生」として関わってほしい。</span>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  <div>参考：DSM-5-TR（医学書院 2023）／ JEED（障害者職業総合センター）／ 厚生労働省 合理的配慮指針<br>
+  発達障害者支援センター全国一覧 ／ Kaien・LITALICO・atGP 各公式情報</div>
+  <div style="margin-top:6px; font-size:12px; color:#5a9060;">※ このマニュアルはキャリア支援の参考資料です。医学的診断・治療は専門医にご相談ください。</div>
+  <div class="footer-sig">
+    君は、一人じゃない。いつでも、目の前のキャリア支援課の扉は開いているよ。<br>
+    ——キャリ爺
+  </div>
+</footer>
+
+<script>
+// タブ切り替え（chapter別管理）
+const prefixMap = { 1: 't', 2: 's', 3: 'j' };
+
+function switchTab(prefix, num, chapter) {
+  // パネル切り替え
+  for (let i = 1; i <= 7; i++) {
+    const p = document.getElementById(prefix + i);
+    if (p) p.classList.toggle('active', i === num);
+  }
+  // ボタン切り替え
+  const tabs = document.getElementById('tabs' + chapter);
+  if (!tabs) return;
+  const btns = tabs.querySelectorAll('.tab-btn');
+  btns.forEach((b, i) => b.classList.toggle('active', i === num - 1));
+}
+</script>
+
+</body>
+</html>

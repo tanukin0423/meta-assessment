@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>神経発達症（発達障害）7分類 | キャリ爺の支援ガイド</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=Noto+Serif+JP:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep: #2d5a27;
+    --green-mid: #4a7c3f;
+    --green-light: #7aad6a;
+    --green-pale: #e8f5e3;
+    --green-mist: #f4faf2;
+    --amber: #d47c0f;
+    --amber-light: #fef3dc;
+    --text-dark: #1a2318;
+    --text-mid: #3d5038;
+    --text-light: #6b8060;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(45,90,39,0.12);
+    --shadow-hover: 0 8px 32px rgba(45,90,39,0.2);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--green-mist);
+    color: var(--text-dark);
+    line-height: 1.8;
+    min-height: 100vh;
+  }
+
+  /* ヘッダー */
+  header {
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '🌱';
+    position: absolute;
+    font-size: 200px;
+    opacity: 0.06;
+    top: -40px;
+    right: -20px;
+    transform: rotate(-15deg);
+    pointer-events: none;
+  }
+  .header-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.2);
+    color: #d4f0c8;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+  header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(22px, 5vw, 34px);
+    color: var(--white);
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 12px;
+  }
+  header .subtitle {
+    color: #c8e8c0;
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .dsm-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--amber);
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-top: 16px;
+  }
+
+  /* メインコンテンツ */
+  main {
+    max-width: 840px;
+    margin: 0 auto;
+    padding: 32px 16px 60px;
+  }
+
+  /* 前置き */
+  .intro-box {
+    background: white;
+    border-left: 5px solid var(--green-mid);
+    border-radius: 0 16px 16px 0;
+    padding: 24px 24px 24px 28px;
+    margin-bottom: 32px;
+    box-shadow: var(--shadow);
+  }
+  .intro-box h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .intro-box p {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.9;
+  }
+  .intro-box .point {
+    background: var(--green-pale);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--green-deep);
+    font-weight: 500;
+  }
+
+  /* DSMとは */
+  .what-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  @media(max-width: 600px) { .what-box { grid-template-columns: 1fr; } }
+  .what-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: var(--shadow);
+  }
+  .what-card .label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .what-card h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin-bottom: 8px;
+  }
+  .what-card p {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.8;
+  }
+
+  /* セクションタイトル */
+  .section-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 36px 0 20px;
+  }
+  .section-title h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--green-deep);
+  }
+  .section-title .line {
+    flex: 1;
+    height: 2px;
+    background: linear-gradient(to right, var(--green-mid), transparent);
+    border-radius: 2px;
+  }
+
+  /* 7分類カード */
+  .disorder-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin-bottom: 32px;
+  }
+  .disorder-card {
+    background: white;
+    border-radius: 18px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: box-shadow 0.25s, transform 0.25s;
+    cursor: default;
+  }
+  .disorder-card:hover {
+    box-shadow: var(--shadow-hover);
+    transform: translateY(-2px);
+  }
+  .disorder-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px 22px;
+  }
+  .num-badge {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 900;
+    color: white;
+    flex-shrink: 0;
+  }
+  .disorder-header .titles { flex: 1; }
+  .disorder-header .jp-name {
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--text-dark);
+    line-height: 1.3;
+  }
+  .disorder-header .en-name {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 2px;
+  }
+  .disorder-header .abbr-tag {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 12px;
+    color: white;
+    flex-shrink: 0;
+  }
+  .disorder-body {
+    padding: 0 22px 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  @media(max-width: 560px) { .disorder-body { grid-template-columns: 1fr; } }
+  .d-section {
+    background: var(--green-mist);
+    border-radius: 10px;
+    padding: 12px 14px;
+  }
+  .d-section.full { grid-column: 1 / -1; }
+  .d-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-bottom: 6px;
+  }
+  .d-text {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.75;
+  }
+  .d-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 4px;
+  }
+  .d-tag {
+    font-size: 11px;
+    background: white;
+    border: 1.5px solid;
+    border-radius: 8px;
+    padding: 2px 10px;
+    font-weight: 500;
+    line-height: 1.6;
+  }
+  .career-tip {
+    background: var(--amber-light);
+    border-left: 4px solid var(--amber);
+    border-radius: 0 10px 10px 0;
+    padding: 10px 14px;
+    grid-column: 1 / -1;
+  }
+  .career-tip .tip-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: var(--amber);
+    margin-bottom: 4px;
+  }
+  .career-tip .tip-text {
+    font-size: 13px;
+    color: #7a5200;
+    line-height: 1.75;
+  }
+
+  /* 色テーマ */
+  .c1 { background: #3a7bd5; }
+  .c2 { background: #e84393; }
+  .c3 { background: #f57c00; }
+  .c4 { background: #7b1fa2; }
+  .c5 { background: #00897b; }
+  .c6 { background: #c62828; }
+  .c7 { background: #558b2f; }
+  .tag1 { border-color: #3a7bd5; color: #3a7bd5; }
+  .tag2 { border-color: #e84393; color: #e84393; }
+  .tag3 { border-color: #f57c00; color: #f57c00; }
+  .tag4 { border-color: #7b1fa2; color: #7b1fa2; }
+  .tag5 { border-color: #00897b; color: #00897b; }
+  .tag6 { border-color: #c62828; color: #c62828; }
+  .tag7 { border-color: #558b2f; color: #558b2f; }
+
+  /* 重要ポイントまとめ */
+  .summary-box {
+    background: var(--green-deep);
+    border-radius: 20px;
+    padding: 30px 28px;
+    margin-bottom: 24px;
+    color: white;
+  }
+  .summary-box h2 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    margin-bottom: 18px;
+    color: #c8f0b8;
+  }
+  .summary-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .summary-list li {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    font-size: 14px;
+    line-height: 1.75;
+    color: #e8f8e0;
+  }
+  .summary-list li .icon {
+    width: 22px;
+    height: 22px;
+    background: var(--green-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* フッター */
+  footer {
+    text-align: center;
+    padding: 32px 16px;
+    background: var(--green-deep);
+    color: #9dd08a;
+    font-size: 13px;
+    line-height: 2;
+  }
+  footer strong {
+    color: white;
+  }
+  footer .signature {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    margin-top: 12px;
+    color: #c8f0b8;
+  }
+
+  /* 注意書き */
+  .caution {
+    background: #fff8e6;
+    border: 1.5px solid #e8c870;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    font-size: 13px;
+    color: #6a4900;
+    line-height: 1.8;
+  }
+  .caution strong { color: #a06800; }
+
+  /* overlap バッジ */
+  .overlap-note {
+    background: white;
+    border-radius: 16px;
+    padding: 20px 24px;
+    box-shadow: var(--shadow);
+    margin-bottom: 32px;
+    border-top: 4px solid var(--green-mid);
+  }
+  .overlap-note h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin-bottom: 10px;
+  }
+  .overlap-note p {
+    font-size: 13px;
+    color: var(--text-mid);
+    line-height: 1.85;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-tag">キャリ爺の支援ガイド</div>
+  <h1>神経発達症（発達障害）<br>7分類 完全ガイド</h1>
+  <p class="subtitle">大学キャリア支援に活かす — 最新診断基準「DSM-5-TR」準拠</p>
+  <div class="dsm-badge">📘 DSM-5-TR（2022年改訂・邦訳2023年）準拠</div>
+</header>
+
+<main>
+
+  <!-- 前置き -->
+  <div class="intro-box">
+    <h2>🌿 はじめに読んでほしいこと</h2>
+    <p>
+      大学のキャリア支援現場では、発達障害（神経発達症）の特性を持つ学生と日々向き合っています。
+      就活の「壁」にぶつかる理由を正しく理解するために、最新の診断基準「DSM-5-TR」をキャリア支援の視点でやさしく解説します。
+    </p>
+    <div class="point">
+      💡 大切な前提：診断名は「その人のすべて」ではありません。特性を知ることは、
+      その学生の「強みの種」を見つける手がかりです。
+    </div>
+  </div>
+
+  <!-- DSMとは -->
+  <div class="what-box">
+    <div class="what-card">
+      <div class="label">DSM-5-TR とは</div>
+      <h3>精神疾患の診断・統計マニュアル</h3>
+      <p>アメリカ精神医学会（APA）が発行する世界標準の診断基準。2022年に改訂（TRはテキストリビジョンの略）。日本でも多くの精神科医が参照しています。</p>
+    </div>
+    <div class="what-card">
+      <div class="label">「神経発達症群」とは</div>
+      <h3>DSM-5-TR の大カテゴリのひとつ</h3>
+      <p>発達障害は「神経発達症群（Neurodevelopmental Disorders）」として分類され、7つの診断グループが含まれます。脳の神経発達の特性に由来します。</p>
+    </div>
+  </div>
+
+  <!-- 「障害」か「症」か -->
+  <div class="caution">
+    <strong>📝 用語について：</strong>DSM-5-TR（日本語版）では、「障害」を「症」に改めています（例：「自閉症スペクトラム障害」→「自閉スペクトラム症」）。ただし法律・支援機関では「障害」表記が残っており、混在しています。このガイドでは最新の「症」表記を基本とします。
+  </div>
+
+  <div class="section-title">
+    <h2>📋 神経発達症 7つの分類</h2>
+    <div class="line"></div>
+  </div>
+
+  <div class="disorder-grid">
+
+    <!-- 1: 知的発達症 -->
+    <div class="disorder-card">
+      <div class="disorder-header">
+        <div class="num-badge c1">1</div>
+        <div class="titles">
+          <div class="jp-name">知的発達症</div>
+          <div class="en-name">Intellectual Developmental Disorder</div>
+        </div>
+        <div class="abbr-tag c1">ID</div>
+      </div>
+      <div class="disorder-body">
+        <div class="d-section">
+          <div class="d-label">定義・特徴</div>
+          <div class="d-text">概念的・社会的・実用的な知的能力と適応機能の両面に欠陥がある状態。IQの数値だけでなく、日常生活での適応力で評価されるように改訂されました。</div>
+        </div>
+        <div class="d-section">
+          <div class="d-label">主なキーワード</div>
+          <div class="d-tags">
+            <span class="d-tag tag1">読み書き・計算</span>
+            <span class="d-tag tag1">社会ルール理解</span>
+            <span class="d-tag tag1">生活自立</span>
+            <span class="d-tag tag1">適応行動</span>
+          </div>
+        </div>
+        <div class="career-tip">
+          <div class="tip-label">🌱 キャリア支援のポイント</div>
+          <div class="tip-text">手順の「見える化」と繰り返し練習が効果的。具体的な業務内容・ルールを明確にした職場とのマッチングを重視。「できること」に焦点を当てた自己PR作りを支援。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2: 自閉スペクトラム症 -->
+    <div class="disorder-card">
+      <div class="disorder-header">
+        <div class="num-badge c2">2</div>
+        <div class="titles">
+          <div class="jp-name">自閉スペクトラム症</div>
+          <div class="en-name">Autism Spectrum Disorder</div>
+        </div>
+        <div class="abbr-tag c2">ASD</div>
+      </div>
+      <div class="disorder-body">
+        <div class="d-section">
+          <div class="d-label">定義・特徴</div>
+          <div class="d-text">「社会的コミュニケーションの持続的な困難」と「限定された反復的な行動・興味」の2軸が核心。DSM-5-TRでは診断基準の「すべて」に該当することが明記されました。かつてのアスペルガー症候群・高機能自閉症などを統合した診断名。</div>
+        </div>
+        <div class="d-section">
+          <div class="d-label">主なキーワード</div>
+          <div class="d-tags">
+            <span class="d-tag tag2">空気を読むのが苦手</span>
+            <span class="d-tag tag2">こだわり・ルーティン</span>
+            <span class="d-tag tag2">感覚過敏・鈍麻</span>
+            <span class="d-tag tag2">特定分野に突出した能力</span>
+          </div>
+        </div>
+        <div class="career-tip">
+          <div class="tip-label">🌱 キャリア支援のポイント</div>
+          <div class="tip-text">曖昧な質問（「何でもいいです」など）には具体的な選択肢を。集団面接やグループワーク対策を丁寧に。「こだわり＝専門性」として強みに変える語り方を一緒に作る。配慮が必要な職場環境（静かな作業環境など）の事前確認を。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3: ADHD -->
+    <div class="disorder-card">
+      <div class="disorder-header">
+        <div class="num-badge c3">3</div>
+        <div class="titles">
+          <div class="jp-name">注意欠如多動症</div>
+          <div class="en-name">Attention-Deficit/Hyperactivity Disorder</div>
+        </div>
+        <div class="abbr-tag c3">ADHD</div>
+      </div>
+      <div class="disorder-body">
+        <div class="d-section">
+          <div class="d-label">定義・特徴</div>
+          <div class="d-text">複数の状況で「著しい不注意・多動性・衝動性」が持続し、12歳以前から症状がある。3サブタイプ（不注意優勢・多動衝動性優勢・混合）があり、大人になってから気づくケースも多い。</div>
+        </div>
+        <div class="d-section">
+          <div class="d-label">主なキーワード</div>
+          <div class="d-tags">
+            <span class="d-tag tag3">忘れ物・遅刻</span>
+            <span class="d-tag tag3">締切管理</span>
+            <span class="d-tag tag3">衝動的な発言</span>
+            <span class="d-tag tag3">過集中</span>
+            <span class="d-tag tag3">段取りの苦手</span>
+          </div>
+        </div>
+        <div class="career-tip">
+          <div class="tip-label">🌱 キャリア支援のポイント</div>
+          <div class="tip-text">就活スケジュール管理を一緒に「仕組み化」する。チェックリストやアラームなどのツール活用を提案。「失敗体験」を責めず、対処法を一緒に考える。スピード感・発想力・行動力は大きな強みになる。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4: コミュニケーション症群 -->
+    <div class="disorder-card">
+      <div class="disorder-header">
+        <div class="num-badge c4">4</div>
+        <div class="titles">
+          <div class="jp-name">コミュニケーション症群</div>
+          <div class="en-name">Communication Disorders</div>
+        </div>
+        <div class="abbr-tag c4">CD</div>
+      </div>
+      <div class="disorder-body">
+        <div class="d-section">
+          <div class="d-label">定義・特徴</div>
+          <div class="d-text">言語・発話・コミュニケーションの習得・使用における困難。「言語症」「語音症」「小児期発症流暢症（吃音）」「社会的コミュニケーション症」などが含まれる。知能そのものの問題ではなく、言語表現の困難が核心。</div>
+        </div>
+        <div class="d-section">
+          <div class="d-label">主なキーワード</div>
+          <div class="d-tags">
+            <span class="d-tag tag4">吃音（どもり）</span>
+            <span class="d-tag tag4">言葉が出にくい</span>
+            <span class="d-tag tag4">会話の流れが掴みにくい</span>
+            <span class="d-tag tag4">文字表現は得意</span>
+          </div>
+        </div>
+        <div class="career-tip">
+          <div class="tip-label">🌱 キャリア支援のポイント</div>
+          <div class="tip-text">面接の「話し方」より「内容の豊かさ」に自信を持てる準備を。事前に練習を重ね、「どもっても伝わる内容」を作る。企業の面接担当者への配慮依頼（合理的配慮）を事前に検討。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5: 限局性学習症 -->
+    <div class="disorder-card">
+      <div class="disorder-header">
+        <div class="num-badge c5">5</div>
+        <div class="titles">
+          <div class="jp-name">限局性学習症</div>
+          <div class="en-name">Specific Learning Disorder</div>
+        </div>
+        <div class="abbr-tag c5">SLD / LD</div>
+      </div>
+      <div class="disorder-body">
+        <div class="d-section">
+          <div class="d-label">定義・特徴</div>
+          <div class="d-text">全般的な知的能力に問題はないにもかかわらず、「読む・書く・計算する」のいずれかに特異的な困難が持続する。読字障害（ディスレクシア）・書字表出障害・算数障害の3種類。</div>
+        </div>
+        <div class="d-section">
+          <div class="d-label">主なキーワード</div>
+          <div class="d-tags">
+            <span class="d-tag tag5">読み書きが極端に苦手</span>
+            <span class="d-tag tag5">計算ミスが多い</span>
+            <span class="d-tag tag5">口頭では理解できる</span>
+            <span class="d-tag tag5">ディスレクシア</span>
+          </div>
+        </div>
+        <div class="career-tip">
+          <div class="tip-label">🌱 キャリア支援のポイント</div>
+          <div class="tip-text">エントリーシートや履歴書作成に時間とサポートを。音声読み上げ・スペルチェックなどのICT活用を提案。「書けない＝考えられない」ではない——口頭での志望動機確認が有効。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6: 発達性協調運動症 -->
+    <div class="disorder-card">
+      <div class="disorder-header">
+        <div class="num-badge c6">6</div>
+        <div class="titles">
+          <div class="jp-name">発達性協調運動症</div>
+          <div class="en-name">Developmental Coordination Disorder</div>
+        </div>
+        <div class="abbr-tag c6">DCD</div>
+      </div>
+      <div class="disorder-body">
+        <div class="d-section">
+          <div class="d-label">定義・特徴</div>
+          <div class="d-text">運動技能の習得・遂行が著しく困難で、生活上の問題を引き起こす。不器用さ、動作のぎこちなさ、スポーツや字を書くことの苦手さとして現れる。知的能力とは独立した特性。</div>
+        </div>
+        <div class="d-section">
+          <div class="d-label">主なキーワード</div>
+          <div class="d-tags">
+            <span class="d-tag tag6">ひどく不器用</span>
+            <span class="d-tag tag6">字が汚い・書くのが遅い</span>
+            <span class="d-tag tag6">体育・スポーツが苦手</span>
+            <span class="d-tag tag6">手先の作業に時間がかかる</span>
+          </div>
+        </div>
+        <div class="career-tip">
+          <div class="tip-label">🌱 キャリア支援のポイント</div>
+          <div class="tip-text">PCでの文書作成など代替手段を積極活用。手先の作業が少ない職種選びのアドバイス。「不器用＝誠実で丁寧」という別の見方を強みとして言語化できると◎。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7: チック症群・常同運動症 -->
+    <div class="disorder-card">
+      <div class="disorder-header">
+        <div class="num-badge c7">7</div>
+        <div class="titles">
+          <div class="jp-name">チック症群・常同運動症</div>
+          <div class="en-name">Tic Disorders / Stereotypic Movement Disorder</div>
+        </div>
+        <div class="abbr-tag c7">TD</div>
+      </div>
+      <div class="disorder-body">
+        <div class="d-section">
+          <div class="d-label">定義・特徴</div>
+          <div class="d-text">チック症は突発的・反復的・非律動的な運動（まばたき・首振りなど）や発声（咳払い・奇声など）が続く状態。常同運動症は繰り返しの自傷的でない動作。「トゥレット症」もチック症に含まれる。</div>
+        </div>
+        <div class="d-section">
+          <div class="d-label">主なキーワード</div>
+          <div class="d-tags">
+            <span class="d-tag tag7">瞬きや首振り</span>
+            <span class="d-tag tag7">咳払い・音声チック</span>
+            <span class="d-tag tag7">本人の意思で止めにくい</span>
+            <span class="d-tag tag7">トゥレット症</span>
+          </div>
+        </div>
+        <div class="career-tip">
+          <div class="tip-label">🌱 キャリア支援のポイント</div>
+          <div class="tip-text">就活の面接や合同説明会でのチックへの不安に寄り添う。「隠す」より「理解してもらえる職場を選ぶ」方向で支援。緊張でチックが増えることを本人と共有し、過度なプレッシャーをかけない関わりを。</div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /disorder-grid -->
+
+  <!-- 重なりについて -->
+  <div class="overlap-note">
+    <h3>🔗 複数の特性が「重なる」ことがある</h3>
+    <p>
+      ASDとADHDを両方持つ学生、SLDとADHDが合わさる学生など、「診断が一つ」ではなく
+      複数の特性が重なる（併存）ことは珍しくありません。また、診断が出ていない
+      「グレーゾーン」の学生も多く、支援の対象は診断名ではなく「困っていること」です。
+      <br>重要なのは診断名のラベルではなく、<strong>「何に困っていて、何なら得意か」</strong>を一緒に整理することです。
+    </p>
+  </div>
+
+  <!-- まとめ -->
+  <div class="summary-box">
+    <h2>🌱 キャリ爺からの7つのまとめ</h2>
+    <ul class="summary-list">
+      <li>
+        <span class="icon">1</span>
+        <span><strong>診断名は入り口</strong>——「その学生らしさ」を理解するための手がかりであり、就活の結論ではない。</span>
+      </li>
+      <li>
+        <span class="icon">2</span>
+        <span><strong>脳の働きの違い</strong>——本人の努力不足でも、育て方の問題でもない。生まれ持った神経発達の特性です。</span>
+      </li>
+      <li>
+        <span class="icon">3</span>
+        <span><strong>「生活に支障がなければ診断なし」</strong>——大学・就活でハードルが上がって初めて表面化することが多い。</span>
+      </li>
+      <li>
+        <span class="icon">4</span>
+        <span><strong>強みと特性は表裏一体</strong>——こだわり＝専門性、過集中＝没頭力、感覚鋭敏＝品質へのこだわりになりうる。</span>
+      </li>
+      <li>
+        <span class="icon">5</span>
+        <span><strong>合理的配慮の活用</strong>——採用選考での配慮申請を知り、使える環境を整える支援が重要。</span>
+      </li>
+      <li>
+        <span class="icon">6</span>
+        <span><strong>併存・グレーゾーンを前提に</strong>——診断は一つとは限らない。「困り感」ベースで対応する。</span>
+      </li>
+      <li>
+        <span class="icon">7</span>
+        <span><strong>ロジャーズの哲学と同じ</strong>——答えは学生の中にある。特性ではなく、その人の可能性を引き出す問いかけを。</span>
+      </li>
+    </ul>
+  </div>
+
+</main>
+
+<footer>
+  <div>参考：DSM-5-TR 精神疾患の診断・統計マニュアル（医学書院 2023年）<br>塩野義製薬 神経発達症情報サイト ／ LITALICO ／ 日本小児神経学会</div>
+  <div style="margin-top:6px; font-size:12px; color:#7ab870;">※ このガイドはキャリア支援の参考資料です。医学的診断は専門医にご相談ください。</div>
+  <div class="signature">
+    君は、一人じゃない。いつでも、目の前のキャリア支援課の扉は開いているよ。<br>
+    ——キャリ爺
+  </div>
+</footer>
+
+</body>
+</html>
