@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>使い方マニュアル｜迷える子羊ガイド 第2弾 | 就活の木</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+
+  :root {
+    --green-deep: #2d5a27;
+    --green-mid: #4a8c3f;
+    --green-light: #7ab648;
+    --green-pale: #e8f4e0;
+    --green-ultra-pale: #f4faf0;
+    --earth: #8b6914;
+    --earth-light: #f5e6c0;
+    --amber: #e8a020;
+    --sky: #3a7cbd;
+    --sky-light: #ddeeff;
+    --rose: #c0404a;
+    --rose-light: #fde8ea;
+    --text-main: #1a2e15;
+    --text-mid: #3d5c37;
+    --text-soft: #6b8f64;
+    --bg: #f8fcf5;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(45,90,39,0.10);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
+    min-height: 100vh;
+    line-height: 1.75;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+    padding: 32px 20px 26px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #d4f0c0;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 3px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+    margin-bottom: 12px;
+  }
+  header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(19px, 5vw, 27px);
+    color: #fff;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+  header p { color: #c8e8b8; font-size: 13px; }
+
+  /* ===== READER MODE TABS ===== */
+  .mode-outer {
+    background: var(--white);
+    border-bottom: 2px solid var(--green-pale);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 12px rgba(45,90,39,0.08);
+  }
+  .mode-tabs {
+    display: flex;
+    max-width: 860px;
+    margin: 0 auto;
+  }
+  .mode-tab {
+    flex: 1;
+    padding: 13px 8px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-soft);
+    border-bottom: 3px solid transparent;
+    transition: all 0.22s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .mode-tab:hover { color: var(--green-mid); background: var(--green-ultra-pale); }
+  .mode-tab.active { color: var(--green-deep); border-bottom-color: var(--green-light); background: var(--green-ultra-pale); }
+  .mode-tab .ti { display: block; font-size: 18px; margin-bottom: 2px; }
+
+  /* ===== MAIN ===== */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 28px 16px 72px;
+  }
+  .mode-section { display: none; }
+  .mode-section.active { display: block; }
+
+  /* ===== COMMON PARTS ===== */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px 26px;
+    margin-bottom: 22px;
+    border: 1px solid rgba(122,182,72,0.15);
+  }
+  .card-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--green-pale);
+  }
+  .intro-box {
+    background: linear-gradient(135deg, var(--green-ultra-pale), var(--earth-light));
+    border-radius: var(--radius);
+    padding: 20px 24px;
+    margin-bottom: 22px;
+    border-left: 4px solid var(--green-mid);
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 1.9;
+  }
+  .intro-box strong { color: var(--green-deep); }
+
+  /* ===== STEP FLOW ===== */
+  .step-flow { display: flex; flex-direction: column; gap: 0; }
+  .step-item {
+    display: flex;
+    gap: 18px;
+    position: relative;
+    padding-bottom: 28px;
+  }
+  .step-item:last-child { padding-bottom: 0; }
+  .step-left { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .step-num {
+    width: 40px; height: 40px;
+    background: var(--green-mid);
+    color: white;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(74,140,63,0.3);
+  }
+  .step-line {
+    width: 2px;
+    flex: 1;
+    background: var(--green-pale);
+    margin: 6px 0;
+    min-height: 20px;
+  }
+  .step-item:last-child .step-line { display: none; }
+  .step-body { flex: 1; }
+  .step-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--green-deep);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .step-desc { font-size: 13.5px; color: var(--text-mid); line-height: 1.85; }
+  .step-desc ul { padding-left: 0; list-style: none; margin-top: 8px; }
+  .step-desc ul li {
+    padding: 4px 0 4px 18px;
+    position: relative;
+    font-size: 13px;
+  }
+  .step-desc ul li::before { content: '▸'; position: absolute; left: 0; color: var(--green-mid); }
+  .step-tip {
+    display: inline-block;
+    background: var(--green-pale);
+    color: var(--green-deep);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 10px;
+    margin-top: 8px;
+  }
+  .step-warn {
+    display: inline-block;
+    background: var(--rose-light);
+    color: var(--rose);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 3px 12px;
+    border-radius: 10px;
+    margin-top: 8px;
+  }
+
+  /* ===== SCENARIO TABLE ===== */
+  .scene-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 22px;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--green-mid);
+  }
+  .scene-card.sky   { border-left-color: var(--sky); }
+  .scene-card.amber { border-left-color: var(--amber); }
+  .scene-card.rose  { border-left-color: var(--rose); }
+  .scene-card.earth { border-left-color: var(--earth); }
+  .scene-head {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--green-deep);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .scene-quote {
+    background: #f0f8ff;
+    border-left: 3px solid var(--sky);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 9px 14px;
+    font-size: 13px;
+    color: #1a3a5c;
+    line-height: 1.8;
+    margin-bottom: 10px;
+    font-style: italic;
+  }
+  .scene-body { font-size: 13px; color: var(--text-mid); line-height: 1.85; }
+  .scene-ng {
+    background: var(--rose-light);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-size: 12.5px;
+    color: #7a2030;
+    margin-top: 10px;
+  }
+  .scene-ok {
+    background: var(--green-pale);
+    border-radius: var(--radius-sm);
+    padding: 8px 14px;
+    font-size: 12.5px;
+    color: var(--green-deep);
+    margin-top: 8px;
+  }
+  .scene-ng::before { content: '❌ NG例： '; font-weight: 700; }
+  .scene-ok::before { content: '✅ OK例： '; font-weight: 700; }
+
+  /* ===== CHECK LIST ===== */
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--green-pale);
+    font-size: 13.5px;
+    color: var(--text-mid);
+  }
+  .checklist li:last-child { border-bottom: none; }
+  .checklist li::before {
+    content: '□';
+    color: var(--green-mid);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+
+  /* ===== PHILOSOPHY BOX ===== */
+  .philosophy {
+    background: linear-gradient(135deg, #2d5a27, #3a7840);
+    border-radius: var(--radius);
+    padding: 24px 28px;
+    margin-bottom: 22px;
+    color: #d4f0c0;
+  }
+  .philosophy .ph-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .philosophy p { font-size: 13.5px; line-height: 2; }
+  .philosophy .ph-quote {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    color: #a8e090;
+    font-style: italic;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+
+  /* ===== FAQ ===== */
+  .faq-item {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(122,182,72,0.15);
+  }
+  .faq-q {
+    padding: 16px 20px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--green-deep);
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .faq-q:hover { background: var(--green-ultra-pale); }
+  .faq-q .fq-icon { flex-shrink: 0; font-size: 14px; margin-top: 1px; transition: transform 0.3s; }
+  .faq-q.open .fq-icon { transform: rotate(180deg); }
+  .faq-a {
+    display: none;
+    padding: 0 20px 18px;
+    font-size: 13.5px;
+    color: var(--text-mid);
+    line-height: 1.85;
+    border-top: 1px solid var(--green-pale);
+    padding-top: 14px;
+  }
+  .faq-a.open { display: block; }
+
+  /* ===== TAGS ===== */
+  .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin: 2px 3px 0 0;
+  }
+  .tag-green { background: var(--green-pale); color: var(--green-deep); }
+  .tag-sky   { background: var(--sky-light); color: var(--sky); }
+  .tag-amber { background: var(--earth-light); color: var(--earth); }
+  .tag-rose  { background: var(--rose-light); color: var(--rose); }
+
+  /* ===== SECTION DIVIDER ===== */
+  .sec-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 28px 0 20px;
+  }
+  .sec-divider .sd-line { flex: 1; height: 1px; background: var(--green-pale); }
+  .sec-divider .sd-label {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 13px;
+    color: var(--text-soft);
+    white-space: nowrap;
+  }
+
+  /* ===== NOTICE ===== */
+  .notice {
+    background: var(--earth-light);
+    border-left: 4px solid var(--amber);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 14px 18px;
+    font-size: 13px;
+    color: #5a3d00;
+    margin-bottom: 18px;
+    line-height: 1.85;
+  }
+  .notice strong { color: var(--earth); }
+
+  /* ===== PRINT ===== */
+  @media print {
+    .mode-outer { display: none; }
+    .mode-section { display: block !important; }
+    header { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .card { break-inside: avoid; }
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 520px) {
+    .card { padding: 16px; }
+    .step-num { width: 34px; height: 34px; font-size: 14px; }
+  }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: var(--text-soft);
+    border-top: 1px solid var(--green-pale);
+    margin-top: 40px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">🌱 就活の木 × 迷える子羊シリーズ 第2弾</div>
+  <h1>📘 カウンセラー 使い方マニュアル</h1>
+  <p>「少し特殊な君」向け支援ガイドアプリ ― 活用のてびき</p>
+</header>
+
+<!-- 読者モード切替 -->
+<div class="mode-outer">
+  <div class="mode-tabs">
+    <div class="mode-tab active" onclick="switchMode('self')">
+      <span class="ti">🗒️</span>自分用メモ
+    </div>
+    <div class="mode-tab" onclick="switchMode('handover')">
+      <span class="ti">🤝</span>引き継ぎ用
+    </div>
+    <div class="mode-tab" onclick="switchMode('training')">
+      <span class="ti">📚</span>研修・勉強会用
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ============================================================
+     MODE 1：自分用メモ
+     ============================================================ -->
+<div id="mode-self" class="mode-section active">
+
+  <div class="intro-box">
+    <strong>このタブは「自分用の整理ノート」として使えます。</strong><br>
+    ツールの使い方フローと、面談での活用ポイントを自分の言葉で確認するためのページです。
+  </div>
+
+  <!-- ツール概要 -->
+  <div class="card">
+    <div class="card-title">🌿 このツールは何のためにある？</div>
+    <p style="font-size:14px;color:var(--text-mid);line-height:2;">
+      「少し特殊な子」――発達特性のグレーゾーンにいる学生、不安が強い学生、親に反対されている学生――に対して、<br>
+      <strong>診断なしで・責めずに・一緒に考える</strong>ための入口を作るためのツールです。<br><br>
+      カール・ロジャーズの「来談者中心療法」に基づき、<strong>「答えは君の中にある」</strong>を具体的な問いと対話の素材で支えることを目的としています。<br><br>
+      ✦ 診断・判定ツールではありません<br>
+      ✦ 数値で学生を評価するものでもありません<br>
+      ✦ 「こんなことで困ってる？」という<strong>対話の入口</strong>です
+    </p>
+  </div>
+
+  <!-- 面談フロー -->
+  <div class="card">
+    <div class="card-title">🔄 面談での活用フロー（4ステップ）</div>
+    <div class="step-flow">
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">1</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">📋 チェックを「事前課題」か「冒頭10分」で行う</div>
+          <div class="step-desc">
+            面談の予約時に「このURLを開いてチェックしておいてね」と渡すか、面談冒頭でスマホ・PCから一緒にチェックする。<br>
+            学生が自分でチェックを入れることで、「自分の困りごとを言葉にする練習」になります。
+            <ul>
+              <li>事前送付する場合：URL共有 or QRコードで渡す（GitHubPages公開済）</li>
+              <li>冒頭で行う場合：カウンセラーのPCを学生に向けて、横並びで確認</li>
+            </ul>
+            <span class="step-tip">💡 強制せず「気になるものだけでいいよ」と伝える</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">2</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">📊 結果バッジで「困りごとの地図」を確認</div>
+          <div class="step-desc">
+            チェック後、「○つ気になることがある」というバッジが領域別に表示されます。<br>
+            数字ではなく<strong>「どの領域に困りごとが集まっているか」</strong>を一緒に眺める感覚で使います。
+            <ul>
+              <li>「一番多かったのはどこだった？」と問いかける</li>
+              <li>「全然チェックしなかった領域はどこ？ここは大丈夫なの？」とも聞いてみる</li>
+              <li>カウンセラーはすぐ解釈しない。まず学生が言葉にするのを待つ</li>
+            </ul>
+            <span class="step-tip">💡 数値の多少で「重度・軽度」を判断しない</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">3</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">💬 ヒントカードを「対話の素材」として使う</div>
+          <div class="step-desc">
+            チェックに応じて自動表示されるヒントカードを、学生と一緒に読みます。<br>
+            「これ当てはまると思う？」「このTIPSの中で試せそうなものある？」と問いながら進めます。
+            <ul>
+              <li>ヒントは「正解の処方箋」ではなく、対話の起点</li>
+              <li>学生が「これは違う」と言ったら、それも重要な情報</li>
+              <li>今日の面談で1〜2個のTIPSを「やってみること」として持ち帰らせる</li>
+            </ul>
+            <span class="step-tip">💡 全部のヒントを読もうとしない。一番刺さったものだけでいい</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num">4</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title">🌿 「カウンセラーへ」タブで次回面談の準備をする</div>
+          <div class="step-desc">
+            カウンセラー向けタブに移動すると、<strong>チェック結果に連動した傾向サマリーと面談優先テーマが自動生成</strong>されます。<br>
+            次回来談前にここを見直して、アプローチの方向を確認します。
+            <ul>
+              <li>「今日の面談で最も優先したいテーマ」は自動抽出される</li>
+              <li>「避けたい言葉」の列は特に確認しておく（無意識に使いがち）</li>
+              <li>合理的配慮・学内連携が必要かどうかの判断材料にもなる</li>
+            </ul>
+            <span class="step-warn">⚠️ サマリーは「診断」ではない。面談の「仮説づくり」として使う</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 自分用チェックリスト -->
+  <div class="card">
+    <div class="card-title">✅ 面談前セルフチェック</div>
+    <ul class="checklist">
+      <li>「診断」ではなく「対話の入口」として使うことを自分に確認した</li>
+      <li>学生にチェックを「強制しない」姿勢を整えた</li>
+      <li>チェックした項目から「断定」せず、「なぜそこにチェックを入れたか」を聞くつもりがある</li>
+      <li>「カウンセラーへ」タブのサマリーを確認した（前回チェックがある場合）</li>
+      <li>今日の面談で扱うテーマを1〜2個に絞った</li>
+      <li>「合理的配慮」の話題が出た場合の窓口情報を確認してある</li>
+    </ul>
+  </div>
+
+  <div class="philosophy">
+    <div class="ph-title">🌿 このツールの根っこにある考え方</div>
+    <p>
+      北山流キャリア支援の根幹は、ロジャーズの「答えは、君の中にある」という哲学です。<br><br>
+      特性チェックは、学生の「困りごとの輪郭」を一緒に言語化するための作業です。<br>
+      ヒントカードは、カウンセラーが「正解を渡す」ためではなく、<br>
+      学生が「自分のやり方を見つける」ための問いの素材として機能します。
+    </p>
+    <div class="ph-quote">「水やりは、答えを育てることではない。根を張る力を育てること。」</div>
+  </div>
+
+</div><!-- /mode-self -->
+
+
+<!-- ============================================================
+     MODE 2：引き継ぎ用
+     ============================================================ -->
+<div id="mode-handover" class="mode-section">
+
+  <div class="intro-box">
+    <strong>このタブは、他のカウンセラーへの引き継ぎ資料として使えます。</strong><br>
+    ツールの設計思想・操作方法・注意事項をコンパクトにまとめています。
+  </div>
+
+  <div class="notice">
+    <strong>引き継ぎ時の必読事項：</strong>このツールは「発達障害チェックツール」ではありません。就活上の困りごとを可視化し、面談の対話を豊かにするための補助ツールです。この点を次の担当者に必ず伝えてください。
+  </div>
+
+  <!-- ツール基本情報 -->
+  <div class="card">
+    <div class="card-title">📋 ツール基本情報</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13.5px;">
+      <tr style="background:var(--green-pale);">
+        <th style="padding:9px 14px;text-align:left;color:var(--green-deep);width:36%;">項目</th>
+        <th style="padding:9px 14px;text-align:left;color:var(--green-deep);">内容</th>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:9px 14px;font-weight:700;">ツール名</td>
+        <td style="padding:9px 14px;">迷える子羊ガイド 第2弾「少し特殊な君へ」</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:9px 14px;font-weight:700;">ブランド</td>
+        <td style="padding:9px 14px;">就活の木 × 多摩大学キャリア支援</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:9px 14px;font-weight:700;">開発者</td>
+        <td style="padding:9px 14px;">北山 四郎（業務委託キャリアカウンセラー）</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:9px 14px;font-weight:700;">公開場所</td>
+        <td style="padding:9px 14px;">GitHub Pages（tanukin0423）</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:9px 14px;font-weight:700;">対象学生</td>
+        <td style="padding:9px 14px;">発達特性のグレーゾーン学生・不安の強い学生・就活に行き詰まりを感じている学生</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:9px 14px;font-weight:700;">利用場面</td>
+        <td style="padding:9px 14px;">個別面談（事前/冒頭/振り返り）</td>
+      </tr>
+      <tr>
+        <td style="padding:9px 14px;font-weight:700;">更新方法</td>
+        <td style="padding:9px 14px;">HTMLファイルを直接編集しGitHubへpush（外部DBなし）</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- 3タブの役割 -->
+  <div class="card">
+    <div class="card-title">🗂️ ツールの3タブ構成と役割</div>
+
+    <div class="scene-card" style="margin-bottom:14px;">
+      <div class="scene-head">✅ タブ①「特性チェック」― 学生が使う</div>
+      <div class="scene-body">
+        5領域・17項目のチェックボックス。チェックを入れると<strong>領域別のバッジ（「○つ気になることがある」形式）</strong>と、<strong>ヒントカードが自動表示</strong>される。<br><br>
+        <span class="tag tag-green">注意・集中</span>
+        <span class="tag tag-sky">コミュニケーション</span>
+        <span class="tag tag-amber">感覚・エネルギー</span>
+        <span class="tag tag-rose">不安・メンタル</span>
+        <span class="tag tag-green">読み書き・認知</span>
+      </div>
+    </div>
+
+    <div class="scene-card sky" style="margin-bottom:14px;">
+      <div class="scene-head">💬 タブ②「悩み別対策」― 学生・カウンセラー両方が使う</div>
+      <div class="scene-body">
+        「親に反対されている」「もう就活やめたい」の2テーマ、各4場面の対処シナリオ。<strong>伝え方の台本・視点の切り替え方法</strong>を具体的に掲載。学生が一人で読んでも、面談中に一緒に読んでも使える。
+      </div>
+    </div>
+
+    <div class="scene-card earth">
+      <div class="scene-head">🌿 タブ③「カウンセラーへ」― カウンセラー専用</div>
+      <div class="scene-body">
+        <strong>チェック結果に連動して傾向サマリーが自動生成</strong>される。チェックが多い順に「この学生の傾向」「アプローチ方針」「避けたい言葉」「今日の優先テーマ」が表示される。<br>
+        特性別の早見表・グレーゾーン学生への配慮事項も固定掲載。
+      </div>
+    </div>
+  </div>
+
+  <!-- 引き継ぎ時の注意事項 -->
+  <div class="card">
+    <div class="card-title">⚠️ 引き継ぎ時に必ず伝えること</div>
+    <div class="step-flow">
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num" style="background:var(--rose);">!</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title" style="color:var(--rose);">「診断ツール」として使わないこと</div>
+          <div class="step-desc">
+            チェック数が多い＝障害がある、ではありません。<br>
+            「就活上のどの場面で困っているか」を可視化するツールです。<br>
+            学生にも最初に「これは診断じゃないよ」と必ず伝えてください。
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num" style="background:var(--earth);">!</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title" style="color:var(--earth);">カルテへの記載は「行動・場面」のみ</div>
+          <div class="step-desc">
+            面談記録にこのツールの結果を書く場合は、「チェック数が多かった」ではなく<br>
+            「複数企業の同時管理に混乱している」「面接で意図を読むのが難しいと語っていた」など<strong>具体的な行動・言葉</strong>で書いてください。<br>
+            診断名・特性名はカルテに書かない（karte_v5.htmlの記録方針と統一）。
+          </div>
+        </div>
+      </div>
+
+      <div class="step-item">
+        <div class="step-left">
+          <div class="step-num" style="background:var(--sky);">!</div>
+          <div class="step-line"></div>
+        </div>
+        <div class="step-body">
+          <div class="step-title" style="color:var(--sky);">「悩み別対策」タブ④（本当に限界）への対応</div>
+          <div class="step-desc">
+            「毎日つらい・食欲ない・涙が出る」に該当する場合、就活支援より<strong>心身の回復が優先</strong>です。<br>
+            学生が話してくれた場合は：<br>
+            ① 否定せず受け止める　② 「一週間就活を休む」許可を一緒に出す<br>
+            ③ 学内相談室・保健センターへの連携を提案する<br>
+            カウンセラー単独で抱え込まないこと。
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 連携先一覧 -->
+  <div class="card">
+    <div class="card-title">📞 連携が必要な場合の窓口（確認して更新してください）</div>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;">
+      <tr style="background:var(--green-pale);">
+        <th style="padding:8px 12px;text-align:left;color:var(--green-deep);">状況</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--green-deep);">連携先</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--green-deep);">備考</th>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:8px 12px;">心身の不調・メンタル危機</td>
+        <td style="padding:8px 12px;">学生相談室・保健センター</td>
+        <td style="padding:8px 12px;color:var(--text-soft);">予約不要窓口あり</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:8px 12px;">障害者手帳・合理的配慮の検討</td>
+        <td style="padding:8px 12px;">障害学生支援室</td>
+        <td style="padding:8px 12px;color:var(--text-soft);">診断書が必要な場合あり</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:8px 12px;">発達特性の診断・医療的支援</td>
+        <td style="padding:8px 12px;">地域の精神科・発達外来</td>
+        <td style="padding:8px 12px;color:var(--text-soft);">学生本人の同意が前提</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;">就活継続困難・休学の検討</td>
+        <td style="padding:8px 12px;">学務課・学科担任</td>
+        <td style="padding:8px 12px;color:var(--text-soft);">キャリア支援と連携して対応</td>
+      </tr>
+    </table>
+  </div>
+
+</div><!-- /mode-handover -->
+
+
+<!-- ============================================================
+     MODE 3：研修・勉強会用
+     ============================================================ -->
+<div id="mode-training" class="mode-section">
+
+  <div class="intro-box">
+    <strong>このタブは、研修・勉強会での配布資料として使えます。</strong><br>
+    「グレーゾーン学生への支援」をテーマにした勉強会の導入資料として設計しています。<br>
+    読後に参加者同士で「自分が似た場面でどうしたか」を語り合う素材としても使えます。
+  </div>
+
+  <!-- 支援哲学 -->
+  <div class="philosophy">
+    <div class="ph-title">🌿 支援の根幹にある哲学</div>
+    <p>
+      カール・ロジャーズの「来談者中心療法」は、カウンセラーが「正解」を持ち込むのではなく、<br>
+      クライエント自身の中にある答えを引き出すことを中心に置きます。<br><br>
+      グレーゾーン学生の就活支援においてもこの哲学は有効です。<br>
+      特性を「治す」のではなく、特性を「知り、活かす」。<br>
+      困りごとを「弱点」として修正しようとするのではなく、<br>
+      「自分に合った就活のやり方」を一緒に見つける伴走者になること――<br>
+      それがこのツールの設計思想です。
+    </p>
+    <div class="ph-quote">「答えは、君の中にある。」― Carl Rogers</div>
+  </div>
+
+  <!-- グレーゾーンとは -->
+  <div class="card">
+    <div class="card-title">📖 「グレーゾーン学生」とは何か</div>
+    <p style="font-size:14px;color:var(--text-mid);line-height:2;margin-bottom:14px;">
+      発達障害の診断基準を満たすほどではないが、<strong>就活の特定の場面で顕著な困難を示す学生</strong>のことを指します。本人も「なんか自分はおかしいのかも」と感じながら、診断を受けていないケースが多数あります。
+    </p>
+    <table style="width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;">
+      <tr style="background:var(--green-pale);">
+        <th style="padding:8px 12px;text-align:left;color:var(--green-deep);">よく見られる場面</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--green-deep);">背景にある可能性</th>
+        <th style="padding:8px 12px;text-align:left;color:var(--green-deep);">支援の方向</th>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:8px 12px;">ESの締め切りを何度も忘れる</td>
+        <td style="padding:8px 12px;">注意機能の弱さ（ADHD傾向）</td>
+        <td style="padding:8px 12px;">外部記憶の設計</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:8px 12px;">面接官の意図が全くわからない</td>
+        <td style="padding:8px 12px;">社会的推論の難しさ（ASD傾向）</td>
+        <td style="padding:8px 12px;">質問の「翻訳」練習</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:8px 12px;">合説会場で情報が入ってこない</td>
+        <td style="padding:8px 12px;">感覚過敏・処理速度の特性</td>
+        <td style="padding:8px 12px;">環境調整・オンライン優先</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--green-pale);">
+        <td style="padding:8px 12px;">不採用が1社あると立ち直れない</td>
+        <td style="padding:8px 12px;">完璧主義・傷つきやすさ</td>
+        <td style="padding:8px 12px;">小さな成功体験の積み上げ</td>
+      </tr>
+      <tr>
+        <td style="padding:8px 12px;">ESを書くのに数日かかる</td>
+        <td style="padding:8px 12px;">LD（書字困難）傾向</td>
+        <td style="padding:8px 12px;">話す→書く変換、音声入力</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- よくある場面と対応 -->
+  <div class="sec-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">📌 よくある「難しい場面」と対応のヒント</div>
+    <div class="sd-line"></div>
+  </div>
+
+  <div class="scene-card">
+    <div class="scene-head">🎯 「特性があるのでは？」と感じたとき</div>
+    <div class="scene-body">
+      学生の言動から発達特性を感じた場合、カウンセラーは診断を促したり、特性名を口にしたりするのは避けます。<br>
+      代わりに<strong>「就活上の困りごと」に焦点を当てて</strong>会話を進めます。
+    </div>
+    <div class="scene-ng">「もしかして発達障害かな？一度病院に行ってみたら？」</div>
+    <div class="scene-ok">「ESの締め切り、何度か難しかったって言ってたね。どんな時に忘れやすい？一緒に対策考えよう」</div>
+  </div>
+
+  <div class="scene-card sky">
+    <div class="scene-head">🗣️ GDでうまく発言できなかった学生への声かけ</div>
+    <div class="scene-body">
+      「空気が読めない」という言葉は使わない。「場の流れに乗るのが難しかった」と言い換え、<strong>具体的な練習方法を一緒に作る</strong>方向に進めます。
+    </div>
+    <div class="scene-ng">「もっと空気読んで発言しないとね。GDって流れが大事だから」</div>
+    <div class="scene-ok">「どのタイミングで発言しようとしたの？どんな言葉を言おうとしてた？一緒に再現してみよう」</div>
+  </div>
+
+  <div class="scene-card amber">
+    <div class="scene-head">⚡ 「もう就活やめたい」と言った学生への対応</div>
+    <div class="scene-body">
+      まず感情を受け止める。その後、「やめたい」の背景（疲労・比較・意味の喪失・限界）のどれかを一緒に確認します。
+    </div>
+    <div class="scene-ng">「でも内定もらわないと困るでしょ。もう少し頑張ってみなよ」</div>
+    <div class="scene-ok">「そうか、しんどくなってきたんだね。今一番しんどいのはどんなとき？」</div>
+  </div>
+
+  <div class="scene-card rose">
+    <div class="scene-head">🌧️ 親に反対されている学生の気持ちをまず聞く</div>
+    <div class="scene-body">
+      「親を説得しなさい」ではなく、まず「どんな気持ちか」を聞く。親の反対の背景には愛情がある場合が多いことを伝えながら、<strong>学生自身が自分の言葉で伝える練習</strong>を支援します。
+    </div>
+    <div class="scene-ng">「親御さんの言うことも一理あるよね。もう少し考えてみたら？」</div>
+    <div class="scene-ok">「反対されてどんな気持ちだった？その言葉を聞いて、自分はどう思った？」</div>
+  </div>
+
+  <!-- 勉強会ワーク -->
+  <div class="card">
+    <div class="card-title">🤝 勉強会ワーク（ペア or グループ）</div>
+    <p style="font-size:14px;color:var(--text-mid);line-height:1.9;margin-bottom:16px;">
+      以下のシナリオをペアで読み合わせ、「自分だったらどう応答するか」を話し合ってください。<br>
+      正解はありません。「どんな言葉が出てきたか」「なぜその言葉を選んだか」を語り合うことが目的です。
+    </p>
+    <div style="background:var(--green-ultra-pale);border-radius:var(--radius-sm);padding:18px 20px;margin-bottom:14px;">
+      <p style="font-size:13.5px;font-weight:700;color:var(--green-deep);margin-bottom:10px;">📝 シナリオA</p>
+      <p style="font-size:13.5px;color:var(--text-mid);line-height:1.9;font-style:italic;">
+        「先週3社の最終面接を受けたんですけど、全部落ちました。もう自分には無理なのかもしれないです。就活、やめようかなって思ってます」
+      </p>
+      <p style="font-size:12px;color:var(--text-soft);margin-top:8px;">▶ 問：最初の一言、何と言いますか？</p>
+    </div>
+    <div style="background:var(--green-ultra-pale);border-radius:var(--radius-sm);padding:18px 20px;margin-bottom:14px;">
+      <p style="font-size:13.5px;font-weight:700;color:var(--green-deep);margin-bottom:10px;">📝 シナリオB</p>
+      <p style="font-size:13.5px;color:var(--text-mid);line-height:1.9;font-style:italic;">
+        「お母さんが絶対公務員にしなさいって言うんです。でも私は全然違う仕事がしたくて……でも親の言うことも聞かないといけないかなって……」
+      </p>
+      <p style="font-size:12px;color:var(--text-soft);margin-top:8px;">▶ 問：まず何を確認しますか？どんな問いを立てますか？</p>
+    </div>
+    <div style="background:var(--green-ultra-pale);border-radius:var(--radius-sm);padding:18px 20px;">
+      <p style="font-size:13.5px;font-weight:700;color:var(--green-deep);margin-bottom:10px;">📝 シナリオC</p>
+      <p style="font-size:13.5px;color:var(--text-mid);line-height:1.9;font-style:italic;">
+        「ESって何回書いても書けないんです。自分の書いたものが全部ダメな気がして。書き直しても書き直しても終わらなくて……もう時間がないのに」
+      </p>
+      <p style="font-size:12px;color:var(--text-soft);margin-top:8px;">▶ 問：「書けない」の背景として何を仮説しますか？どこから聞き始めますか？</p>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div class="sec-divider">
+    <div class="sd-line"></div>
+    <div class="sd-label">❓ よくある質問</div>
+    <div class="sd-line"></div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      このツールを使う「タイミング」はいつがベストですか？
+      <span class="fq-icon">▼</span>
+    </div>
+    <div class="faq-a">
+      「来談回数3〜4回目以降の学生」に使うのが効果的です。初回面談ではまず関係構築を優先し、「ちょっと試してみよう」という雰囲気が出てきた段階で導入するとスムーズです。<br>
+      また「就活で詰まっている感じがある」「元気がない」といったサインが出ているときに使うと、言語化の助けになります。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      チェック数が多い学生に「病院に行ったほうがいい」と言うべきですか？
+      <span class="fq-icon">▼</span>
+    </div>
+    <div class="faq-a">
+      直接的な誘導は慎重に。「就活上の困りごとへの対処」を中心に進め、学生自身が「もっと詳しく知りたい」「専門家に相談したい」と言い出したときに初めて窓口情報を伝えます。<br>
+      カウンセラーから一方的に「病院へ」と言うと、学生が傷ついたり、相談に来なくなったりするリスクがあります。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      「悩み別対策」タブは学生に単独で使わせていいですか？
+      <span class="fq-icon">▼</span>
+    </div>
+    <div class="faq-a">
+      はい、学生が一人で読んで活用できるよう設計しています。特に「親に反対されている」「就活やめたい」の場面は、面談に来る前に一人で読んで気持ちを整理することもできます。<br>
+      ただし「本当に限界かもしれない」の場面④に該当する場合は、必ず相談窓口につなぐよう設計してあります。一人で抱え込ませないことが大切です。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      「カウンセラーへ」タブのサマリーをそのままカルテに貼っていいですか？
+      <span class="fq-icon">▼</span>
+    </div>
+    <div class="faq-a">
+      そのままの貼り付けは避けてください。サマリーは「仮説づくりの素材」です。<br>
+      カルテには「特性傾向：○○」ではなく、「スケジュール管理に関して複数のエピソードが語られた。外部記憶ツールの導入を次回提案予定」のように<strong>具体的な行動と支援の方向</strong>を書いてください。
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="faq-q" onclick="toggleFaq(this)">
+      チェック項目を増やしたり、編集したりできますか？
+      <span class="fq-icon">▼</span>
+    </div>
+    <div class="faq-a">
+      HTMLファイルを直接編集することで追加・変更できます。チェック項目の追加は、data-cat属性（カテゴリ番号1〜5）とdata-hint属性（ヒントのキー名）を合わせて設定してください。<br>
+      新しいヒントを追加する場合は、JavaScriptのhintsオブジェクトに同じキー名でtitle・body・tipsを追加します。詳細は北山（開発者）に確認を。
+    </div>
+  </div>
+
+</div><!-- /mode-training -->
+
+</div><!-- /main -->
+
+<footer>
+  🌱 就活の木 ― 迷える子羊シリーズ 第2弾 使い方マニュアル ｜ カール・ロジャーズの来談者中心療法を支援哲学の根幹に<br>
+  <span style="font-size:11px;margin-top:4px;display:inline-block;">開発・著作：北山 四郎（多摩大学キャリア支援課）</span>
+</footer>
+
+<script>
+function switchMode(name) {
+  document.querySelectorAll('.mode-section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.mode-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(`mode-${name}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleFaq(qEl) {
+  qEl.classList.toggle('open');
+  const aEl = qEl.nextElementSibling;
+  aEl.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

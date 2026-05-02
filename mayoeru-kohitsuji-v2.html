@@ -1,0 +1,1344 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>迷える子羊シリーズ 第2弾 | 就活の木</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap');
+
+  :root {
+    --green-deep: #2d5a27;
+    --green-mid: #4a8c3f;
+    --green-light: #7ab648;
+    --green-pale: #e8f4e0;
+    --green-ultra-pale: #f4faf0;
+    --earth: #8b6914;
+    --earth-light: #f5e6c0;
+    --amber: #e8a020;
+    --sky: #3a7cbd;
+    --sky-light: #ddeeff;
+    --rose: #c0404a;
+    --rose-light: #fde8ea;
+    --text-main: #1a2e15;
+    --text-mid: #3d5c37;
+    --text-soft: #6b8f64;
+    --bg: #f8fcf5;
+    --white: #ffffff;
+    --shadow: 0 4px 20px rgba(45,90,39,0.10);
+    --radius: 14px;
+    --radius-sm: 8px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+    background: var(--bg);
+    color: var(--text-main);
+    min-height: 100vh;
+    line-height: 1.7;
+  }
+
+  /* ===== HEADER ===== */
+  header {
+    background: linear-gradient(135deg, var(--green-deep) 0%, var(--green-mid) 60%, var(--green-light) 100%);
+    padding: 28px 20px 22px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  header::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+  }
+  .header-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.18);
+    color: #d4f0c0;
+    font-size: 11px;
+    letter-spacing: 2px;
+    padding: 3px 14px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.3);
+    margin-bottom: 10px;
+  }
+  header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: clamp(20px, 5vw, 28px);
+    color: #ffffff;
+    font-weight: 700;
+    text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    letter-spacing: 1px;
+  }
+  header p {
+    color: #c8e8b8;
+    font-size: 13px;
+    margin-top: 6px;
+  }
+  .tree-icon { font-size: 28px; margin-right: 8px; vertical-align: middle; }
+
+  /* ===== NAV TABS ===== */
+  .nav-outer {
+    background: var(--white);
+    border-bottom: 2px solid var(--green-pale);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 2px 12px rgba(45,90,39,0.08);
+  }
+  .nav-tabs {
+    display: flex;
+    max-width: 860px;
+    margin: 0 auto;
+    overflow-x: auto;
+  }
+  .nav-tab {
+    flex: 1;
+    min-width: 120px;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text-soft);
+    border-bottom: 3px solid transparent;
+    transition: all 0.25s;
+    white-space: nowrap;
+    user-select: none;
+  }
+  .nav-tab:hover { color: var(--green-mid); background: var(--green-ultra-pale); }
+  .nav-tab.active {
+    color: var(--green-deep);
+    border-bottom-color: var(--green-light);
+    background: var(--green-ultra-pale);
+  }
+  .nav-tab .tab-icon { display: block; font-size: 18px; margin-bottom: 3px; }
+
+  /* ===== MAIN LAYOUT ===== */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 24px 16px 60px;
+  }
+  .section { display: none; }
+  .section.active { display: block; }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(122,182,72,0.15);
+  }
+  .card-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-title .icon { font-size: 20px; }
+
+  /* ===== INTRO SECTION ===== */
+  .intro-box {
+    background: linear-gradient(135deg, var(--green-ultra-pale), var(--earth-light));
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--green-mid);
+  }
+  .intro-box p { font-size: 14px; color: var(--text-mid); line-height: 1.9; }
+  .intro-box strong { color: var(--green-deep); }
+
+  /* ===== CATEGORY SECTION ===== */
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--green-pale);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    margin: 20px 0 10px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .category-header:hover { background: #d4edca; }
+  .category-header h3 {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--green-deep);
+    flex: 1;
+  }
+  .category-header .cat-icon { font-size: 20px; }
+  .category-header .toggle-icon { font-size: 12px; color: var(--text-soft); transition: transform 0.3s; }
+  .category-header.open .toggle-icon { transform: rotate(180deg); }
+  .category-count {
+    background: var(--green-mid);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .check-items { display: none; }
+  .check-items.open { display: block; }
+
+  /* ===== CHECKBOX ITEMS ===== */
+  .check-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 10px 12px;
+    margin-bottom: 4px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: background 0.18s;
+    border: 1px solid transparent;
+  }
+  .check-item:hover { background: var(--green-ultra-pale); }
+  .check-item.checked {
+    background: var(--green-pale);
+    border-color: rgba(122,182,72,0.4);
+  }
+  .check-item input[type="checkbox"] {
+    width: 18px; height: 18px;
+    accent-color: var(--green-mid);
+    flex-shrink: 0;
+    margin-top: 2px;
+    cursor: pointer;
+  }
+  .check-label { font-size: 14px; color: var(--text-main); line-height: 1.6; }
+  .check-label small { display: block; color: var(--text-soft); font-size: 12px; margin-top: 2px; }
+
+  /* ===== RESULT AREA ===== */
+  .result-bar {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px 24px;
+    margin: 28px 0 20px;
+    border: 2px solid var(--green-light);
+  }
+  .result-bar h3 { font-size: 15px; font-weight: 700; color: var(--green-deep); margin-bottom: 6px; }
+  .result-bar .result-intro { font-size: 13px; color: var(--text-soft); margin-bottom: 14px; }
+  .score-row {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+  .score-badge {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    background: var(--green-ultra-pale);
+    border-radius: var(--radius-sm);
+    padding: 12px 16px;
+    border: 1px solid var(--green-pale);
+    min-width: 160px;
+    flex: 1;
+    transition: all 0.3s;
+    gap: 4px;
+  }
+  .score-badge.zero { opacity: 0.45; }
+  .score-badge.highlight {
+    background: #f0fae8;
+    border-color: var(--green-mid);
+    box-shadow: 0 2px 8px rgba(74,140,63,0.12);
+  }
+  .score-badge .s-top { display: flex; align-items: center; gap: 6px; }
+  .score-badge .s-icon { font-size: 16px; }
+  .score-badge .s-label { font-size: 12px; color: var(--text-soft); font-weight: 500; }
+  .score-badge .s-sentence {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-main);
+    line-height: 1.5;
+  }
+  .score-badge .s-sentence .s-count {
+    color: var(--green-deep);
+    font-size: 18px;
+  }
+  .score-badge .s-sentence.zero-text { color: var(--text-soft); font-weight: 400; font-size: 13px; }
+
+  /* ===== HINT CARDS ===== */
+  .hint-section { margin-top: 20px; }
+  .hint-section h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    color: var(--green-deep);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--green-pale);
+  }
+  .hint-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 20px;
+    margin-bottom: 16px;
+    border-left: 4px solid var(--green-mid);
+    animation: fadeSlide 0.4s ease both;
+  }
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .hint-card .hint-title {
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--green-deep);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .hint-card .hint-body { font-size: 13.5px; color: var(--text-mid); line-height: 1.85; }
+  .hint-card .tip-list { margin-top: 10px; padding-left: 0; list-style: none; }
+  .hint-card .tip-list li {
+    padding: 5px 0 5px 20px;
+    position: relative;
+    font-size: 13px;
+    color: var(--text-mid);
+  }
+  .hint-card .tip-list li::before { content: '✓'; position: absolute; left: 0; color: var(--green-mid); font-weight: 700; }
+
+  .no-result {
+    text-align: center;
+    padding: 30px;
+    color: var(--text-soft);
+    font-size: 14px;
+  }
+
+  /* color variants for hint cards */
+  .hint-card.sky   { border-left-color: var(--sky); }
+  .hint-card.amber { border-left-color: var(--amber); }
+  .hint-card.rose  { border-left-color: var(--rose); }
+  .hint-card.earth { border-left-color: var(--earth); }
+
+  /* ===== RESET BTN ===== */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 22px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+    font-family: inherit;
+  }
+  .btn-green { background: var(--green-mid); color: white; }
+  .btn-green:hover { background: var(--green-deep); transform: translateY(-1px); }
+  .btn-outline { background: white; color: var(--green-mid); border: 2px solid var(--green-mid); }
+  .btn-outline:hover { background: var(--green-ultra-pale); }
+
+  /* ===== TROUBLE SECTION (②③) ===== */
+  .trouble-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border-radius: var(--radius);
+    overflow: hidden;
+    border: 2px solid var(--green-pale);
+  }
+  .trouble-tab {
+    flex: 1;
+    padding: 14px 10px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    background: var(--white);
+    color: var(--text-soft);
+    transition: all 0.2s;
+    border: none;
+    font-family: inherit;
+  }
+  .trouble-tab.active { background: var(--green-deep); color: white; }
+  .trouble-tab:hover:not(.active) { background: var(--green-ultra-pale); color: var(--green-deep); }
+
+  .trouble-content { display: none; animation: fadeSlide 0.35s ease; }
+  .trouble-content.active { display: block; }
+
+  .scenario-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px;
+    margin-bottom: 16px;
+  }
+  .scenario-card .sc-title {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--rose);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .scenario-card .sc-situation {
+    background: var(--rose-light);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 13px;
+    color: #7a2030;
+    margin-bottom: 12px;
+    font-style: italic;
+  }
+  .scenario-card .sc-body { font-size: 13.5px; color: var(--text-mid); line-height: 1.85; }
+  .scenario-card .sc-keyword {
+    display: inline-block;
+    background: var(--green-pale);
+    color: var(--green-deep);
+    font-size: 11px;
+    font-weight: 700;
+    padding: 2px 10px;
+    border-radius: 10px;
+    margin: 2px 3px 0 0;
+  }
+  .scenario-card .sc-script {
+    background: #f0f8ff;
+    border-left: 3px solid var(--sky);
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    padding: 10px 14px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #1a3a5c;
+    line-height: 1.8;
+  }
+  .scenario-card .sc-script strong { color: var(--sky); }
+
+  /* parent section */
+  .parent-content .scenario-card .sc-title { color: var(--earth); }
+  .parent-content .scenario-card .sc-situation { background: var(--earth-light); color: #5a3d00; }
+
+  /* ===== COUNSELOR NOTE ===== */
+  .counselor-note {
+    background: linear-gradient(135deg, #2d5a27 0%, #3a7840 100%);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-top: 28px;
+    color: #d4f0c0;
+  }
+  .counselor-note .cn-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    color: white;
+    font-weight: 700;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .counselor-note p { font-size: 13px; line-height: 1.9; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    text-align: center;
+    padding: 20px;
+    font-size: 12px;
+    color: var(--text-soft);
+    border-top: 1px solid var(--green-pale);
+    margin-top: 40px;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 480px) {
+    .card { padding: 16px; }
+    .score-badge { min-width: 75px; padding: 8px 10px; }
+    .score-badge .s-num { font-size: 18px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-badge">🌱 就活の木 × 迷える子羊シリーズ</div>
+  <h1><span class="tree-icon">🐑</span>迷える子羊ガイド<br><small style="font-size:14px;font-weight:400;">第2弾 ― 少し特殊な君へ</small></h1>
+  <p>特性を知って、自分らしい就活の道を見つけよう</p>
+</header>
+
+<div class="nav-outer">
+  <div class="nav-tabs">
+    <div class="nav-tab active" onclick="switchSection('check')">
+      <span class="tab-icon">✅</span>特性チェック
+    </div>
+    <div class="nav-tab" onclick="switchSection('trouble')">
+      <span class="tab-icon">💬</span>悩み別対策
+    </div>
+    <div class="nav-tab" onclick="switchSection('counselor')">
+      <span class="tab-icon">🌿</span>カウンセラーへ
+    </div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ========== ① 特性チェックセクション ========== -->
+  <div id="section-check" class="section active">
+
+    <div class="intro-box">
+      <p>このチェックは<strong>診断ではありません</strong>。あなたが就活で「なんか難しいな」と感じていることを可視化して、<strong>具体的なヒント</strong>につなげるためのツールです。気になる項目にチェックを入れてみてください。</p>
+    </div>
+
+    <!-- カテゴリ1: 注意・集中 -->
+    <div class="category-header open" onclick="toggleCat(this)">
+      <span class="cat-icon">🎯</span>
+      <h3>注意・集中の特性</h3>
+      <span class="category-count" id="count-1">0</span>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="check-items open" id="cat-1">
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="1" data-hint="adhd-multi">
+        <span class="check-label">説明会や面接中、気づくと別のことを考えていた<small>話を最後まで聞くのが難しいと感じる</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="1" data-hint="adhd-forget">
+        <span class="check-label">ESの締め切りや説明会の日程を忘れてしまった<small>スケジュール管理が苦手</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="1" data-hint="adhd-start">
+        <span class="check-label">ESを書き始めるまでにとても時間がかかる<small>取りかかりの難しさ（先延ばし傾向）</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="1" data-hint="adhd-multi">
+        <span class="check-label">複数の企業の選考を同時に管理するのが混乱する<small>複数タスクの優先づけが難しい</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="1" data-hint="adhd-impulse">
+        <span class="check-label">なんとなく良さそうと思って深く考えずにエントリーした<small>衝動的な行動・後悔しやすい</small></span>
+      </label>
+    </div>
+
+    <!-- カテゴリ2: コミュニケーション -->
+    <div class="category-header" onclick="toggleCat(this)">
+      <span class="cat-icon">🗣️</span>
+      <h3>コミュニケーションの特性</h3>
+      <span class="category-count" id="count-2">0</span>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="check-items" id="cat-2">
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="2" data-hint="asd-literal">
+        <span class="check-label">面接官の意図が読みにくく、的外れな答えをしてしまった<small>「空気を読む」「行間を読む」が難しい</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="2" data-hint="asd-detail">
+        <span class="check-label">自己PRや志望動機を簡潔にまとめるのが苦手<small>情報量が多くなりすぎてしまう</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="2" data-hint="asd-small">
+        <span class="check-label">OB訪問や合同説明会でうまく話しかけられない<small>雑談・小話が苦手</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="2" data-hint="asd-literal">
+        <span class="check-label">グループディスカッションでどう発言すればいいか分からなかった<small>場の流れに合わせた発言が難しい</small></span>
+      </label>
+    </div>
+
+    <!-- カテゴリ3: 感覚・エネルギー -->
+    <div class="category-header" onclick="toggleCat(this)">
+      <span class="cat-icon">⚡</span>
+      <h3>感覚・エネルギーの特性</h3>
+      <span class="category-count" id="count-3">0</span>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="check-items" id="cat-3">
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="3" data-hint="sens-fatigue">
+        <span class="check-label">複数社の選考が重なると一気に疲れ果ててしまう<small>エネルギー切れが早い・回復に時間がかかる</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="3" data-hint="sens-noise">
+        <span class="check-label">合同説明会の会場が騒がしくて情報が入ってこない<small>聴覚・視覚の過敏さ</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="3" data-hint="sens-change">
+        <span class="check-label">選考の変更連絡や予期せぬ状況に強く動揺した<small>変化・不測の事態への対処が難しい</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="3" data-hint="sens-fatigue">
+        <span class="check-label">スーツを着ること・長時間外出することが身体的に辛い<small>感覚過敏・身体的な疲れやすさ</small></span>
+      </label>
+    </div>
+
+    <!-- カテゴリ4: 不安・メンタル -->
+    <div class="category-header" onclick="toggleCat(this)">
+      <span class="cat-icon">🌧️</span>
+      <h3>不安・メンタルの状態</h3>
+      <span class="category-count" id="count-4">0</span>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="check-items" id="cat-4">
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="4" data-hint="anx-reject">
+        <span class="check-label">不採用が怖くてエントリーを迷いすぎてしまう<small>失敗恐怖・完璧主義の傾向</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="4" data-hint="anx-compare">
+        <span class="check-label">周りの進み具合が気になって自己嫌悪になった<small>比較・自己評価の低さ</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="4" data-hint="anx-stop">
+        <span class="check-label">就活を考えると気分が沈んで何もできない日がある<small>気力の喪失・意欲の波が大きい</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="4" data-hint="anx-reject">
+        <span class="check-label">OB訪問で断られたことがずっと気になっている<small>傷つきやすさ・立ち直りに時間がかかる</small></span>
+      </label>
+    </div>
+
+    <!-- カテゴリ5: 読み書き・認知 -->
+    <div class="category-header" onclick="toggleCat(this)">
+      <span class="cat-icon">📝</span>
+      <h3>読み書き・認知の特性</h3>
+      <span class="category-count" id="count-5">0</span>
+      <span class="toggle-icon">▼</span>
+    </div>
+    <div class="check-items" id="cat-5">
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="5" data-hint="ld-write">
+        <span class="check-label">ESを書くのに人より何倍も時間がかかる<small>文章化・言語化が難しい</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="5" data-hint="ld-read">
+        <span class="check-label">企業説明資料や求人情報を読むと頭に入ってこない<small>長文読解・情報整理が難しい</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="5" data-hint="ld-write">
+        <span class="check-label">作文・エントリーシートに誤字脱字が多くなってしまう<small>書字・校正の困難さ</small></span>
+      </label>
+      <label class="check-item" onclick="toggleCheck(this)">
+        <input type="checkbox" data-cat="5" data-hint="ld-spi">
+        <span class="check-label">SPIの計算問題や図形問題で極端にできないものがある<small>特定の認知処理の凸凹</small></span>
+      </label>
+    </div>
+
+    <!-- 結果エリア -->
+    <div class="result-bar" id="result-bar">
+      <h3>🌱 気になっていること、教えてくれてありがとう</h3>
+      <p class="result-intro">チェックした内容をもとに、あなた向けのヒントを下に表示しています。</p>
+      <div class="score-row" id="score-row">
+        <div class="score-badge zero" id="badge-1">
+          <div class="s-top"><span class="s-icon">🎯</span><span class="s-label">集中・スケジュール</span></div>
+          <div class="s-sentence zero-text" id="sent-1">気になることなし</div>
+        </div>
+        <div class="score-badge zero" id="badge-2">
+          <div class="s-top"><span class="s-icon">🗣️</span><span class="s-label">伝える・場の空気</span></div>
+          <div class="s-sentence zero-text" id="sent-2">気になることなし</div>
+        </div>
+        <div class="score-badge zero" id="badge-3">
+          <div class="s-top"><span class="s-icon">⚡</span><span class="s-label">疲れ・感覚の敏感さ</span></div>
+          <div class="s-sentence zero-text" id="sent-3">気になることなし</div>
+        </div>
+        <div class="score-badge zero" id="badge-4">
+          <div class="s-top"><span class="s-icon">🌧️</span><span class="s-label">不安・気持ちの波</span></div>
+          <div class="s-sentence zero-text" id="sent-4">気になることなし</div>
+        </div>
+        <div class="score-badge zero" id="badge-5">
+          <div class="s-top"><span class="s-icon">📝</span><span class="s-label">書く・読む・整理</span></div>
+          <div class="s-sentence zero-text" id="sent-5">気になることなし</div>
+        </div>
+      </div>
+      <button class="btn btn-outline" onclick="resetAll()">🔄 リセット</button>
+    </div>
+
+    <!-- ヒントエリア -->
+    <div class="hint-section" id="hint-section">
+      <div class="no-result" id="no-result">気になる項目にチェックを入れると、あなた向けのヒントが表示されます 🌱</div>
+      <div id="hints-container"></div>
+    </div>
+
+  </div><!-- /section-check -->
+
+  <!-- ========== ② 悩み別対策セクション ========== -->
+  <div id="section-trouble" class="section">
+
+    <div class="intro-box">
+      <p>就活中、<strong>「親に反対されている」「もう就活をやめたい」</strong>という気持ちになることは珍しくありません。カウンセラーとして、よく聞く場面への対応ヒントをまとめました。学生自身も、支援者も活用してください。</p>
+    </div>
+
+    <div class="trouble-tabs">
+      <button class="trouble-tab active" onclick="switchTrouble('parent')">👪 親に反対されている</button>
+      <button class="trouble-tab" onclick="switchTrouble('quit')">😔 もう就活やめたい</button>
+    </div>
+
+    <!-- 親反対 -->
+    <div id="trouble-parent" class="trouble-content parent-content active">
+
+      <div class="scenario-card">
+        <div class="sc-title">📌 よくある場面①「大手じゃないとダメ」</div>
+        <div class="sc-situation">「なんでそんな小さい会社受けるの？もっとちゃんとしたところ行きなさい」</div>
+        <p class="sc-body">親の言う「ちゃんとした会社」は、多くの場合<strong>知名度・安定</strong>のことです。親世代の経験からくる善意の言葉ですが、今の就活市場・自分の特性とはズレがあることも。</p>
+        <div style="margin-top:10px;">
+          <span class="sc-keyword">価値観の翻訳</span>
+          <span class="sc-keyword">情報提供</span>
+          <span class="sc-keyword">実績提示</span>
+        </div>
+        <div class="sc-script">
+          <strong>💬 伝え方のヒント</strong><br>
+          「この会社、実は○○分野で業界トップなんだ。〇〇大手も取引先にあるよ。自分なりに調べてここが一番自分に合ってると思った」<br><br>
+          ▶ 親の「安定・将来性」の不安に応える事実を一つだけ持ち込む。自分の研究量を見せることで「ちゃんと考えている」を伝える。
+        </div>
+      </div>
+
+      <div class="scenario-card">
+        <div class="sc-title">📌 よくある場面②「公務員にしなさい」</div>
+        <div class="sc-situation">「不安定な時代なんだから公務員か教員でしょ。何で民間にこだわるの？」</div>
+        <p class="sc-body">公務員を勧める親の背景には「子どもに苦労させたくない」という愛情があります。真正面から否定すると対立が深まります。</p>
+        <div style="margin-top:10px;">
+          <span class="sc-keyword">感謝から入る</span>
+          <span class="sc-keyword">意思の明確化</span>
+          <span class="sc-keyword">条件提示</span>
+        </div>
+        <div class="sc-script">
+          <strong>💬 伝え方のヒント</strong><br>
+          「心配してくれてありがとう。公務員も考えたんだけど、自分は○○がしたくて、それを活かせるのは民間だと思ってる。もし内定もらえなかったら一緒に考え直す」<br><br>
+          ▶ 「まず試させてほしい」という姿勢と、最終的な判断軸を自分が持っていることを伝える。
+        </div>
+      </div>
+
+      <div class="scenario-card">
+        <div class="sc-title">📌 よくある場面③「地元・実家近くで就職しなさい」</div>
+        <div class="sc-situation">「東京で一人暮らしなんてできるの？地元の企業にしてよ」</div>
+        <p class="sc-body">親の不安の本質は「安全でいられるか」「連絡が取れるか」です。地域の問題ではなくコントロール不安の表れである場合も。</p>
+        <div style="margin-top:10px;">
+          <span class="sc-keyword">不安の言語化</span>
+          <span class="sc-keyword">連絡約束</span>
+          <span class="sc-keyword">試験期間の提案</span>
+        </div>
+        <div class="sc-script">
+          <strong>💬 伝え方のヒント</strong><br>
+          「毎週連絡する。最初の3ヶ月でしんどかったら帰ってくることも選択肢にする。でも一度チャレンジさせてほしい」<br><br>
+          ▶ 「連絡頻度」「万が一の対策」を具体的に伝えると安心感が増す。
+        </div>
+      </div>
+
+      <div class="scenario-card">
+        <div class="sc-title">📌 よくある場面④「なぜ就職活動するの（院・留学すべき）」</div>
+        <div class="sc-situation">「もっと勉強してから就職すればよかったのに。なんで急いで就活してるの」</div>
+        <p class="sc-body">特に理系・外国語系の家庭で起こりやすい場面です。本人の意思を「浅い」と思われている場合の対応。</p>
+        <div style="margin-top:10px;">
+          <span class="sc-keyword">選択の根拠</span>
+          <span class="sc-keyword">比較検討した事実</span>
+        </div>
+        <div class="sc-script">
+          <strong>💬 伝え方のヒント</strong><br>
+          「院進・留学も調べたよ。でも今の自分には○○の経験を社会人として積む方が成長できると思った。もし将来必要なら社会人入試もある」<br><br>
+          ▶「比較検討した上での選択」を見せることで、軽い気持ちではないことが伝わる。
+        </div>
+      </div>
+
+      <div class="counselor-note">
+        <div class="cn-title">🌿 カウンセラーより</div>
+        <p>親の反対の多くは「愛情の裏返し」です。真正面からぶつかるより、「親の不安の正体を一緒に見つける」作業をすることで、対話が変わります。<br><br>どうしても解決しない場合、「キャリアカウンセラーと一緒に考えた」という事実を伝えるだけで、親が「専門家が関わっている」と安心することもあります。</p>
+      </div>
+    </div>
+
+    <!-- やめたい -->
+    <div id="trouble-quit" class="trouble-content">
+
+      <div class="scenario-card">
+        <div class="sc-title" style="color:var(--sky)">📌 気持ちの場面①「連続で落ちた」</div>
+        <div class="sc-situation">「3社連続で最終落ちした。もう自分は必要とされていないのかもしれない」</div>
+        <p class="sc-body">不採用が続くと「自分の存在が否定された」ように感じやすい。でも採用は<strong>「この会社との相性・タイミング」</strong>の話です。人格の評価ではありません。</p>
+        <div style="margin-top:10px;">
+          <span class="sc-keyword" style="background:var(--sky-light);color:var(--sky)">リフレーム</span>
+          <span class="sc-keyword" style="background:var(--sky-light);color:var(--sky)">小さな一歩</span>
+        </div>
+        <div class="sc-script">
+          <strong>💬 自分への声かけ</strong><br>
+          「3社の縁がなかっただけ。縁がある会社は必ずある。今日は1社だけ調べてみる」<br><br>
+          ▶ やめたい気持ちの下には「疲れ」があることが多い。まず「休む許可」を自分に与えてから次を考える。
+        </div>
+      </div>
+
+      <div class="scenario-card">
+        <div class="sc-title" style="color:var(--sky)">📌 気持ちの場面②「周りが決まっていく」</div>
+        <div class="sc-situation">「友達がどんどん内定をもらっている。私だけ取り残されているみたい」</div>
+        <p class="sc-body">就活は「同時進行のレース」ではなく、一人ひとりが異なるコースを走っています。6月内定が「正解」ではないし、秋冬・既卒での内定も珍しくない。</p>
+        <div style="margin-top:10px;">
+          <span class="sc-keyword" style="background:var(--sky-light);color:var(--sky)">比較の外に出る</span>
+          <span class="sc-keyword" style="background:var(--sky-light);color:var(--sky)">自分のペース</span>
+        </div>
+        <div class="sc-script">
+          <strong>💬 視点の切り替え</strong><br>
+          SNSから少し距離を置く。「友達の内定先が自分の幸せかどうか」を問い直す。<br><br>
+          ▶ 自分の「本当に行きたい会社リスト」を一枚の紙に書き直してみる。
+        </div>
+      </div>
+
+      <div class="scenario-card">
+        <div class="sc-title" style="color:var(--sky)">📌 気持ちの場面③「何のために働くかわからない」</div>
+        <div class="sc-situation">「志望動機が書けない。正直、どこの会社でもいい気がしてきた。何のために就職するの？」</div>
+        <p class="sc-body">これは「就活の疲れ」ではなく、<strong>「自分の価値観と向き合うサイン」</strong>かもしれません。このタイミングで立ち止まることは悪くない。</p>
+        <div style="margin-top:10px;">
+          <span class="sc-keyword" style="background:var(--sky-light);color:var(--sky)">価値観の棚卸し</span>
+          <span class="sc-keyword" style="background:var(--sky-light);color:var(--sky)">原点回帰</span>
+        </div>
+        <div class="sc-script">
+          <strong>💬 問いかけ</strong><br>
+          「今まで楽しかったこと・没頭できたことを3つ書く」「大学で一番頑張ったことの『なぜ』を5回繰り返す」<br><br>
+          ▶ 志望動機を「作る」前に、まず「自分の動機の種」を探す作業に戻る。
+        </div>
+      </div>
+
+      <div class="scenario-card">
+        <div class="sc-title" style="color:var(--sky)">📌 気持ちの場面④「本当に限界かもしれない」</div>
+        <div class="sc-situation">「毎日つらい。食欲もない。涙が出る。就活どころじゃない」</div>
+        <p class="sc-body">これは「就活のスランプ」ではなく、心と身体からのSOSかもしれません。<strong>就活を続けることより、回復することが先</strong>です。</p>
+        <div style="margin-top:10px;">
+          <span class="sc-keyword" style="background:var(--rose-light);color:var(--rose)">休む許可</span>
+          <span class="sc-keyword" style="background:var(--rose-light);color:var(--rose)">相談を</span>
+        </div>
+        <div class="sc-script" style="background:#fff8f0;border-left-color:var(--rose)">
+          <strong style="color:var(--rose)">🌿 今すぐできること</strong><br>
+          ① 大学のカウンセラーに話してみる（予約不要の相談窓口あり）<br>
+          ② 就活を「一週間休む」と決める<br>
+          ③ 信頼できる人に「つらい」とだけ伝える<br><br>
+          ▶ 就活は「一時停止」できます。6月が全てではありません。
+        </div>
+      </div>
+
+      <div class="counselor-note">
+        <div class="cn-title">🌿 カウンセラーより</div>
+        <p>「就活をやめたい」という気持ちは、「今の自分に合わない方法でやっている」サインであることが多いです。<br><br>就活をやめることと、企業に入ることをやめることは別の話。スピードを落とす・方向を変える・一時停止する――それは逃げではなく、<strong>賢い戦略的撤退</strong>です。一人で抱えないでください。</p>
+      </div>
+    </div>
+
+  </div><!-- /section-trouble -->
+
+  <!-- ========== ③ カウンセラー向けセクション ========== -->
+  <div id="section-counselor" class="section">
+
+    <!-- 動的サマリー（チェック結果連動） -->
+    <div class="counselor-summary">
+      <div class="cs-title">📋 この学生のチェック結果サマリー</div>
+      <div id="counselor-summary-body">
+        <div class="cs-no-check">← 「特性チェック」タブでチェックを入れると、ここに傾向がまとめて表示されます</div>
+      </div>
+    </div>
+
+    <div class="intro-box">
+      <p>このページは<strong>支援者向け</strong>の使い方ガイドです。面談でのこのツールの活用方法と、特性別の関わり方のポイントをまとめています。</p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">🔍</span>面談での活用フロー</div>
+      <p style="font-size:14px;color:var(--text-mid);line-height:2;">
+        <strong>Step 1｜来談前・冒頭</strong><br>
+        「就活で困っていること、気になることにチェックしてきてね」と事前課題として渡す or 面談冒頭10分で一緒にチェック<br><br>
+        <strong>Step 2｜スコア確認</strong><br>
+        どのカテゴリが高いかを確認。「一番チェックが多かった領域、どんな場面でそう感じた？」と具体化<br><br>
+        <strong>Step 3｜ヒントの共有</strong><br>
+        自動表示されたヒントを学生と一緒に読む。「これは当てはまる？」と対話の素材として使う<br><br>
+        <strong>Step 4｜合理的配慮の検討</strong><br>
+        特性が強い場合、「この会社はオープン/クローズどちらで受けるか」の話し合いにつなげる
+      </p>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">💡</span>特性別 関わり方のキーワード</div>
+      <table style="width:100%;border-collapse:collapse;font-size:13px;">
+        <tr style="background:var(--green-pale);">
+          <th style="padding:8px 12px;text-align:left;color:var(--green-deep);">特性領域</th>
+          <th style="padding:8px 12px;text-align:left;color:var(--green-deep);">有効な関わり</th>
+          <th style="padding:8px 12px;text-align:left;color:var(--green-deep);">避けたい言葉</th>
+        </tr>
+        <tr style="border-bottom:1px solid var(--green-pale);">
+          <td style="padding:8px 12px;">注意・集中</td>
+          <td style="padding:8px 12px;">タスクを細分化して提示、視覚的なリスト</td>
+          <td style="padding:8px 12px;">「ちゃんとやれば？」</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--green-pale);">
+          <td style="padding:8px 12px;">コミュニケーション</td>
+          <td style="padding:8px 12px;">具体的な言葉で伝える、暗黙ルールを明示</td>
+          <td style="padding:8px 12px;">「空気を読んで」</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--green-pale);">
+          <td style="padding:8px 12px;">感覚・エネルギー</td>
+          <td style="padding:8px 12px;">無理のないスケジュール設計、休息の正当化</td>
+          <td style="padding:8px 12px;">「みんな頑張ってる」</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--green-pale);">
+          <td style="padding:8px 12px;">不安・メンタル</td>
+          <td style="padding:8px 12px;">感情の言語化支援、小さな成功体験の積み上げ</td>
+          <td style="padding:8px 12px;">「気にしすぎだよ」</td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px;">読み書き・認知</td>
+          <td style="padding:8px 12px;">口述→カウンセラーが整理、音声入力の紹介</td>
+          <td style="padding:8px 12px;">「何回直しても直らない」</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="icon">📋</span>グレーゾーン学生への配慮事項</div>
+      <p style="font-size:14px;color:var(--text-mid);line-height:2;">
+        ● 「発達障害かもしれない」と思っても、診断を促すより<strong>「就活上の困りごと」に焦点</strong>を当てる<br>
+        ● 障害者手帳取得・クローズ就活・オープン就活の選択は<strong>本人が決める</strong>もの<br>
+        ● 「合理的配慮申請」の存在を早めに知らせておく<br>
+        ● カウンセラー自身の記録には<strong>具体的な行動・場面</strong>を書き、診断名は書かない<br>
+        ● 必要に応じて学内支援室・医療機関との<strong>連携窓口</strong>を学生と一緒に確認する
+      </p>
+    </div>
+
+    <div class="counselor-note">
+      <div class="cn-title">🌿 就活の木 ― カウンセラー哲学</div>
+      <p>「答えは、君の中にある。」<br><br>特性を「弱点」として修正しようとするのではなく、特性を「知る」ことで、自分に合った就活のやり方を一緒に見つける。それが、この木が根を張る土の役割です。</p>
+    </div>
+
+  </div><!-- /section-counselor -->
+
+  <!-- カウンセラー向け動的サマリーCSS -->
+  <style>
+  .counselor-summary {
+    background: linear-gradient(135deg, #f0fae8, #e8f4e0);
+    border: 2px solid var(--green-mid);
+    border-radius: var(--radius);
+    padding: 22px 24px;
+    margin-bottom: 24px;
+  }
+  .counselor-summary .cs-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--green-deep);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .cs-no-check {
+    color: var(--text-soft);
+    font-size: 14px;
+    text-align: center;
+    padding: 16px 0;
+  }
+  .cs-tendency {
+    margin-bottom: 14px;
+    padding: 14px 16px;
+    background: white;
+    border-radius: var(--radius-sm);
+    border-left: 4px solid var(--green-mid);
+    animation: fadeSlide 0.3s ease both;
+  }
+  .cs-tendency.sky   { border-left-color: var(--sky); }
+  .cs-tendency.amber { border-left-color: var(--amber); }
+  .cs-tendency.rose  { border-left-color: var(--rose); }
+  .cs-tendency.earth { border-left-color: var(--earth); }
+  .cs-tendency .ct-head {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--text-main);
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cs-tendency .ct-body { font-size: 13px; color: var(--text-mid); line-height: 1.8; }
+  .cs-tendency .ct-approach {
+    margin-top: 8px;
+    font-size: 13px;
+    color: var(--green-deep);
+    font-weight: 500;
+  }
+  .cs-items-list {
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--text-soft);
+  }
+  </style>
+
+</div><!-- /main -->
+
+<footer>
+  🌱 就活の木 ― 迷える子羊シリーズ 第2弾 ｜ カール・ロジャーズの来談者中心療法を支援哲学の根幹に
+</footer>
+
+<script>
+// ===== HINT DATA =====
+const hints = {
+  'adhd-start': {
+    title: '🎯 取りかかりの難しさ ― 「2分ルール」のすすめ',
+    color: '',
+    body: '「やらなきゃ」と思えば思うほど動けなくなるのは、エネルギーが動機より先に切れているサインです。',
+    tips: [
+      'ESは「1行だけ書く」から始める。完成を目指さない',
+      '就活手帳に「今日やること」を1つだけ書く',
+      'タイマーを15分セットして、終わったら止めていい',
+      'カウンセラーとの面談を「エンジンをかける場」として使う'
+    ]
+  },
+  'adhd-forget': {
+    title: '📅 締め切り管理 ― 外部記憶を作る',
+    color: '',
+    body: '記憶に頼らない仕組みを作ることが大切です。「忘れる自分が悪い」ではなく、「忘れない環境を設計する」発想へ。',
+    tips: [
+      'Googleカレンダーにエントリー締め切りを全部入れ、3日前アラートも設定',
+      'スマホのホーム画面に今週のTO DOを付箋アプリで固定',
+      '就活管理シートを1枚作り、毎朝1分確認する習慣をつける',
+      '面談時に次の行動を一緒に確認・メモする'
+    ]
+  },
+  'adhd-multi': {
+    title: '🗂️ 複数管理の混乱 ― 「就活マップ」一枚作戦',
+    color: 'sky',
+    body: '複数企業を同時に管理するのは、誰でも負荷が高いことです。情報を「頭の外に出す」ことで認知の負担を減らせます。',
+    tips: [
+      '企業ごとに色分けしたシートを1枚作る（会社名・締切・状況だけ）',
+      'その日やることを朝に「今日の1社」と決める',
+      '進行中の会社は最大5社まで、それ以上は一覧から外す',
+      '混乱したらカウンセラーに「整理の時間」を作ってもらう'
+    ]
+  },
+  'adhd-impulse': {
+    title: '⚡ 衝動エントリー ― 「24時間ルール」',
+    color: 'amber',
+    body: '「なんか良さそう」で即エントリーすること自体は悪くない。でも後で後悔しないために、確認の手順を一つ入れましょう。',
+    tips: [
+      'エントリーしたい→まず「なぜ？」を3行メモする',
+      '24時間後に読み返してまだ行きたいと思ったら応募',
+      '自分が大切にしたい条件（職種・場所・雰囲気）を3つ決めておく',
+      '迷ったら「就活の軸チェックシート」を使ってみる'
+    ]
+  },
+  'asd-literal': {
+    title: '🗣️ 面接の意図を読む ― 「質問の翻訳」作業',
+    color: 'sky',
+    body: '面接の質問には「裏の意図」があることが多いです。それを事前に知っておくだけで、答えやすさが大きく変わります。',
+    tips: [
+      '「あなたの強みは？」→「入社後に活かせるスキルを教えてほしい」という質問',
+      '「弱みは？」→「自己理解できていますか？改善努力はありますか？」という質問',
+      'よく聞かれる質問15問の「裏の意図」リストを一緒に作る',
+      'GDは「良い発言をする場」より「場を前に進める場」と理解する'
+    ]
+  },
+  'asd-detail': {
+    title: '📝 まとめる難しさ ― 「型」に当てはめる',
+    color: '',
+    body: '伝えたいことがたくさんある人ほど、まとめるのが難しくなります。型を使うことで情報量をコントロールできます。',
+    tips: [
+      'STAR法（状況・課題・行動・結果）で話す内容を整理する',
+      '自己PRは「結論→エピソード→学び→入社後の活かし方」の4行で',
+      '「一番伝えたいことだけ話す」練習を繰り返す',
+      '話した後に「つまり〇〇です」と必ず付け加える癖をつける'
+    ]
+  },
+  'asd-small': {
+    title: '💬 雑談・小話 ― 「台本」があれば大丈夫',
+    color: 'amber',
+    body: '雑談が苦手なのは、「次に何を言えばいいか」の引き出しが少ないから。引き出しを作る練習をしましょう。',
+    tips: [
+      '「最近はまっていること」を3つ準備しておく',
+      '相手の話に「うなずき＋オウム返し＋質問」の流れを練習',
+      'OB訪問では「聞きたいこと5問リスト」を必ず持参',
+      '無理に笑顔を作らなくていい。「話を聞く姿勢」だけ意識する'
+    ]
+  },
+  'sens-fatigue': {
+    title: '⚡ エネルギー管理 ― 「充電型」就活プランの設計',
+    color: 'earth',
+    body: '説明会・面接・ES…と就活は消耗することの連続です。「がんばる日」と「回復する日」を計画的に分けましょう。',
+    tips: [
+      '週に1〜2日は就活を完全にしない「OFF日」を設ける',
+      '1日の選考は最大2件まで。移動時間に余白を作る',
+      '疲れを感じたら「今日は何ができた？」と自分をねぎらう',
+      '睡眠を7時間確保することを就活中の最優先事項にする'
+    ]
+  },
+  'sens-noise': {
+    title: '👂 感覚過敏 ― 環境を整える工夫',
+    color: 'amber',
+    body: '騒音・照明・においに敏感なのは「わがまま」ではありません。環境を整えることは合理的な自己管理です。',
+    tips: [
+      '合説には早めに行き、端・壁側の席を確保する',
+      'ノイズキャンセリングイヤホンを活用（入室前まで）',
+      '疲れやすい会場はオンライン説明会に切り替えられないか確認',
+      'スーツの素材・靴のフィット感を事前に試し着で確認する'
+    ]
+  },
+  'sens-change': {
+    title: '🔄 変化への対処 ― 「想定外シナリオ」を持つ',
+    color: 'sky',
+    body: '「予期しない出来事」に強くなるには、事前に「もし〇〇なら〇〇する」を準備しておくことが有効です。',
+    tips: [
+      '「面接が急遽オンラインになった場合」など変更への対応を事前に考えておく',
+      '予定変更の連絡が来たらまず深呼吸し、「確認します」と返信する',
+      '当日の持ち物・経路を前日に再確認するルーティンを作る',
+      '変化に動揺したときのクールダウン方法を1つ決めておく'
+    ]
+  },
+  'anx-reject': {
+    title: '💙 不採用の恐怖 ― 「縁がなかっただけ」の視点',
+    color: 'sky',
+    body: '不採用は「あなたがダメ」ではなく、「この会社とのタイミングが合わなかった」だけです。採用側も迷って決めています。',
+    tips: [
+      '落ちたら「自分の何が足りなかったか」より「どんな人が求められていたか」を考える',
+      '1社落ちたら「縁がなかった会社が1社確定した」と記録する',
+      '内定をもらった先輩の話を聞く（失敗談も含めて）',
+      '「エントリーした事実」「受けた経験」だけで十分すごいと認める'
+    ]
+  },
+  'anx-compare': {
+    title: '🌿 比較・自己嫌悪 ― 「自分軸」に戻る作業',
+    color: '',
+    body: '就活SNSは「うまくいっている人」の発信が中心です。見えていない「苦労・迷い」が必ずあります。',
+    tips: [
+      '就活SNSを見る時間を1日10分以内に決める',
+      '「友達の内定先＝自分の幸せ」ではないことを紙に書いて貼る',
+      '自分の「外せない条件」を3つだけ決めて、それを軸にする',
+      '毎日寝る前に「今日できたこと」を1つだけ書く'
+    ]
+  },
+  'anx-stop': {
+    title: '🌧️ 気力の喪失 ― まず「休む許可」を',
+    color: 'earth',
+    body: '何もできない日があるのは、それだけ頑張ってきた証拠でもあります。休むことは「諦め」ではありません。',
+    tips: [
+      '「今日は就活しない日」と決めてOKにする',
+      '好きなことを1時間する（ゲーム・映画・料理・散歩）',
+      '信頼できる人に「最近しんどい」と話す',
+      '学内の相談窓口・カウンセラーに話すだけでも楽になることがある'
+    ]
+  },
+  'ld-write': {
+    title: '✏️ ES・文章化の難しさ ― 「話す→書く」変換作業',
+    color: 'amber',
+    body: 'ESを書けない人が、話すと流暢に語れることはよくあります。まず声に出してから文字に落とす方法を試してみましょう。',
+    tips: [
+      'スマホの音声入力でエピソードを話す→テキスト化→整える',
+      'カウンセラーに話したことをメモしてもらい、それを元に書く',
+      '誤字脱字はスペルチェック・音読で発見する',
+      '「書けない」のではなく「整理する手順が違う」だけ。まず箇条書きから'
+    ]
+  },
+  'ld-read': {
+    title: '📖 長文読解の難しさ ― 「斜め読み」戦略',
+    color: '',
+    body: '求人票・会社案内の全文を読もうとすると処理が追いつかなくなることがあります。読む場所を絞りましょう。',
+    tips: [
+      '求人票は「仕事内容・求める人物像・待遇」の3箇所だけ読む',
+      '重要な情報はコピーして大きく表示し直す',
+      '企業研究はテキストより動画・説明会を優先する',
+      'AIツール（要約機能）を使って長文を短くしてから読む'
+    ]
+  },
+  'ld-spi': {
+    title: '🧮 SPI対策 ― 「凸凹」を知って対処する',
+    color: 'sky',
+    body: 'SPIが極端に苦手な分野がある場合、それは認知の凸凹のサインかもしれません。苦手な型だけ集中練習が有効です。',
+    tips: [
+      '模擬試験で「どの問題タイプが落ちているか」を特定する',
+      '計算問題は公式の丸暗記より「解き方の手順カード」で対応',
+      'WEBテストは辞書やメモ可能な場合もある―形式を事前確認',
+      'SPI免除・ES重視の企業を中心に受けることも戦略の一つ'
+    ]
+  }
+};
+
+// ===== カテゴリ定義 =====
+const catMeta = {
+  1: {
+    icon: '🎯', label: '集中・スケジュール',
+    tendency: '「注意・集中・段取り」に関する困りごとがみられます',
+    color: '',
+    approach: '► タスクの細分化・外部記憶の活用を提案。「締め切りリスト」を一緒に作る時間を設けましょう。',
+    note: 'ADHDの傾向を想定した支援（診断なしでも有効）。面談では行動を一つに絞って終わることが重要です。'
+  },
+  2: {
+    icon: '🗣️', label: '伝える・場の空気',
+    tendency: '「コミュニケーション・場の読みにくさ」に関する困りごとがみられます',
+    color: 'sky',
+    approach: '► 面接質問の「裏の意図」を一緒に整理。GDや面接の台本を事前に作る練習を。',
+    note: 'ASD傾向を想定した支援。「暗黙のルールの言語化」が最も効果的なアプローチです。'
+  },
+  3: {
+    icon: '⚡', label: '疲れ・感覚の敏感さ',
+    tendency: '「エネルギー消耗・感覚過敏・変化への対処」に関する困りごとがみられます',
+    color: 'earth',
+    approach: '► 就活の「ON日・OFF日」設計を一緒に。合説よりオンライン説明会を優先する選択肢も提案を。',
+    note: '過活動・感覚過敏の傾向。無理に「頑張らせない」支援が鍵。スケジュールに余白を作ることが最優先。'
+  },
+  4: {
+    icon: '🌧️', label: '不安・気持ちの波',
+    tendency: '「不安・自己評価の低さ・気力の喪失」に関する困りごとがみられます',
+    color: 'rose',
+    approach: '► 「小さな成功体験の積み上げ」を意識した面談設計を。比較ではなく自分のペースを確認する問いを使いましょう。',
+    note: '心理的安全性の確保が最優先。「就活やめたい」の場面④（本当に限界）に該当する場合は、学内相談室・医療機関との連携を検討。'
+  },
+  5: {
+    icon: '📝', label: '書く・読む・整理',
+    tendency: '「文章化・読解・認知処理」に関する困りごとがみられます',
+    color: 'amber',
+    approach: '► 「話す→書く」変換（音声入力）の紹介を。ES添削は内容より「構造の整理」を先に行いましょう。',
+    note: 'LD（学習障害）傾向を想定した支援。SPIの凸凹がある場合は、SPI免除・ES重視の選考方式を探す戦略も有効。'
+  }
+};
+
+function toggleCheck(el) {
+  const cb = el.querySelector('input[type=checkbox]');
+  if (cb.checked) { el.classList.add('checked'); }
+  else { el.classList.remove('checked'); }
+  updateResults();
+}
+
+function updateResults() {
+  const totals = {1:0,2:0,3:0,4:0,5:0};
+  const checkedLabels = {1:[],2:[],3:[],4:[],5:[]};
+  const hintKeys = new Set();
+
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    if (cb.checked) {
+      const cat = parseInt(cb.dataset.cat);
+      const hint = cb.dataset.hint;
+      totals[cat]++;
+      // チェックした項目の文言を収集
+      const labelEl = cb.closest('.check-item').querySelector('.check-label');
+      if (labelEl) {
+        const text = labelEl.childNodes[0].textContent.trim();
+        checkedLabels[cat].push(text);
+      }
+      if (hint) hintKeys.add(hint);
+    }
+  });
+
+  // ===== バッジ更新（文章形式）=====
+  for (let i=1;i<=5;i++) {
+    const badge = document.getElementById(`badge-${i}`);
+    const sent  = document.getElementById(`sent-${i}`);
+    document.getElementById(`count-${i}`).textContent = totals[i];
+
+    if (totals[i] === 0) {
+      badge.className = 'score-badge zero';
+      sent.className = 's-sentence zero-text';
+      sent.textContent = '気になることなし';
+    } else {
+      badge.className = 'score-badge highlight';
+      sent.className = 's-sentence';
+      sent.innerHTML = `<span class="s-count">${totals[i]}</span>つ、気になることがある`;
+    }
+  }
+
+  // ===== ヒントカード更新 =====
+  const container = document.getElementById('hints-container');
+  const noResult  = document.getElementById('no-result');
+  container.innerHTML = '';
+
+  if (hintKeys.size === 0) {
+    noResult.style.display = 'block';
+  } else {
+    noResult.style.display = 'none';
+    let delay = 0;
+    hintKeys.forEach(key => {
+      const h = hints[key];
+      if (!h) return;
+      const card = document.createElement('div');
+      card.className = `hint-card ${h.color || ''}`;
+      card.style.animationDelay = `${delay}ms`;
+      card.innerHTML = `
+        <div class="hint-title">${h.title}</div>
+        <div class="hint-body">${h.body}
+          <ul class="tip-list">
+            ${h.tips.map(t => `<li>${t}</li>`).join('')}
+          </ul>
+        </div>`;
+      container.appendChild(card);
+      delay += 80;
+    });
+  }
+
+  // ===== カウンセラーサマリー更新 =====
+  updateCounselorSummary(totals, checkedLabels);
+}
+
+function updateCounselorSummary(totals, checkedLabels) {
+  const body = document.getElementById('counselor-summary-body');
+  if (!body) return;
+
+  const activeCategories = Object.keys(totals).filter(k => totals[k] > 0);
+
+  if (activeCategories.length === 0) {
+    body.innerHTML = '<div class="cs-no-check">← 「特性チェック」タブでチェックを入れると、ここに傾向がまとめて表示されます</div>';
+    return;
+  }
+
+  // 多い順にソート
+  activeCategories.sort((a,b) => totals[b] - totals[a]);
+
+  let html = '';
+  activeCategories.forEach((k, idx) => {
+    const m = catMeta[k];
+    const items = checkedLabels[k];
+    const delay = idx * 80;
+    html += `
+      <div class="cs-tendency ${m.color}" style="animation-delay:${delay}ms">
+        <div class="ct-head">${m.icon} ${m.tendency}（${totals[k]}項目）</div>
+        <div class="ct-body">
+          チェックあり：${items.map(t=>`「${t}」`).join('、')}
+        </div>
+        <div class="ct-approach">${m.approach}</div>
+        <div class="cs-items-list">💡 ${m.note}</div>
+      </div>`;
+  });
+
+  // 面談の優先事項
+  const priority = catMeta[activeCategories[0]];
+  html += `
+    <div style="background:#f0fae8;border-radius:8px;padding:12px 16px;margin-top:4px;font-size:13px;color:var(--green-deep);">
+      <strong>📌 今日の面談で最も優先したいテーマ：</strong>「${priority.label}」の困りごと（${totals[activeCategories[0]]}項目）<br>
+      <span style="color:var(--text-mid);">${priority.approach.replace('► ','')}</span>
+    </div>`;
+
+  body.innerHTML = html;
+}
+
+function toggleCat(header) {
+  header.classList.toggle('open');
+  const items = header.nextElementSibling;
+  items.classList.toggle('open');
+}
+
+function resetAll() {
+  document.querySelectorAll('input[type=checkbox]').forEach(cb => {
+    cb.checked = false;
+    cb.closest('.check-item').classList.remove('checked');
+  });
+  updateResults();
+}
+
+// ===== TAB SWITCHING =====
+function switchSection(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(`section-${name}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+  // カウンセラータブに切り替えたとき即サマリー更新
+  if (name === 'counselor') updateResults();
+}
+
+function switchTrouble(name) {
+  document.querySelectorAll('.trouble-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.trouble-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById(`trouble-${name}`).classList.add('active');
+  event.currentTarget.classList.add('active');
+}
+
+// Init
+updateResults();
+</script>
+</body>
+</html>
